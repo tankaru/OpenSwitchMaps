@@ -1,4 +1,4 @@
-# OpenMapSwitcher
+# OpenSwitchMap
 Map service switcher for Chrome extension
 
 OpenStreetMapを中心に地図サービスを切り替えることができるChrome拡張機能です。
