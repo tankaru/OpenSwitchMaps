@@ -13,7 +13,8 @@ let multimapas = document.getElementById('multimapas');
 let yandex = document.getElementById('yandex');
 let ingress = document.getElementById('ingress');
 let f4map = document.getElementById('f4map');
-
+let keepright = document.getElementById('keepright');
+let osminspector = document.getElementById('osminspector');
 
 function getLatLonZoom(url){
 	map_url = url;
@@ -146,6 +147,24 @@ osmose.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'http://osmose.openstreetmap.fr/map/#zoom=' + zoom + '&lat=' + lat + '&lon=' + lon + '");'});
+	});
+};
+
+keepright.onclick = function(element) {
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		[lat, lon, zoom] = getLatLonZoom(tabs[0].url);
+	chrome.tabs.executeScript(
+		tabs[0].id,
+		{code: 'window.open("' + 'https://www.keepright.at/report_map.php?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon + '");'});
+	});
+};
+
+osminspector.onclick = function(element) {
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		[lat, lon, zoom] = getLatLonZoom(tabs[0].url);
+	chrome.tabs.executeScript(
+		tabs[0].id,
+		{code: 'window.open("' + 'http://tools.geofabrik.de/osmi/?view=geometry&lon=' + lon + '&lat=' + lat + '&zoom=' + zoom + '");'});
 	});
 };
 
