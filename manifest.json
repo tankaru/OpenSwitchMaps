@@ -2,6 +2,7 @@
     "name": "OpenSwitchMap for Japanese OpenStreetMap contributors",
     "version": "0.1",
     "description": "Switch map services, mainly for OpenStreetMap users",
+	"homepage_url": "https://github.com/tankaru/OpenSwitchMap",
 	"permissions": ["activeTab","declarativeContent"],
 	"background": {
       "scripts": ["background.js"],
