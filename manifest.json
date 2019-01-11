@@ -1,0 +1,20 @@
+  {
+    "name": "OpenMapSwitcher for Japanese OpenStreetMap contributors",
+    "version": "0.1",
+    "description": "Switch map services, mainly for OpenStreetMap users",
+	"permissions": ["activeTab","declarativeContent"],
+	"background": {
+      "scripts": ["background.js"],
+      "persistent": false
+    },
+	"page_action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "128": "icons/icon128.png"
+      }
+	},
+    "icons": {
+        "128": "icons/icon128.png"
+    },
+    "manifest_version": 2
+  }
