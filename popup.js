@@ -12,6 +12,8 @@ let mapcompare = document.getElementById('mapcompare');
 let multimapas = document.getElementById('multimapas');
 let yandex = document.getElementById('yandex');
 let ingress = document.getElementById('ingress');
+let f4map = document.getElementById('f4map');
+
 
 function getLatLonZoom(url){
 	map_url = url;
@@ -30,6 +32,8 @@ function getLatLonZoom(url){
 		[is_supported_url, zoom, lat, lon] = map_url.match(/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 	}else if(map_url.match(/(yandex).*(maps)/)){
 		[is_supported_url, lon, lat, zoom] = map_url.match(/ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d{1,2})/);
+	}else if(map_url.match(/(demo\.f4map\.com)/)){
+		[is_supported_url, lat, lon, zoom] = map_url.match(/#lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)&zoom=(\d{1,2})/);
 	}
 	
 	return [lat, lon, zoom];
@@ -72,6 +76,15 @@ gsimaps.onclick = function(element) {
 		{code: 'window.location.href ="' + 'https://maps.gsi.go.jp/#' + zoom + '/' + lat + '/' + lon + '/' + '";'});
 	});
 };
+
+f4map.onclick = function(element) {
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		[lat, lon, zoom] = getLatLonZoom(tabs[0].url);
+	chrome.tabs.executeScript(
+		tabs[0].id,
+		{code: 'window.location.href ="' + 'https://demo.f4map.com/#lat=' + lat + '&lon=' + lon + '&zoom=' + zoom + '";'});
+	});
+}; 
 
 yandex.onclick = function(element) {
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
