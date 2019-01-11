@@ -1,5 +1,5 @@
   {
-    "name": "OpenMapSwitcher for Japanese OpenStreetMap contributors",
+    "name": "OpenSwitchMap for Japanese OpenStreetMap contributors",
     "version": "0.1",
     "description": "Switch map services, mainly for OpenStreetMap users",
 	"permissions": ["activeTab","declarativeContent"],
