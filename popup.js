@@ -47,9 +47,10 @@ function getLatLonZoom(url){
 google.onclick = function(element) {
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		[lat, lon, zoom] = getLatLonZoom(tabs[0].url);
-	chrome.tabs.executeScript(
-		tabs[0].id,
-		{code: 'window.location.href ="' + 'https://www.google.co.jp/maps/@' + lat + ',' + lon + ',' + zoom + 'z' + '";'});
+		chrome.tabs.executeScript(
+			tabs[0].id,
+			{code: 'window.location.href ="' + 'https://www.google.co.jp/maps/@' + lat + ',' + lon + ',' + zoom + 'z' + '";'});
+		window.close();
 	});
 }; 
 openstreetmap.onclick = function(element) {
@@ -58,7 +59,8 @@ openstreetmap.onclick = function(element) {
     chrome.tabs.executeScript(
         tabs[0].id,
         {code: 'window.location.href ="' + 'https://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lon + '";'});
-   });
+		window.close();
+	});
 };
 mapillary.onclick = function(element) {
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -66,6 +68,7 @@ mapillary.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.location.href ="' + 'https://www.mapillary.com/app/?lat=' + lat + '&lng=' + lon + '&z=' + zoom + '";'});
+		window.close();
 	});
 }; 
 
@@ -75,6 +78,7 @@ gsimaps.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.location.href ="' + 'https://maps.gsi.go.jp/#' + zoom + '/' + lat + '/' + lon + '/' + '";'});
+		window.close();
 	});
 };
 
@@ -84,6 +88,7 @@ f4map.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.location.href ="' + 'https://demo.f4map.com/#lat=' + lat + '&lon=' + lon + '&zoom=' + zoom + '";'});
+		window.close();
 	});
 }; 
 
@@ -93,6 +98,7 @@ yandex.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.location.href ="' + 'https://yandex.com/maps/?ll=' + lon + '%2C' + lat + '&z=' + zoom + '";'});
+		window.close();
 	});
 }; 
 
@@ -111,6 +117,7 @@ mapfan.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'https://mapfan.com/map/spots/search?c=' + lat + ',' + lon + ',' + zoom + '");'});
+		window.close();
 	});
 };
 
@@ -129,6 +136,7 @@ openstreetcam.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.location.href ="' + 'https://www.openstreetcam.org/map/@' + lat + ',' + lon + ',' + zoom + 'z' + '";'});
+		window.close();
 	});
 };
 
@@ -138,6 +146,7 @@ overpassturbo.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'http://overpass-turbo.eu/?Q=&C=' + lat + ';' + lon + ';' + zoom + '");'});
+		window.close();
 	});
 };
 
@@ -147,6 +156,7 @@ osmose.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'http://osmose.openstreetmap.fr/map/#zoom=' + zoom + '&lat=' + lat + '&lon=' + lon + '");'});
+		window.close();
 	});
 };
 
@@ -156,6 +166,7 @@ keepright.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'https://www.keepright.at/report_map.php?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon + '");'});
+		window.close();
 	});
 };
 
@@ -165,6 +176,7 @@ osminspector.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'http://tools.geofabrik.de/osmi/?view=geometry&lon=' + lon + '&lat=' + lat + '&zoom=' + zoom + '");'});
+		window.close();
 	});
 };
 
@@ -174,6 +186,7 @@ whodidit.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'http://simon04.dev.openstreetmap.org/whodidit/?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon + '");'});
+		window.close();
 	});
 };
 
@@ -183,6 +196,7 @@ mapcompare.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'http://tools.geofabrik.de/mc/#' + zoom + '/' + lat + '/' + lon + '");'});
+		window.close();
 	});
 };
 
@@ -192,6 +206,7 @@ multimapas.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'http://javier.jimenezshaw.com/mapas/mapas.html?z=' + zoom + '&c=' + lat + ',' + lon + '");'});
+		window.close();
 	});
 };
 
@@ -201,5 +216,6 @@ ingress.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'https://intel.ingress.com/intel?ll=' + lat + ',' + lon + '&z=' + zoom + '");'});
+		window.close();
 	});
 };
