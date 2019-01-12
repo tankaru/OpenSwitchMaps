@@ -20,7 +20,7 @@ function getLatLonZoom(url){
 	map_url = url;
 	if (map_url.match(/(www\.openstreetmap)/)){
 		[is_supported_url, zoom, lat, lon] = map_url.match(/map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-	}else if(map_url.match(/(google).*(maps).*z$/)){
+	}else if(map_url.match(/(google).*(maps).*z/)){
 		[is_supported_url, lat, lon, zoom] = map_url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
 	}else if(map_url.match(/(google).*(maps).*(1e3)$/)){
 		[is_supported_url, lat, lon, zoom] = map_url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[.m]/);
