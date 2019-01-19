@@ -15,6 +15,8 @@ let ingress = document.getElementById('ingress');
 let f4map = document.getElementById('f4map');
 let keepright = document.getElementById('keepright');
 let osminspector = document.getElementById('osminspector');
+let mapion = document.getElementById('mapion');
+
 
 function getLatLonZoom(url){
 	map_url = url;
@@ -219,3 +221,14 @@ ingress.onclick = function(element) {
 		window.close();
 	});
 };
+
+mapion.onclick = function(element) {
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		[lat, lon, zoom] = getLatLonZoom(tabs[0].url);
+	chrome.tabs.executeScript(
+		tabs[0].id,
+		{code: 'window.open("' + 'https://www.mapion.co.jp/m2/' + lat + ',' + lon + ',' + zoom + '");'});
+		window.close();
+	});
+};
+
