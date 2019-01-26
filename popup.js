@@ -24,7 +24,7 @@ function getLatLonZoom(url){
 		[is_supported_url, zoom, lat, lon] = map_url.match(/map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 	}else if(map_url.match(/(google).*(maps).*z/)){
 		[is_supported_url, lat, lon, zoom] = map_url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
-	}else if(map_url.match(/(google).*(maps).*(1e3)$/)){
+	}else if(map_url.match(/(google).*(maps).*(1e3)/)){
 		[is_supported_url, lat, lon, zoom] = map_url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[.m]/);
 		zoom = -1.4436*Math.log(zoom)+26.871;
 	}else if(map_url.match(/(mapillary)/)){
@@ -185,6 +185,7 @@ osminspector.onclick = function(element) {
 whodidit.onclick = function(element) {
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 		[lat, lon, zoom] = getLatLonZoom(tabs[0].url);
+		if (Number(zoom)>18) zoom = 18;
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'http://simon04.dev.openstreetmap.org/whodidit/?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon + '");'});
