@@ -3,7 +3,7 @@
     <head>
       <style>
 	    body {
-			width: 150px;
+			width: 453px;
 		}
         button {
           height: 30px;
@@ -17,11 +17,26 @@
 			font-weight: bold;
 			text-align: center;
 		}
+		div.mainmaps {
+			float: left;
+			width: 150px;
+
+		}
+		div.osmtools {
+			float: left;
+			width: 150px;
+
+		}
+		div.othermaps {
+			float: left;
+			width: 150px;
+		}
 		</style>
 	  <meta charset="utf-8">
     </head>
     <body>
-
+		<div class="mainmaps">
+	  <p class="separator" id="">--Main maps--</p>
 	  <p class="map" id="google"><img src="http://www.google.com/s2/favicons?domain=www.google.co.jp">Google Maps</p>
 	  <p class="map" id="openstreetmap"><img src="http://www.google.com/s2/favicons?domain=www.openstreetmap.org">OpenStreetMap</p>
 	  <p class="map" id="mapillary"><img src="http://www.google.com/s2/favicons?domain=www.mapillary.com">Mapillary</p>
@@ -29,6 +44,8 @@
 	  <p class="map" id="openstreetcam"><img src="http://www.google.com/s2/favicons?domain=www.openstreetcam.org">OpenStreetCam</p>
 	  <p class="map" id="f4map"><img src="http://www.google.com/s2/favicons?domain=demo.f4map.com">F4map</p>
 	  <p class="map" id="yandex"><img src="http://www.google.com/s2/favicons?domain=yandex.com">Yandex</p>
+		</div>
+		<div class="osmtools">
 	  <p class="separator" id="">--OSM tools--</p>
 	  <p class="map" id="overpassturbo"><img src="http://www.google.com/s2/favicons?domain=overpass-turbo.eu">Overpass-turbo</p>
 	  <p class="map" id="osmose"><img src="http://www.google.com/s2/favicons?domain=osmose.openstreetmap.fr">Osmose</p>
@@ -38,13 +55,15 @@
 	  <p class="map" id="mapcompare"><img src="http://www.google.com/s2/favicons?domain=tools.geofabrik.de">Map compare</p>
 	  <p class="map" id="multimapas"><img src="http://www.google.com/s2/favicons?domain=javier.jimenezshaw.com">Multimapas</p>
 	  <p class="map" id="waymarkedtrails"><img src="http://www.google.com/s2/favicons?domain=hiking.waymarkedtrails.org">Waymarked Trails</p>
+		</div>
+		<div class="othermaps">
 	  <p class="separator" id="">--Other maps--</p>
 	  <p class="map" id="ingress"><img src="http://www.google.com/s2/favicons?domain=intel.ingress.com">Ingress Intel map</p>
 	  <p class="map" id="yahoo"><img src="http://www.google.com/s2/favicons?domain=map.yahoo.co.jp">Yahoo Map JP</p>
 	  <p class="map" id="bing"><img src="http://www.google.com/s2/favicons?domain=www.bing.com">Bing</p>
 	  <p class="map" id="mapfan"><img src="http://www.google.com/s2/favicons?domain=mapfan.com">MapFan</p>
 	  <p class="map" id="mapion"><img src="http://www.google.com/s2/favicons?domain=www.mapion.co.jp">Mapion</p>
-
+		</div>
 
 
 	  <script src="popup.js"></script>
