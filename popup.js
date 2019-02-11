@@ -17,6 +17,7 @@ let keepright = document.getElementById('keepright');
 let osminspector = document.getElementById('osminspector');
 let mapion = document.getElementById('mapion');
 let waymarkedtrails = document.getElementById('waymarkedtrails');
+let openstreetmapde = document.getElementById('openstreetmapde');
 
 function getLatLonZoom(url){
 	map_url = url;
@@ -239,6 +240,16 @@ waymarkedtrails.onclick = function(element) {
 	chrome.tabs.executeScript(
 		tabs[0].id,
 		{code: 'window.open("' + 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '!' + lat + '!' + lon + '");'});
+		window.close();
+	});
+};
+
+openstreetmapde.onclick = function(element) {
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+		[lat, lon, zoom] = getLatLonZoom(tabs[0].url);
+	chrome.tabs.executeScript(
+		tabs[0].id,
+		{code: 'window.open("' + 'https://www.openstreetmap.de/karte.html?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon + '");'});
 		window.close();
 	});
 };
