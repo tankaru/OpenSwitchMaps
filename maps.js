@@ -1,5 +1,6 @@
 module.exports = {
   google: {
+    urlPattern: /google.*maps/,
     getUrl(lat, lon, zoom) {
       return 'https://www.google.co.jp/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
@@ -15,6 +16,7 @@ module.exports = {
     },
   },
   openstreetmap: {
+    urlPattern: /www\.openstreetmap\.org/,
     getUrl(lat, lon, zoom) {
       return 'https://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lon;
     },
@@ -26,6 +28,7 @@ module.exports = {
     },
   },
   mapillary: {
+    urlPattern: /www\.mapillary\.com/,
     getUrl(lat, lon, zoom) {
       return 'https://www.mapillary.com/app/?lat=' + lat + '&lng=' + lon + '&z=' + zoom;
     },
@@ -37,6 +40,7 @@ module.exports = {
     },
   },
   openstreetcam: {
+    urlPattern: /www\.openstreetcam\.org/,
     getUrl(lat, lon, zoom) {
       return 'https://www.openstreetcam.org/map/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
@@ -48,6 +52,7 @@ module.exports = {
     },
   },
   gsimaps: {
+    urlPattern: /maps\.gsi\.go\.jp/,
     getUrl(lat, lon, zoom) {
       return 'https://maps.gsi.go.jp/#' + zoom + '/' + lat + '/' + lon + '/';
     },
@@ -99,6 +104,7 @@ module.exports = {
     },
   },
   yandex: {
+    urlPattern: /yandex\.com\/maps/,
     getUrl(lat, lon, zoom) {
       return 'https://yandex.com/maps/?ll=' + lon + '%2C' + lat + '&z=' + zoom;
     },
@@ -115,6 +121,7 @@ module.exports = {
     },
   },
   f4map: {
+    urlPattern: /demo\.f4map\.com/,
     getUrl(lat, lon, zoom) {
       return 'https://demo.f4map.com/#lat=' + lat + '&lon=' + lon + '&zoom=' + zoom;
     },
