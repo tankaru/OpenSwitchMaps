@@ -1,21 +1,21 @@
-  {
-    "name": "OpenSwitchMaps",
-    "version": "0.4",
-    "description": "Switch map services, mainly for Japanese OpenStreetMap contributors",
-	"homepage_url": "https://github.com/tankaru/OpenSwitchMap",
-	"permissions": ["activeTab","declarativeContent"],
-	"background": {
-      "scripts": ["background.js"],
-      "persistent": false
-    },
-	"page_action": {
-      "default_popup": "popup.html",
-      "default_icon": {
-        "128": "icons/icon128.png"
-      }
-	},
-    "icons": {
-        "128": "icons/icon128.png"
-    },
-    "manifest_version": 2
-  }
+{
+  "name": "OpenSwitchMaps",
+  "version": "0.4",
+  "description": "Switch map services, mainly for Japanese OpenStreetMap contributors",
+  "homepage_url": "https://github.com/tankaru/OpenSwitchMap",
+  "permissions": ["activeTab", "declarativeContent"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "128": "icons/icon128.png"
+  },
+  "manifest_version": 2
+}
