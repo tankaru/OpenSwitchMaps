@@ -2,9 +2,8 @@ const maps = require('./maps');
 
 function getLatLonZoom(url) {
   for (const map of Object.values(maps)) {
-    const latLonZom = map.getLatLonZoom && map.getLatLonZoom(url);
-    if (latLonZom) {
-      return latLonZom;
+    if (map.urlPattern && map.urlPattern.test(url)) {
+      return map.getLatLonZoom(url);
     }
   }
 }

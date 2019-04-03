@@ -21,10 +21,8 @@ module.exports = {
       return 'https://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lon;
     },
     getLatLonZoom(url) {
-      if (url.match(/(www\.openstreetmap)/)) {
-        const [, zoom, lat, lon] = url.match(/map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-        return [lat, lon, zoom];
-      }
+      const [, zoom, lat, lon] = url.match(/map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      return [lat, lon, zoom];
     },
   },
   mapillary: {
@@ -33,10 +31,8 @@ module.exports = {
       return 'https://www.mapillary.com/app/?lat=' + lat + '&lng=' + lon + '&z=' + zoom;
     },
     getLatLonZoom(url) {
-      if (url.match(/(mapillary)/)) {
-        const [, lat, lon, zoom] = url.match(/lat=(-?\d[0-9.]*)&lng=(-?\d[0-9.]*)&z=(\d{1,2})/);
-        return [lat, lon, zoom];
-      }
+      const [, lat, lon, zoom] = url.match(/lat=(-?\d[0-9.]*)&lng=(-?\d[0-9.]*)&z=(\d{1,2})/);
+      return [lat, lon, zoom];
     },
   },
   openstreetcam: {
@@ -45,10 +41,8 @@ module.exports = {
       return 'https://www.openstreetcam.org/map/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
     getLatLonZoom(url) {
-      if (url.match(/(openstreetcam)/)) {
-        const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
-        return [lat, lon, zoom];
-      }
+      const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      return [lat, lon, zoom];
     },
   },
   gsimaps: {
@@ -57,10 +51,8 @@ module.exports = {
       return 'https://maps.gsi.go.jp/#' + zoom + '/' + lat + '/' + lon + '/';
     },
     getLatLonZoom(url) {
-      if (url.match(/(maps\.gsi\.go\.jp)/)) {
-        const [, zoom, lat, lon] = url.match(/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-        return [lat, lon, zoom];
-      }
+      const [, zoom, lat, lon] = url.match(/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      return [lat, lon, zoom];
     },
   },
   yahoo: {
@@ -104,15 +96,13 @@ module.exports = {
     },
   },
   yandex: {
-    urlPattern: /yandex\.com\/maps/,
+    urlPattern: /yandex.*maps/,
     getUrl(lat, lon, zoom) {
       return 'https://yandex.com/maps/?ll=' + lon + '%2C' + lat + '&z=' + zoom;
     },
     getLatLonZoom(url) {
-      if (url.match(/(yandex).*(maps)/)) {
-        const [, lon, lat, zoom] = url.match(/ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d{1,2})/);
-        return [lat, lon, zoom];
-      }
+      const [, lon, lat, zoom] = url.match(/ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d{1,2})/);
+      return [lat, lon, zoom];
     },
   },
   ingress: {
@@ -126,10 +116,8 @@ module.exports = {
       return 'https://demo.f4map.com/#lat=' + lat + '&lon=' + lon + '&zoom=' + zoom;
     },
     getLatLonZoom(url) {
-      if (url.match(/(demo\.f4map\.com)/)) {
-        const [, lat, lon, zoom] = url.match(/#lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)&zoom=(\d{1,2})/);
-        return [lat, lon, zoom];
-      }
+      const [, lat, lon, zoom] = url.match(/#lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)&zoom=(\d{1,2})/);
+      return [lat, lon, zoom];
     },
   },
   keepright: {
