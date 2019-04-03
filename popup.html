@@ -4,7 +4,11 @@
 <head>
   <style>
     body {
-      width: 453px;
+      font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+      font-size: 10pt;
+      display: table;
+      padding: 0;
+      margin: 0;
     }
 
     p.map {
@@ -22,14 +26,18 @@
       background-color: #eee;
     }
 
-    p.separator {
+    .title {
+      background-color: #eee;
       font-weight: bold;
+      font-size: larger;
       text-align: center;
+      padding: 1px;
+      margin: 0;
     }
 
     .column {
-      float: left;
-      width: 150px;
+      display: table-cell;
+      white-space: nowrap;
     }
   </style>
   <meta charset="utf-8">
@@ -37,7 +45,7 @@
 
 <body>
   <div class="column">
-    <p class="separator" id="">--Main maps--</p>
+    <p class="title">Main maps</p>
     <p class="map" id="google"><img src="http://www.google.com/s2/favicons?domain=www.google.co.jp">Google Maps</p>
     <p class="map" id="openstreetmap"><img src="http://www.google.com/s2/favicons?domain=www.openstreetmap.org">OpenStreetMap</p>
     <p class="map" id="mapillary"><img src="http://www.google.com/s2/favicons?domain=www.mapillary.com">Mapillary</p>
@@ -47,7 +55,7 @@
     <p class="map" id="yandex"><img src="http://www.google.com/s2/favicons?domain=yandex.com">Yandex</p>
   </div>
   <div class="column">
-    <p class="separator" id="">--OSM tools--</p>
+    <p class="title">OSM tools</p>
     <p class="map" id="overpassturbo"><img src="http://www.google.com/s2/favicons?domain=overpass-turbo.eu">Overpass-turbo</p>
     <p class="map" id="osmose"><img src="http://www.google.com/s2/favicons?domain=osmose.openstreetmap.fr">Osmose</p>
     <p class="map" id="keepright"><img src="http://www.google.com/s2/favicons?domain=www.keepright.at">KeepRight</p>
@@ -58,7 +66,7 @@
     <p class="map" id="waymarkedtrails"><img src="http://www.google.com/s2/favicons?domain=hiking.waymarkedtrails.org">Waymarked Trails</p>
   </div>
   <div class="column">
-    <p class="separator" id="">--Other maps--</p>
+    <p class="title">Other maps</p>
     <p class="map" id="ingress"><img src="http://www.google.com/s2/favicons?domain=intel.ingress.com">Ingress Intel map</p>
     <p class="map" id="openstreetmapde"><img src="http://www.google.com/s2/favicons?domain=www.openstreetmap.de">OSM.de</p>
     <p class="map" id="yahoo"><img src="http://www.google.com/s2/favicons?domain=map.yahoo.co.jp">Yahoo Map JP</p>
