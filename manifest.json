@@ -16,5 +16,11 @@
   "icons": {
     "128": "icons/icon128.png"
   },
-  "manifest_version": 2
+  "manifest_version": 2,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "OpenSwitchMap@tankaru",
+      "strict_min_version": "54.0"
+    }
+  }
 }
