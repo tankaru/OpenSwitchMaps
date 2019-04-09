@@ -6,7 +6,7 @@ OpenStreetMapを中心に地図サービスを切り替えることができるC
 
 ![画面イメージ](Screenshot.png)
 
-![操作例動画](https://www.youtube.com/watch?v=tO87xkc7VaI)
+![操作例動画](http://img.youtube.com/vi/tO87xkc7VaI/0.jpg)](http://www.youtube.com/watch?v=tO87xkc7VaI)
 
 アイコンはICOOON MONO(http://icooon-mono.com/)から使用させていただきました。
 
