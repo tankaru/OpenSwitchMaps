@@ -1,6 +1,14 @@
 # OpenSwitchMap
 Map service switcher for Chrome extension
 
+Greatly contributed by jazzzz. Thanks!
+
+This app uses Node.js
+1. Install Node.js if needed
+1. Install the dependencies: npm install
+1. Build the extension: npm run build
+1. The extension is built in the dist directory
+
 OpenStreetMapを中心に地図サービスを切り替えることができるChrome拡張機能です。
 特にMapillary⇔OSM⇔Googleマップの切り替えが便利かと思います。
 
