@@ -1,7 +1,7 @@
 module.exports = [{
     name: "Google Maps",
     category: "Main maps",
-    domain: "www.google.co.jp",
+    domain: "google.co.jp",
     urlPattern: /google.*maps/,
     getUrl(lat, lon, zoom) {
       return 'https://www.google.co.jp/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
@@ -132,6 +132,7 @@ module.exports = [{
     category: "OSM tools",
     domain: "simon04.dev.openstreetmap.org",
     getUrl(lat, lon, zoom) {
+		if (Number(zoom)>18) zoom = 18;
       return 'http://simon04.dev.openstreetmap.org/whodidit/?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
   },
@@ -154,7 +155,7 @@ module.exports = [{
   {
     name: "Waymarked Trails",
     category: "OSM tools",
-    domain: "king.waymarkedtrails.org",
+    domain: "hiking.waymarkedtrails.org",
     getUrl(lat, lon, zoom) {
       return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '!' + lat + '!' + lon;
     },
