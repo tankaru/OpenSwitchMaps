@@ -59,10 +59,10 @@ module.exports = [{
   {
     name: "OpenStreetCam",
     category: "Main maps",
-    domain: "www.openstreetcam.org",
-    urlPattern: /www\.openstreetcam\.org/,
+    domain: "openstreetcam.org",
+    urlPattern: /openstreetcam\.org/,
     getUrl(lat, lon, zoom) {
-      return 'https://www.openstreetcam.org/map/@' + lat + ',' + lon + ',' + zoom + 'z';
+      return 'https://openstreetcam.org/map/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
     getLatLonZoom(url) {
       const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
