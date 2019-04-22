@@ -37,7 +37,7 @@ function makeMapElement(map) {
   element.appendChild(img);
   const textnode = document.createTextNode(map.name);
   element.appendChild(textnode);
-  element.onclick = function() {
+  element.onmousedown = function(event) {
     chrome.tabs.query({
       active: true,
       currentWindow: true
@@ -45,8 +45,13 @@ function makeMapElement(map) {
       const tab = tabs[0];
       const [lat, lon, zoom] = getLatLonZoom(tab.url);
       const mapUrl = map.getUrl(lat, lon, zoom);
+	  if (event.button == 0)
       chrome.tabs.executeScript(tab.id, {
         code: 'window.location.href =' + JSON.stringify(mapUrl) + ';',
+      });
+	  else if (event.button == 1)
+      chrome.tabs.executeScript(tab.id, {
+        code: 'window.open(' + JSON.stringify(mapUrl) + ');',
       });
       window.close();
     });
