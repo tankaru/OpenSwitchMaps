@@ -26,7 +26,9 @@ Screenshot of Firefox
 
 ![Screenshot of Firefox](Screenshot-firefox.jpg)
 
-[![操作例動画](http://img.youtube.com/vi/tO87xkc7VaI/0.jpg)](http://www.youtube.com/watch?v=tO87xkc7VaI)
+Example video
+
+[![Example](http://img.youtube.com/vi/tO87xkc7VaI/0.jpg)](http://www.youtube.com/watch?v=tO87xkc7VaI)
 
 ## Japanese descriptions
 OpenStreetMapを中心に地図サービスを切り替えることができるChrome拡張機能です。
