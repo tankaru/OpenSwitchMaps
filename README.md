@@ -12,7 +12,10 @@ This app uses Node.js
 OpenStreetMapを中心に地図サービスを切り替えることができるChrome拡張機能です。
 特にMapillary⇔OSM⇔Googleマップの切り替えが便利かと思います。
 
-![画面イメージ](Screenshot.png)
+Screenshot of Chrome
+![Screenshot of Chrome](Screenshot-chrome.jpg)
+Screenshot of Firefox
+![Screenshot of Firefox](Screenshot-firefox.jpg)
 
 [![操作例動画](http://img.youtube.com/vi/tO87xkc7VaI/0.jpg)](http://www.youtube.com/watch?v=tO87xkc7VaI)
 
