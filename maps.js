@@ -1,7 +1,7 @@
 module.exports = [{
     name: "Google Maps",
     category: "Main maps",
-    domain: "google.co.jp",
+    domain: "www.google.co.jp",
     urlPattern: /google.*maps/,
     getUrl(lat, lon, zoom) {
       return 'https://www.google.co.jp/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
