@@ -12,11 +12,11 @@ module.exports = [{
         return [lat, lon, zoom];
       } else if (url.match(/(google).*(maps).*(\/m)/)) {
         let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[.m]/);
-        zoom = -1.4436 * Math.log(zoom) + 26.871;
+        zoom = Math.round(-1.4436 * Math.log(zoom) + 26.871);
         return [lat, lon, zoom];
       } else if (url.match(/(google).*(maps).*(35y)/)) {
         let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[.a]/);
-        zoom = -1.44 * Math.log(zoom) + 27.5;
+        zoom = Math.round(-1.44 * Math.log(zoom) + 27.5);
         return [lat, lon, zoom];
 		}
     },
@@ -226,7 +226,7 @@ module.exports = [{
     domain: "flightradar24.com",
     urlPattern: /www\.flightradar24\.com/,
     getUrl(lat, lon, zoom) {
-      return 'https://www.flightradar24.com/' + lat + ',' + lon + '/' + zoom;
+      return 'https://www.flightradar24.com/' + lat + ',' + lon + '/' + Math.round(zoom);
     },
     getLatLonZoom(url) {
       const [, lat, lon, zoom] = url.match(/(-?\d[0-9.]*),(-?\d[0-9.]*)\/(\d{1,2})/);
@@ -269,7 +269,7 @@ module.exports = [{
     },
     getLatLonZoom(url) {
       let [, lon, lat, zoom] = url.match(/orthographic=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9]*)/);
-	  zoom = (zoom/11.1)**(1/3.12);
+	  zoom = Math.round((zoom/11.1)**(1/3.12));
       return [lat, lon, zoom];
     },
   },
