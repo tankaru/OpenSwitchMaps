@@ -10,11 +10,15 @@ module.exports = [{
       if (url.match(/(google).*(maps).*z/)) {
         const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
         return [lat, lon, zoom];
-      } else if (url.match(/(google).*(maps).*(1e3)/)) {
+      } else if (url.match(/(google).*(maps).*(\/m)/)) {
         let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[.m]/);
         zoom = -1.4436 * Math.log(zoom) + 26.871;
         return [lat, lon, zoom];
-      }
+      } else if (url.match(/(google).*(maps).*(35y)/)) {
+        let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[.a]/);
+        zoom = -1.44 * Math.log(zoom) + 27.5;
+        return [lat, lon, zoom];
+		}
     },
   },
   {
