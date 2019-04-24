@@ -1,10 +1,10 @@
 module.exports = [{
     name: "Google Maps",
     category: "Main maps",
-    domain: "www.google.co.jp",
+    domain: "www.google.com",
     urlPattern: /google.*maps/,
     getUrl(lat, lon, zoom) {
-      return 'https://www.google.co.jp/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
+      return 'https://www.google.com/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
     getLatLonZoom(url) {
       if (url.match(/(google).*(maps).*z/)) {
@@ -165,14 +165,6 @@ module.exports = [{
     },
   },
   {
-    name: "Ingress Intel map",
-    category: "Other maps",
-    domain: "intel.ingress.com",
-    getUrl(lat, lon, zoom) {
-      return 'https://intel.ingress.com/intel?ll=' + lat + ',' + lon + '&z=' + zoom;
-    },
-  },
-  {
     name: "OSM.de",
     category: "Other maps",
     domain: "www.openstreetmap.de",
@@ -220,4 +212,52 @@ module.exports = [{
       return 'https://www.geoportail.gouv.fr/carte?c=' + lon + ',' + lat + '&z=' + zoom + '&l0=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR.CV::GEOPORTAIL:OGC:WMTS(1)&permalink=yes';
     },
   },
+  {
+    name: "Ingress Intel map",
+    category: "Other maps",
+    domain: "intel.ingress.com",
+    getUrl(lat, lon, zoom) {
+      return 'https://intel.ingress.com/intel?ll=' + lat + ',' + lon + '&z=' + zoom;
+    },
+  },
+  {
+    name: "flightradar24",
+    category: "Other maps",
+    domain: "flightradar24.com",
+    urlPattern: /www\.flightradar24\.com/,
+    getUrl(lat, lon, zoom) {
+      return 'https://www.flightradar24.com/' + lat + ',' + lon + '/' + zoom;
+    },
+    getLatLonZoom(url) {
+      const [, lat, lon, zoom] = url.match(/(-?\d[0-9.]*),(-?\d[0-9.]*)\/(\d{1,2})/);
+      return [lat, lon, zoom];
+    },
+  },
+  {
+    name: "MarineTraffic",
+    category: "Other maps",
+    domain: "marinetraffic.com",
+    urlPattern: /www\.marinetraffic\.com/,
+    getUrl(lat, lon, zoom) {
+      return 'https://www.marinetraffic.com/en/ais/home/centerx:' + lon + '/centery:' + lat + '/zoom:' + zoom;
+    },
+    getLatLonZoom(url) {
+      const [, lon, lat, zoom] = url.match(/centerx:(-?\d[0-9.]*)\/centery:(-?\d[0-9.]*)\/zoom:(\d{1,2})/);
+      return [lat, lon, zoom];
+    },
+  },
+  {
+    name: "Windy.com",
+    category: "Other maps",
+    domain: "windy.com",
+    urlPattern: /www\.windy\.com/,
+    getUrl(lat, lon, zoom) {
+      return 'https://www.windy.com/?' + lat + ',' + lon + ',' + zoom + ',i:pressure';
+    },
+    getLatLonZoom(url) {
+      const [, lat, lon, zoom] = url.match(/\?(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      return [lat, lon, zoom];
+    },
+  },
+  
 ];
