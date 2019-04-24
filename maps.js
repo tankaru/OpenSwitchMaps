@@ -212,4 +212,12 @@ module.exports = [{
       return 'https://www.mapion.co.jp/m2/' + lat + ',' + lon + ',' + zoom;
     },
   },
+  {
+    name: "IGN GeoPortal(FR)",
+    category: "Other maps",
+    domain: "geoportail.gouv.fr",
+    getUrl(lat, lon, zoom) {
+      return 'https://www.geoportail.gouv.fr/carte?c=' + lon + ',' + lat + '&z=' + zoom + '&l0=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR.CV::GEOPORTAIL:OGC:WMTS(1)&permalink=yes';
+    },
+  },
 ];
