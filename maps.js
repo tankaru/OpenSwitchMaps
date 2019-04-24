@@ -252,12 +252,26 @@ module.exports = [{
     domain: "windy.com",
     urlPattern: /www\.windy\.com/,
     getUrl(lat, lon, zoom) {
-      return 'https://www.windy.com/?' + lat + ',' + lon + ',' + zoom + ',i:pressure';
+      return 'https://www.windy.com/?' + lat + ',' + lon + ',' + Math.round(zoom) + ',i:pressure';
     },
     getLatLonZoom(url) {
-      const [, lat, lon, zoom] = url.match(/\?(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      const [, lat, lon, zoom] = url.match(/(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
       return [lat, lon, zoom];
     },
   },
-  
+   {
+    name: "earth",
+    category: "Other maps",
+    domain: "earth.nullschool.net",
+    urlPattern: /earth\.nullschool\.net/,
+    getUrl(lat, lon, zoom) {
+      return 'https://earth.nullschool.net/#current/wind/surface/level/orthographic=' + lon + ',' + lat + ',' + 11.1*zoom**3.12;
+    },
+    getLatLonZoom(url) {
+      let [, lon, lat, zoom] = url.match(/orthographic=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9]*)/);
+	  zoom = (zoom/11.1)**(1/3.12);
+      return [lat, lon, zoom];
+    },
+  },
+ 
 ];
