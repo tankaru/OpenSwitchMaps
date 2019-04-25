@@ -100,6 +100,19 @@ module.exports = [{
     },
   },
   {
+    name: "Qwant Maps",
+    category: "Main maps",
+    domain: "qwant.com",
+    urlPattern: /www\.qwant\.com/,
+    getUrl(lat, lon, zoom) {
+      return 'https://www.qwant.com/maps/#map=' + zoom + '/' + lat + '/' + lon;
+    },
+    getLatLonZoom(url) {
+      const [, zoom, lat, lon] = url.match(/#map=(\d{1,2})[0-9.]*\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      return [lat, lon, zoom];
+    },
+  },
+  {
     name: "Overpass-turbo",
     category: "OSM tools",
     domain: "overpass-turbo.eu",
