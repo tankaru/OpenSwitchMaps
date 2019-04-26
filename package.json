@@ -1,7 +1,7 @@
 {
   "name": "OpenSwitchMaps",
   "version": "0.5.6",
-  "description": "Switch map services, mainly for Japanese OpenStreetMap contributors",
+  "description": "Switch map services, and some useful links for OpenStreetMap contributors",
   "scripts": {
     "dev": "parcel watch manifest.json",
     "build": "parcel build manifest.json"

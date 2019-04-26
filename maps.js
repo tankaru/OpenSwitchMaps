@@ -124,8 +124,13 @@ module.exports = [{
     name: "Osmose",
     category: "OSM tools",
     domain: "osmose.openstreetmap.fr",
+    urlPattern: /osmose\.openstreetmap\.fr/,
     getUrl(lat, lon, zoom) {
       return 'http://osmose.openstreetmap.fr/map/#zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
+    },
+    getLatLonZoom(url) {
+      const [, zoom, lat, lon] = url.match(/#zoom=(\d{1,2})&lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)/);
+      return [lat, lon, zoom];
     },
   },
   {
