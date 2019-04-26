@@ -10,7 +10,7 @@ module.exports = [{
       if (url.match(/(google).*(maps).*z/)) {
         const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
         return [lat, lon, zoom];
-      } else if (url.match(/(google).*(maps).*(\/m)/)) {
+      } else if (url.match(/(google).*(maps).*(m\/)/)) {
         let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[.m]/);
         zoom = Math.round(-1.4436 * Math.log(zoom) + 26.871);
         return [lat, lon, zoom];
