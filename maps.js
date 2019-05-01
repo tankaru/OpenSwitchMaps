@@ -182,20 +182,25 @@ module.exports = [{
       return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '!' + lat + '!' + lon;
     },
   },
-  {
-    name: "OSM.de",
-    category: "Other maps",
-    domain: "www.openstreetmap.de",
+   {
+    name: "BigMap 2",
+    category: "OSM tools",
+    domain: "osmz.ru",
     getUrl(lat, lon, zoom) {
-      return 'https://www.openstreetmap.de/karte.html?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
+      return 'http://bigmap.osmz.ru/index.html#map=' + zoom + '/' + lat + '/' + lon;
     },
   },
-  {
-    name: "Yahoo Map JP",
-    category: "Other maps",
-    domain: "map.yahoo.co.jp",
+ {
+    name: "Pic4Carto",
+    category: "OSM tools",
+    domain: "pavie.info",
+    urlPattern: /projets\.pavie\.info\/pic4carto\/index\.html/,
     getUrl(lat, lon, zoom) {
-      return 'https://map.yahoo.co.jp/maps?lat=' + lat + '&lon=' + lon + '&z=' + zoom;
+      return 'http://projets.pavie.info/pic4carto/index.html?#' + zoom + '/' + lat + '/' + lon;
+    },
+    getLatLonZoom(url) {
+      const [, zoom, lat, lon] = url.match(/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      return [lat, lon, zoom];
     },
   },
   {
@@ -204,6 +209,14 @@ module.exports = [{
     domain: "www.bing.com",
     getUrl(lat, lon, zoom) {
       return 'https://www.bing.com/maps?cp=' + lat + '~' + lon + '&lvl=' + zoom;
+    },
+  },
+  {
+    name: "Yahoo Map JP",
+    category: "Other maps",
+    domain: "map.yahoo.co.jp",
+    getUrl(lat, lon, zoom) {
+      return 'https://map.yahoo.co.jp/maps?lat=' + lat + '&lon=' + lon + '&z=' + zoom;
     },
   },
   {
@@ -220,6 +233,14 @@ module.exports = [{
     domain: "www.mapion.co.jp",
     getUrl(lat, lon, zoom) {
       return 'https://www.mapion.co.jp/m2/' + lat + ',' + lon + ',' + zoom;
+    },
+  },
+  {
+    name: "OSM.de",
+    category: "Other maps",
+    domain: "www.openstreetmap.de",
+    getUrl(lat, lon, zoom) {
+      return 'https://www.openstreetmap.de/karte.html?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
   },
   {
@@ -288,6 +309,19 @@ module.exports = [{
     getLatLonZoom(url) {
       let [, lon, lat, zoom] = url.match(/orthographic=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9]*)/);
 	  zoom = Math.round((zoom/11.1)**(1/3.12));
+      return [lat, lon, zoom];
+    },
+  },
+   {
+    name: "map.orhyginal",
+    category: "Other maps",
+    domain: "orhyginal.fr",
+    urlPattern: /map\.orhyginal\.fr/,
+    getUrl(lat, lon, zoom) {
+      return 'http://map.orhyginal.fr/#' + zoom + '/' + lat + '/' + lon;
+    },
+    getLatLonZoom(url) {
+      const [, zoom, lat, lon] = url.match(/#(\d[0-9]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
       return [lat, lon, zoom];
     },
   },
