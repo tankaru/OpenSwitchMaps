@@ -7,15 +7,15 @@ module.exports = [{
       return 'https://www.google.com/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
     getLatLonZoom(url) {
-      if (url.match(/(google).*(maps).*z/)) {
+      if (url.match(/google.*maps.*z[/$]/)) {
         const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
         return [lat, lon, zoom];
-      } else if (url.match(/(google).*(maps).*(m\/)/)) {
+      } else if (url.match(/google.*maps.*m\//)) {
         let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[m]/);
         zoom = Math.round(-1.4436 * Math.log(zoom) + 26.871);
         return [lat, lon, zoom];
-      } else if (url.match(/(google).*(maps).*(y,)/)) {
-        let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[a]/);
+      } else if (url.match(/google.*maps.*y,/)) {
+        let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),([0-9]*)[a]/);
         zoom = Math.round(-1.44 * Math.log(zoom) + 27.5);
         return [lat, lon, zoom];
 		}
