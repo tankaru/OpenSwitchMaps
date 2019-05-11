@@ -7,8 +7,10 @@ module.exports = [{
       return 'https://www.google.com/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
     getLatLonZoom(url) {
-      if (url.match(/google.*maps.*z[/$]/)) {
-        const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
+
+      if (url.match(/google.*maps.*,[0-9.]*z/)) {
+		const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
+
         return [lat, lon, zoom];
       } else if (url.match(/google.*maps.*m\//)) {
         let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[m]/);
@@ -19,6 +21,7 @@ module.exports = [{
         zoom = Math.round(-1.44 * Math.log(zoom) + 27.5);
         return [lat, lon, zoom];
 		}
+		
     },
   },
   {
