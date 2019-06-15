@@ -226,8 +226,13 @@ module.exports = [{
     name: "MapFan",
     category: "Other maps",
     domain: "mapfan.com",
+    urlPattern: /mapfan\.com\/map\/spots/,
     getUrl(lat, lon, zoom) {
       return 'https://mapfan.com/map/spots/search?c=' + lat + ',' + lon + ',' + zoom;
+    },
+    getLatLonZoom(url) {
+      const [, lat, lon, zoom] = url.match(/search\?c=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      return [lat, lon, zoom];
     },
   },
   {
@@ -315,7 +320,21 @@ module.exports = [{
       return [lat, lon, zoom];
     },
   },
-   {
+/*   {
+    name: "uMap(Exit only)",
+    category: "Other maps",
+    domain: "umap.openstreetmap.fr",
+    urlPattern: /umap\.openstreetmap\.fr/,
+    getUrl(lat, lon, zoom) {
+      return 'https://umap.openstreetmap.fr/';
+    },
+    getLatLonZoom(url) {
+      const [, zoom, lat, lon] = url.match(/#(\d[0-9]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      return [lat, lon, zoom];
+    },
+  },
+ */
+  /* {
     name: "map.orhyginal",
     category: "Other maps",
     domain: "orhyginal.fr",
@@ -328,5 +347,5 @@ module.exports = [{
       return [lat, lon, zoom];
     },
   },
- 
+ */
 ];
