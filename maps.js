@@ -284,7 +284,7 @@ module.exports = [{
     domain: "flightradar24.com",
     urlPattern: /www\.flightradar24\.com/,
     getUrl(lat, lon, zoom) {
-      return 'https://www.flightradar24.com/' + lat + ',' + lon + '/' + Math.round(zoom);
+      return 'https://www.flightradar24.com/' + Math.round(lat*100)/100 + ',' + Math.round(lon*100)/100 + '/' + Math.round(zoom);
     },
     getLatLonZoom(url) {
       const [, lat, lon, zoom] = url.match(/(-?\d[0-9.]*),(-?\d[0-9.]*)\/(\d{1,2})/);
