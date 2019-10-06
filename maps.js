@@ -187,8 +187,13 @@ module.exports = [{
     name: "Waymarked Trails",
     category: "OSM tools",
     domain: "hiking.waymarkedtrails.org",
+    urlPattern: /waymarkedtrails\.org/,
     getUrl(lat, lon, zoom) {
       return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '!' + lat + '!' + lon;
+    },
+    getLatLonZoom(url) {
+      const [, zoom, lat, lon] = url.match(/#\?map=(\d{1,2})!(-?\d[0-9.]*)!(-?\d[0-9.]*)/);
+      return [lat, lon, zoom];
     },
   },
    {
