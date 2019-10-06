@@ -141,6 +141,7 @@ module.exports = [{
     category: "OSM tools",
     domain: "www.keepright.at",
     getUrl(lat, lon, zoom) {
+		if (Number(zoom)>18) zoom = 18;
       return 'https://www.keepright.at/report_map.php?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
   },
@@ -165,8 +166,13 @@ module.exports = [{
     name: "Map compare",
     category: "OSM tools",
     domain: "tools.geofabrik.de",
+    urlPattern: /tools\.geofabrik\.de\/mc/,
     getUrl(lat, lon, zoom) {
       return 'http://tools.geofabrik.de/mc/#' + zoom + '/' + lat + '/' + lon;
+    },
+    getLatLonZoom(url) {
+      const [, zoom, lat, lon] = url.match(/mc\/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      return [lat, lon, zoom];
     },
   },
   {

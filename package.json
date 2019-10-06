@@ -1,6 +1,6 @@
 {
   "name": "OpenSwitchMaps",
-  "version": "0.5.8",
+  "version": "0.5.9",
   "description": "Switch map services, and some useful links for OpenStreetMap contributors",
   "scripts": {
     "dev": "parcel watch manifest.json",
@@ -19,5 +19,8 @@
   "devDependencies": {
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-web-extension": "^1.5.2"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
   }
 }
