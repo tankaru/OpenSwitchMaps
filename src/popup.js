@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const maps = require('./maps');
 
 const body = document.querySelector('body');
@@ -13,7 +14,7 @@ maps.forEach(map => {
 });
 
 function getLatLonZoom(url) {
-  const map = maps.find(map => map.urlPattern && map.urlPattern.test(url));
+  const map = _.find(maps, map => _.invoke(map, 'getLatLonZoom', url));
   if (map) {
     return map.getLatLonZoom(url);
   }
