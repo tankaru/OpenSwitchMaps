@@ -1,6 +1,10 @@
+const MAIN_CATEGORY = "Main maps";
+const OSM_CATEGORY = "OSM tools";
+const OTHER_CATEGORY = "Other maps";
+
 module.exports = [{
     name: "Google Maps",
-    category: "Main maps",
+    category: MAIN_CATEGORY,
     domain: "www.google.com",
     getUrl(lat, lon, zoom) {
       return 'https://www.google.com/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
@@ -24,7 +28,7 @@ module.exports = [{
   },
   {
     name: "OpenStreetMap",
-    category: "Main maps",
+    category: MAIN_CATEGORY,
     domain: "www.openstreetmap.org",
     getUrl(lat, lon, zoom) {
       return 'https://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lon;
@@ -39,7 +43,7 @@ module.exports = [{
   },
   {
     name: "Mapillary",
-    category: "Main maps",
+    category: MAIN_CATEGORY,
     domain: "www.mapillary.com",
     getUrl(lat, lon, zoom) {
       return 'https://www.mapillary.com/app/?lat=' + lat + '&lng=' + lon + '&z=' + zoom;
@@ -54,7 +58,7 @@ module.exports = [{
   },
   {
     name: "地理院地図",
-    category: "Main maps",
+    category: MAIN_CATEGORY,
     domain: "maps.gsi.go.jp",
     getUrl(lat, lon, zoom) {
       return 'https://maps.gsi.go.jp/#' + zoom + '/' + lat + '/' + lon + '/';
@@ -69,7 +73,7 @@ module.exports = [{
   },
   {
     name: "OpenStreetCam",
-    category: "Main maps",
+    category: MAIN_CATEGORY,
     domain: "openstreetcam.org",
     getUrl(lat, lon, zoom) {
       return 'https://openstreetcam.org/map/@' + lat + ',' + lon + ',' + zoom + 'z';
@@ -84,7 +88,7 @@ module.exports = [{
   },
   {
     name: "F4map",
-    category: "Main maps",
+    category: MAIN_CATEGORY,
     domain: "f4map.com",
     getUrl(lat, lon, zoom) {
       return 'https://demo.f4map.com/#lat=' + lat + '&lon=' + lon + '&zoom=' + zoom;
@@ -99,7 +103,7 @@ module.exports = [{
   },
   {
     name: "Yandex",
-    category: "Main maps",
+    category: MAIN_CATEGORY,
     domain: "yandex.com",
     getUrl(lat, lon, zoom) {
       return 'https://yandex.com/maps/?ll=' + lon + '%2C' + lat + '&z=' + zoom;
@@ -114,7 +118,7 @@ module.exports = [{
   },
   {
     name: "Qwant Maps",
-    category: "Main maps",
+    category: MAIN_CATEGORY,
     domain: "qwant.com",
     getUrl(lat, lon, zoom) {
       return 'https://www.qwant.com/maps/#map=' + zoom + '/' + lat + '/' + lon;
@@ -129,7 +133,7 @@ module.exports = [{
   },
   {
     name: "Overpass-turbo",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "overpass-turbo.eu",
     getUrl(lat, lon, zoom) {
       return 'http://overpass-turbo.eu/?Q=&C=' + lat + ';' + lon + ';' + zoom;
@@ -137,7 +141,7 @@ module.exports = [{
   },
   {
     name: "Osmose",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "osmose.openstreetmap.fr",
     getUrl(lat, lon, zoom) {
       return 'http://osmose.openstreetmap.fr/map/#zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
@@ -152,7 +156,7 @@ module.exports = [{
   },
   {
     name: "KeepRight",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "www.keepright.at",
     getUrl(lat, lon, zoom) {
       if (Number(zoom) > 18) zoom = 18;
@@ -161,7 +165,7 @@ module.exports = [{
   },
   {
     name: "OSM Inspector",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "tools.geofabrik.de",
     getUrl(lat, lon, zoom) {
       return 'http://tools.geofabrik.de/osmi/?view=geometry&lon=' + lon + '&lat=' + lat + '&zoom=' + zoom;
@@ -169,7 +173,7 @@ module.exports = [{
   },
   {
     name: "Who did it?",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "simon04.dev.openstreetmap.org",
     getUrl(lat, lon, zoom) {
       if (Number(zoom) > 18) zoom = 18;
@@ -178,7 +182,7 @@ module.exports = [{
   },
   {
     name: "Map compare",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "tools.geofabrik.de",
     getUrl(lat, lon, zoom) {
       return 'http://tools.geofabrik.de/mc/#' + zoom + '/' + lat + '/' + lon;
@@ -193,7 +197,7 @@ module.exports = [{
   },
   {
     name: "Multimapas",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "javier.jimenezshaw.com",
     getUrl(lat, lon, zoom) {
       return 'http://javier.jimenezshaw.com/mapas/mapas.html?z=' + zoom + '&c=' + lat + ',' + lon;
@@ -201,7 +205,7 @@ module.exports = [{
   },
   {
     name: "Waymarked Trails",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "hiking.waymarkedtrails.org",
     getUrl(lat, lon, zoom) {
       return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '!' + lat + '!' + lon;
@@ -216,7 +220,7 @@ module.exports = [{
   },
   {
     name: "BigMap 2",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "osmz.ru",
     getUrl(lat, lon, zoom) {
       return 'http://bigmap.osmz.ru/index.html#map=' + zoom + '/' + lat + '/' + lon;
@@ -224,7 +228,7 @@ module.exports = [{
   },
   {
     name: "Pic4Carto",
-    category: "OSM tools",
+    category: OSM_CATEGORY,
     domain: "pavie.info",
     getUrl(lat, lon, zoom) {
       return 'http://projets.pavie.info/pic4carto/index.html?#' + zoom + '/' + lat + '/' + lon;
@@ -239,7 +243,7 @@ module.exports = [{
   },
   {
     name: "Bing",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "www.bing.com",
     getUrl(lat, lon, zoom) {
       return 'https://www.bing.com/maps?cp=' + lat + '~' + lon + '&lvl=' + zoom;
@@ -247,7 +251,7 @@ module.exports = [{
   },
   {
     name: "Yahoo Map JP",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "map.yahoo.co.jp",
     getUrl(lat, lon, zoom) {
       return 'https://map.yahoo.co.jp/maps?lat=' + lat + '&lon=' + lon + '&z=' + zoom;
@@ -255,7 +259,7 @@ module.exports = [{
   },
   {
     name: "MapFan",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "mapfan.com",
     getUrl(lat, lon, zoom) {
       return 'https://mapfan.com/map/spots/search?c=' + lat + ',' + lon + ',' + zoom;
@@ -270,7 +274,7 @@ module.exports = [{
   },
   {
     name: "Mapion",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "www.mapion.co.jp",
     getUrl(lat, lon, zoom) {
       return 'https://www.mapion.co.jp/m2/' + lat + ',' + lon + ',' + zoom;
@@ -278,7 +282,7 @@ module.exports = [{
   },
   {
     name: "OSM.de",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "www.openstreetmap.de",
     getUrl(lat, lon, zoom) {
       return 'https://www.openstreetmap.de/karte.html?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
@@ -286,7 +290,7 @@ module.exports = [{
   },
   {
     name: "IGN GeoPortal(FR)",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "geoportail.gouv.fr",
     getUrl(lat, lon, zoom) {
       return 'https://www.geoportail.gouv.fr/carte?c=' + lon + ',' + lat + '&z=' + zoom + '&l0=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN25TOUR.CV::GEOPORTAIL:OGC:WMTS(1)&permalink=yes';
@@ -294,7 +298,7 @@ module.exports = [{
   },
   {
     name: "Ingress Intel map",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "intel.ingress.com",
     getUrl(lat, lon, zoom) {
       return 'https://intel.ingress.com/intel?ll=' + lat + ',' + lon + '&z=' + zoom;
@@ -302,7 +306,7 @@ module.exports = [{
   },
   {
     name: "flightradar24",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "flightradar24.com",
     getUrl(lat, lon, zoom) {
       return 'https://www.flightradar24.com/' + Math.round(lat * 100) / 100 + ',' + Math.round(lon * 100) / 100 + '/' + Math.round(zoom);
@@ -317,7 +321,7 @@ module.exports = [{
   },
   {
     name: "MarineTraffic",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "marinetraffic.com",
     getUrl(lat, lon, zoom) {
       return 'https://www.marinetraffic.com/en/ais/home/centerx:' + lon + '/centery:' + lat + '/zoom:' + zoom;
@@ -332,7 +336,7 @@ module.exports = [{
   },
   {
     name: "Windy.com",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "windy.com",
     getUrl(lat, lon, zoom) {
       return 'https://www.windy.com/?' + lat + ',' + lon + ',' + Math.round(zoom) + ',i:pressure';
@@ -347,7 +351,7 @@ module.exports = [{
   },
   {
     name: "earth",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "earth.nullschool.net",
     getUrl(lat, lon, zoom) {
       return 'https://earth.nullschool.net/#current/wind/surface/level/orthographic=' + lon + ',' + lat + ',' + 11.1 * zoom ** 3.12;
@@ -363,7 +367,7 @@ module.exports = [{
   },
 /*   {
     name: "uMap(Exit only)",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "umap.openstreetmap.fr",
     getUrl(lat, lon, zoom) {
       return 'https://umap.openstreetmap.fr/';
@@ -379,7 +383,7 @@ module.exports = [{
  */
   /* {
     name: "map.orhyginal",
-    category: "Other maps",
+    category: OTHER_CATEGORY,
     domain: "orhyginal.fr",
     getUrl(lat, lon, zoom) {
       return 'http://map.orhyginal.fr/#' + zoom + '/' + lat + '/' + lon;
