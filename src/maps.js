@@ -9,7 +9,7 @@ module.exports = [{
     getLatLonZoom(url) {
 
       if (url.match(/google.*maps.*,[0-9.]*z/)) {
-		const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
+        const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
 
         return [lat, lon, zoom];
       } else if (url.match(/google.*maps.*m\//)) {
@@ -20,8 +20,8 @@ module.exports = [{
         let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),([0-9]*)[a]/);
         zoom = Math.round(-1.44 * Math.log(zoom) + 27.5);
         return [lat, lon, zoom];
-		}
-		
+      }
+
     },
   },
   {
@@ -141,7 +141,7 @@ module.exports = [{
     category: "OSM tools",
     domain: "www.keepright.at",
     getUrl(lat, lon, zoom) {
-		if (Number(zoom)>18) zoom = 18;
+      if (Number(zoom) > 18) zoom = 18;
       return 'https://www.keepright.at/report_map.php?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
   },
@@ -158,7 +158,7 @@ module.exports = [{
     category: "OSM tools",
     domain: "simon04.dev.openstreetmap.org",
     getUrl(lat, lon, zoom) {
-		if (Number(zoom)>18) zoom = 18;
+      if (Number(zoom) > 18) zoom = 18;
       return 'http://simon04.dev.openstreetmap.org/whodidit/?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
   },
@@ -196,7 +196,7 @@ module.exports = [{
       return [lat, lon, zoom];
     },
   },
-   {
+  {
     name: "BigMap 2",
     category: "OSM tools",
     domain: "osmz.ru",
@@ -204,7 +204,7 @@ module.exports = [{
       return 'http://bigmap.osmz.ru/index.html#map=' + zoom + '/' + lat + '/' + lon;
     },
   },
- {
+  {
     name: "Pic4Carto",
     category: "OSM tools",
     domain: "pavie.info",
@@ -284,7 +284,7 @@ module.exports = [{
     domain: "flightradar24.com",
     urlPattern: /www\.flightradar24\.com/,
     getUrl(lat, lon, zoom) {
-      return 'https://www.flightradar24.com/' + Math.round(lat*100)/100 + ',' + Math.round(lon*100)/100 + '/' + Math.round(zoom);
+      return 'https://www.flightradar24.com/' + Math.round(lat * 100) / 100 + ',' + Math.round(lon * 100) / 100 + '/' + Math.round(zoom);
     },
     getLatLonZoom(url) {
       const [, lat, lon, zoom] = url.match(/(-?\d[0-9.]*),(-?\d[0-9.]*)\/(\d{1,2})/);
@@ -317,17 +317,17 @@ module.exports = [{
       return [lat, lon, zoom];
     },
   },
-   {
+  {
     name: "earth",
     category: "Other maps",
     domain: "earth.nullschool.net",
     urlPattern: /earth\.nullschool\.net/,
     getUrl(lat, lon, zoom) {
-      return 'https://earth.nullschool.net/#current/wind/surface/level/orthographic=' + lon + ',' + lat + ',' + 11.1*zoom**3.12;
+      return 'https://earth.nullschool.net/#current/wind/surface/level/orthographic=' + lon + ',' + lat + ',' + 11.1 * zoom ** 3.12;
     },
     getLatLonZoom(url) {
       let [, lon, lat, zoom] = url.match(/orthographic=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9]*)/);
-	  zoom = Math.round((zoom/11.1)**(1/3.12));
+      zoom = Math.round((zoom / 11.1) ** (1 / 3.12));
       return [lat, lon, zoom];
     },
   },
