@@ -3,8 +3,8 @@
   "version": "0.5.9",
   "description": "Switch map services, and some useful links for OpenStreetMap contributors",
   "scripts": {
-    "dev": "parcel watch manifest.json",
-    "build": "parcel build manifest.json"
+    "dev": "parcel watch src/manifest.json",
+    "build": "parcel build src/manifest.json"
   },
   "repository": {
     "type": "git",

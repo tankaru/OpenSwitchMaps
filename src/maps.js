@@ -2,117 +2,129 @@ module.exports = [{
     name: "Google Maps",
     category: "Main maps",
     domain: "www.google.com",
-    urlPattern: /google.*maps/,
     getUrl(lat, lon, zoom) {
       return 'https://www.google.com/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
     getLatLonZoom(url) {
-
-      if (url.match(/google.*maps.*,[0-9.]*z/)) {
-		const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/);
-
+      let match;
+      if (match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/)) {
+        const [, lat, lon, zoom] = match;
         return [lat, lon, zoom];
-      } else if (url.match(/google.*maps.*m\//)) {
-        let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[m]/);
+      } else if (match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[m]/)) {
+        let [, lat, lon, zoom] = match;
         zoom = Math.round(-1.4436 * Math.log(zoom) + 26.871);
         return [lat, lon, zoom];
-      } else if (url.match(/google.*maps.*y,/)) {
-        let [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),([0-9]*)[a]/);
+      } else if (match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),([0-9]*)[a].*35y/)) {
+        let [, lat, lon, zoom] = match;
         zoom = Math.round(-1.44 * Math.log(zoom) + 27.5);
         return [lat, lon, zoom];
-		}
-		
+      }
+
     },
   },
   {
     name: "OpenStreetMap",
     category: "Main maps",
     domain: "www.openstreetmap.org",
-    urlPattern: /www\.openstreetmap\.org/,
     getUrl(lat, lon, zoom) {
       return 'https://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lon;
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/www\.openstreetmap\.org.*map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
     name: "Mapillary",
     category: "Main maps",
     domain: "www.mapillary.com",
-    urlPattern: /www\.mapillary\.com/,
     getUrl(lat, lon, zoom) {
       return 'https://www.mapillary.com/app/?lat=' + lat + '&lng=' + lon + '&z=' + zoom;
     },
     getLatLonZoom(url) {
-      const [, lat, lon, zoom] = url.match(/lat=(-?\d[0-9.]*)&lng=(-?\d[0-9.]*)&z=(\d{1,2})/);
-      return [lat, lon, zoom];
+      const match = url.match(/www\.mapillary\.com.*lat=(-?\d[0-9.]*)&lng=(-?\d[0-9.]*)&z=(\d{1,2})/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
     name: "地理院地図",
     category: "Main maps",
     domain: "maps.gsi.go.jp",
-    urlPattern: /maps\.gsi\.go\.jp/,
     getUrl(lat, lon, zoom) {
       return 'https://maps.gsi.go.jp/#' + zoom + '/' + lat + '/' + lon + '/';
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/maps\.gsi\.go\.jp.*#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
     name: "OpenStreetCam",
     category: "Main maps",
     domain: "openstreetcam.org",
-    urlPattern: /openstreetcam\.org/,
     getUrl(lat, lon, zoom) {
       return 'https://openstreetcam.org/map/@' + lat + ',' + lon + ',' + zoom + 'z';
     },
     getLatLonZoom(url) {
-      const [, lat, lon, zoom] = url.match(/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
-      return [lat, lon, zoom];
+      const match = url.match(/openstreetcam\.org.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
     name: "F4map",
     category: "Main maps",
     domain: "f4map.com",
-    urlPattern: /demo\.f4map\.com/,
     getUrl(lat, lon, zoom) {
       return 'https://demo.f4map.com/#lat=' + lat + '&lon=' + lon + '&zoom=' + zoom;
     },
     getLatLonZoom(url) {
-      const [, lat, lon, zoom] = url.match(/#lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)&zoom=(\d{1,2})/);
-      return [lat, lon, zoom];
+      const match = url.match(/demo\.f4map\.com.*#lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)&zoom=(\d{1,2})/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
     name: "Yandex",
     category: "Main maps",
     domain: "yandex.com",
-    urlPattern: /yandex.*maps/,
     getUrl(lat, lon, zoom) {
       return 'https://yandex.com/maps/?ll=' + lon + '%2C' + lat + '&z=' + zoom;
     },
     getLatLonZoom(url) {
-      const [, lon, lat, zoom] = url.match(/ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d{1,2})/);
-      return [lat, lon, zoom];
+      const match = url.match(/yandex.*maps.*ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d{1,2})/);
+      if (match) {
+        const [, lon, lat, zoom] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
     name: "Qwant Maps",
     category: "Main maps",
     domain: "qwant.com",
-    urlPattern: /www\.qwant\.com/,
     getUrl(lat, lon, zoom) {
       return 'https://www.qwant.com/maps/#map=' + zoom + '/' + lat + '/' + lon;
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/#map=(\d{1,2})[0-9.]*\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/www\.qwant\.com.*#map=(\d{1,2})[0-9.]*\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
@@ -127,13 +139,15 @@ module.exports = [{
     name: "Osmose",
     category: "OSM tools",
     domain: "osmose.openstreetmap.fr",
-    urlPattern: /osmose\.openstreetmap\.fr/,
     getUrl(lat, lon, zoom) {
       return 'http://osmose.openstreetmap.fr/map/#zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/#zoom=(\d{1,2})&lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/osmose\.openstreetmap\.fr.*#zoom=(\d{1,2})&lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
@@ -141,7 +155,7 @@ module.exports = [{
     category: "OSM tools",
     domain: "www.keepright.at",
     getUrl(lat, lon, zoom) {
-		if (Number(zoom)>18) zoom = 18;
+      if (Number(zoom) > 18) zoom = 18;
       return 'https://www.keepright.at/report_map.php?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
   },
@@ -158,7 +172,7 @@ module.exports = [{
     category: "OSM tools",
     domain: "simon04.dev.openstreetmap.org",
     getUrl(lat, lon, zoom) {
-		if (Number(zoom)>18) zoom = 18;
+      if (Number(zoom) > 18) zoom = 18;
       return 'http://simon04.dev.openstreetmap.org/whodidit/?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
   },
@@ -166,13 +180,15 @@ module.exports = [{
     name: "Map compare",
     category: "OSM tools",
     domain: "tools.geofabrik.de",
-    urlPattern: /tools\.geofabrik\.de\/mc/,
     getUrl(lat, lon, zoom) {
       return 'http://tools.geofabrik.de/mc/#' + zoom + '/' + lat + '/' + lon;
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/mc\/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/tools\.geofabrik\.de\/mc\/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
@@ -187,16 +203,18 @@ module.exports = [{
     name: "Waymarked Trails",
     category: "OSM tools",
     domain: "hiking.waymarkedtrails.org",
-    urlPattern: /waymarkedtrails\.org/,
     getUrl(lat, lon, zoom) {
       return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '!' + lat + '!' + lon;
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/#\?map=(\d{1,2})!(-?\d[0-9.]*)!(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/waymarkedtrails\.org.*#\?map=(\d{1,2})!(-?\d[0-9.]*)!(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
-   {
+  {
     name: "BigMap 2",
     category: "OSM tools",
     domain: "osmz.ru",
@@ -204,17 +222,19 @@ module.exports = [{
       return 'http://bigmap.osmz.ru/index.html#map=' + zoom + '/' + lat + '/' + lon;
     },
   },
- {
+  {
     name: "Pic4Carto",
     category: "OSM tools",
     domain: "pavie.info",
-    urlPattern: /projets\.pavie\.info\/pic4carto\/index\.html/,
     getUrl(lat, lon, zoom) {
       return 'http://projets.pavie.info/pic4carto/index.html?#' + zoom + '/' + lat + '/' + lon;
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/projets\.pavie\.info\/pic4carto\/index\.html.*#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
@@ -237,13 +257,15 @@ module.exports = [{
     name: "MapFan",
     category: "Other maps",
     domain: "mapfan.com",
-    urlPattern: /mapfan\.com\/map\/spots/,
     getUrl(lat, lon, zoom) {
       return 'https://mapfan.com/map/spots/search?c=' + lat + ',' + lon + ',' + zoom;
     },
     getLatLonZoom(url) {
-      const [, lat, lon, zoom] = url.match(/search\?c=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
-      return [lat, lon, zoom];
+      const match = url.match(/mapfan\.com\/map\/spots\/search\?c=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
@@ -282,66 +304,76 @@ module.exports = [{
     name: "flightradar24",
     category: "Other maps",
     domain: "flightradar24.com",
-    urlPattern: /www\.flightradar24\.com/,
     getUrl(lat, lon, zoom) {
-      return 'https://www.flightradar24.com/' + Math.round(lat*100)/100 + ',' + Math.round(lon*100)/100 + '/' + Math.round(zoom);
+      return 'https://www.flightradar24.com/' + Math.round(lat * 100) / 100 + ',' + Math.round(lon * 100) / 100 + '/' + Math.round(zoom);
     },
     getLatLonZoom(url) {
-      const [, lat, lon, zoom] = url.match(/(-?\d[0-9.]*),(-?\d[0-9.]*)\/(\d{1,2})/);
-      return [lat, lon, zoom];
+      const match = url.match(/www\.flightradar24\.com.*(-?\d[0-9.]*),(-?\d[0-9.]*)\/(\d{1,2})/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
     name: "MarineTraffic",
     category: "Other maps",
     domain: "marinetraffic.com",
-    urlPattern: /www\.marinetraffic\.com/,
     getUrl(lat, lon, zoom) {
       return 'https://www.marinetraffic.com/en/ais/home/centerx:' + lon + '/centery:' + lat + '/zoom:' + zoom;
     },
     getLatLonZoom(url) {
-      const [, lon, lat, zoom] = url.match(/centerx:(-?\d[0-9.]*)\/centery:(-?\d[0-9.]*)\/zoom:(\d{1,2})/);
-      return [lat, lon, zoom];
+      const match = url.match(/www\.marinetraffic\.com.*centerx:(-?\d[0-9.]*)\/centery:(-?\d[0-9.]*)\/zoom:(\d{1,2})/);
+      if (match) {
+        const [, lon, lat, zoom] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
   {
     name: "Windy.com",
     category: "Other maps",
     domain: "windy.com",
-    urlPattern: /www\.windy\.com/,
     getUrl(lat, lon, zoom) {
       return 'https://www.windy.com/?' + lat + ',' + lon + ',' + Math.round(zoom) + ',i:pressure';
     },
     getLatLonZoom(url) {
-      const [, lat, lon, zoom] = url.match(/(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
-      return [lat, lon, zoom];
+      const match = url.match(/www\.windy\.com.*(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
-   {
+  {
     name: "earth",
     category: "Other maps",
     domain: "earth.nullschool.net",
-    urlPattern: /earth\.nullschool\.net/,
     getUrl(lat, lon, zoom) {
-      return 'https://earth.nullschool.net/#current/wind/surface/level/orthographic=' + lon + ',' + lat + ',' + 11.1*zoom**3.12;
+      return 'https://earth.nullschool.net/#current/wind/surface/level/orthographic=' + lon + ',' + lat + ',' + 11.1 * zoom ** 3.12;
     },
     getLatLonZoom(url) {
-      let [, lon, lat, zoom] = url.match(/orthographic=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9]*)/);
-	  zoom = Math.round((zoom/11.1)**(1/3.12));
-      return [lat, lon, zoom];
+      const match = url.match(/earth\.nullschool\.net.*orthographic=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9]*)/);
+      if (match) {
+        let [, lon, lat, zoom] = match;
+        zoom = Math.round((zoom / 11.1) ** (1 / 3.12));
+        return [lat, lon, zoom];
+      }
     },
   },
 /*   {
     name: "uMap(Exit only)",
     category: "Other maps",
     domain: "umap.openstreetmap.fr",
-    urlPattern: /umap\.openstreetmap\.fr/,
     getUrl(lat, lon, zoom) {
       return 'https://umap.openstreetmap.fr/';
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/#(\d[0-9]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/umap\.openstreetmap\.fr.*#(\d[0-9]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
  */
@@ -349,13 +381,15 @@ module.exports = [{
     name: "map.orhyginal",
     category: "Other maps",
     domain: "orhyginal.fr",
-    urlPattern: /map\.orhyginal\.fr/,
     getUrl(lat, lon, zoom) {
       return 'http://map.orhyginal.fr/#' + zoom + '/' + lat + '/' + lon;
     },
     getLatLonZoom(url) {
-      const [, zoom, lat, lon] = url.match(/#(\d[0-9]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-      return [lat, lon, zoom];
+      const match = url.match(/map\.orhyginal\.fr.*#(\d[0-9]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
     },
   },
  */
