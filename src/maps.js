@@ -1,8 +1,31 @@
+const _ = require('lodash');
+
 const MAIN_CATEGORY = "Main maps";
 const OSM_CATEGORY = "OSM tools";
 const OTHER_CATEGORY = "Other maps";
 
-module.exports = [{
+module.exports = {
+  getAllMaps,
+  isMatchingAMap,
+  getLatLonZoom,
+};
+
+function getAllMaps() {
+  return maps;
+}
+
+function isMatchingAMap(url) {
+  return _.some(maps, map => _.invoke(map, 'getLatLonZoom', url));
+}
+
+function getLatLonZoom(url) {
+  const map = _.find(maps, map => _.invoke(map, 'getLatLonZoom', url));
+  if (map) {
+    return map.getLatLonZoom(url);
+  }
+}
+
+const maps = [{
     name: "Google Maps",
     category: MAIN_CATEGORY,
     domain: "www.google.com",

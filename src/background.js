@@ -1,5 +1,4 @@
-const _ = require('lodash');
-const maps = require('./maps');
+const {isMatchingAMap} = require('./maps');
 
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
   if (isMatchingAMap(tab.url)) {
@@ -8,7 +7,3 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     chrome.pageAction.hide(tabId);
   }
 });
-
-function isMatchingAMap(url) {
-  return _.some(maps, map => _.invoke(map, 'getLatLonZoom', url));
-}

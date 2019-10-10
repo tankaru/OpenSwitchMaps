@@ -1,9 +1,8 @@
-const _ = require('lodash');
-const maps = require('./maps');
+const {getLatLonZoom, getAllMaps} = require('./maps');
 
 const body = document.querySelector('body');
 const columns = {};
-maps.forEach(map => {
+getAllMaps().forEach(map => {
   const element = makeMapElement(map);
   let column = columns[map.category];
   if (!column) {
@@ -12,13 +11,6 @@ maps.forEach(map => {
   }
   column.appendChild(element);
 });
-
-function getLatLonZoom(url) {
-  const map = _.find(maps, map => _.invoke(map, 'getLatLonZoom', url));
-  if (map) {
-    return map.getLatLonZoom(url);
-  }
-}
 
 function makeColum(name) {
   const columnElement = document.createElement('div');
