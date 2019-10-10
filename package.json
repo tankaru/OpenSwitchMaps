@@ -17,10 +17,14 @@
   },
   "homepage": "https://github.com/tankaru/OpenSwitchMaps#readme",
   "devDependencies": {
+    "@vue/component-compiler-utils": "^3.0.0",
     "parcel-bundler": "^1.12.4",
-    "parcel-plugin-web-extension": "^1.5.2"
+    "parcel-plugin-web-extension": "^1.5.2",
+    "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.15",
+    "vue": "^2.6.10",
+    "vue-hot-reload-api": "^2.3.4"
   }
 }
