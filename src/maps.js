@@ -308,7 +308,7 @@ module.exports = [{
       return 'https://www.flightradar24.com/' + Math.round(lat * 100) / 100 + ',' + Math.round(lon * 100) / 100 + '/' + Math.round(zoom);
     },
     getLatLonZoom(url) {
-      const match = url.match(/www\.flightradar24\.com.*(-?\d[0-9.]*),(-?\d[0-9.]*)\/(\d{1,2})/);
+      const match = url.match(/flightradar24\.com.*\/(-?\d[0-9.]*),(-?\d[0-9.]*)\/(\d{1,2})/);
       if (match) {
         const [, lat, lon, zoom] = match;
         return [lat, lon, zoom];
@@ -338,7 +338,7 @@ module.exports = [{
       return 'https://www.windy.com/?' + lat + ',' + lon + ',' + Math.round(zoom) + ',i:pressure';
     },
     getLatLonZoom(url) {
-      const match = url.match(/www\.windy\.com.*(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      const match = url.match(/www\.windy\.com.*[,\?](-?\d[0-9.]+),(-?\d[0-9.]+),(\d{1,2})/);
       if (match) {
         const [, lat, lon, zoom] = match;
         return [lat, lon, zoom];
