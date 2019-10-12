@@ -22,12 +22,14 @@
 <script>
 const _ = require('lodash');
 const {getLatLonZoom, getAllMaps} = require('../maps');
+const storage = require('../options/storage');
 
 module.exports = {
-  data() {
-    return {
-      columns: _.groupBy(getAllMaps(), 'category'),
-    };
+  computed: {
+    columns() {
+      const enabledMaps = _.filter(getAllMaps(), map => storage.observableEnabledMaps[map.name]);
+      return _.groupBy(enabledMaps, 'category');
+    },
   },
   methods: {
     openMapInCurrentTab(map) {

@@ -25,6 +25,7 @@
   "dependencies": {
     "lodash": "^4.17.15",
     "vue": "^2.6.10",
-    "vue-hot-reload-api": "^2.3.4"
+    "vue-hot-reload-api": "^2.3.4",
+    "webextension-polyfill": "^0.5.0"
   }
 }

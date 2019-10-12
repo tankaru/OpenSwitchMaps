@@ -3,18 +3,21 @@
   "version": "0.5.10",
   "description": "Switch map services, and some useful links for OpenStreetMap contributors",
   "homepage_url": "https://github.com/tankaru/OpenSwitchMap",
-  "permissions": ["activeTab", "tabs"],
+  "permissions": ["activeTab", "tabs", "storage"],
   "background": {
     "scripts": ["background.js"]
   },
   "page_action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup/popup.html",
     "default_icon": {
       "128": "icon128.png"
     }
   },
   "icons": {
     "128": "icon128.png"
+  },
+  "options_ui": {
+    "page": "options/options.html"
   },
   "manifest_version": 2,
   "browser_specific_settings": {
