@@ -18,15 +18,23 @@ This extention uses Node.js
 1. You can jump to OpenStreetMap at the same position
 1. Left click: Open in the same tab. Middle click: Open a new tab.
 
-Screenshot of Chrome
+## Settings
+Show/hide maps:
+1. Right click the earth icon,
+1. Select "Options"
+1. Check/uncheck each map to show/hide it.
+
+
+## Screenshots
+Chrome
 
 ![Screenshot of Chrome](Screenshot-chrome.jpg)
 
-Screenshot of Firefox
+Firefox
 
 ![Screenshot of Firefox](Screenshot-firefox.jpg)
 
-Example video
+## Example video
 
 [![Example](http://img.youtube.com/vi/tO87xkc7VaI/0.jpg)](http://www.youtube.com/watch?v=tO87xkc7VaI)
 
