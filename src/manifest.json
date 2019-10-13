@@ -8,7 +8,7 @@
     "scripts": ["background.js"]
   },
   "page_action": {
-    "default_popup": "popup/popup.html",
+    "default_popup": "popup.html",
     "default_icon": {
       "128": "icon128.png"
     }
@@ -17,7 +17,7 @@
     "128": "icon128.png"
   },
   "options_ui": {
-    "page": "options/options.html"
+    "page": "options.html"
   },
   "manifest_version": 2,
   "browser_specific_settings": {
