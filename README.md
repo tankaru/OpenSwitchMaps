@@ -29,6 +29,7 @@ Show/hide maps:
 Chrome
 
 ![Screenshot of Chrome](Screenshot-chrome.jpg)
+![Settings](Screenshot-chrome-settings.jpg)
 
 Firefox
 
