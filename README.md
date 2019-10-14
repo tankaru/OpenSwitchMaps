@@ -43,7 +43,7 @@ Firefox
 OpenStreetMapを中心に地図サービスを切り替えることができるChrome拡張機能です。
 特にMapillary⇔OSM⇔Googleマップの切り替えが便利かと思います。
 
-アイコンはICOOON MONO(http://icooon-mono.com/)から使用させていただきました。
+アイコンは [ICOOON MONO](http://icooon-mono.com/) から使用させていただきました。
 
 説明用のスクリーンショット静止画にはOpenStreetMap((c)OpenStreetMap Contributors)を使用しています。
 
