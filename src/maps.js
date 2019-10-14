@@ -396,7 +396,7 @@ const maps = [{
     category: OTHER_CATEGORY,
     domain: "cyclosm.org",
     getUrl(lat, lon, zoom) {
-      return 'https://www.cyclosm.org/#map=' + zoom + '/' + lat + '/' + 'lon' + '/cyclosm';
+      return 'https://www.cyclosm.org/#map=' + zoom + '/' + lat + '/' + lon + '/cyclosm';
     },
     getLatLonZoom(url) {
       const match = url.match(/www\.cyclosm\.org\/#map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)\/cyclosm/);
