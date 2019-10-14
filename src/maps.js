@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const MAIN_CATEGORY = "Main maps";
-const OSM_CATEGORY = "OSM tools";
+const OSM_CATEGORY = "Utilities";
 const OTHER_CATEGORY = "Other maps";
 
 module.exports = {
