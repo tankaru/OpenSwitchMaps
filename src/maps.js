@@ -191,6 +191,7 @@ const maps = [{
     category: OSM_CATEGORY,
     domain: "tools.geofabrik.de",
     getUrl(lat, lon, zoom) {
+      if (Number(zoom) > 18) zoom = 18;
       return 'http://tools.geofabrik.de/osmi/?view=geometry&lon=' + lon + '&lat=' + lat + '&zoom=' + zoom;
     },
   },
