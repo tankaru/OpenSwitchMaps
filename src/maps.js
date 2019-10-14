@@ -201,6 +201,7 @@ const maps = [{
     domain: "simon04.dev.openstreetmap.org",
     getUrl(lat, lon, zoom) {
       if (Number(zoom) > 18) zoom = 18;
+      if (Number(zoom) < 12) zoom = 12;
       return 'http://simon04.dev.openstreetmap.org/whodidit/?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
     },
   },
