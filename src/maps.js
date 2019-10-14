@@ -155,6 +155,14 @@ const maps = [{
     },
   },
   {
+    name: "Bing",
+    category: MAIN_CATEGORY,
+    domain: "www.bing.com",
+    getUrl(lat, lon, zoom) {
+      return 'https://www.bing.com/maps?cp=' + lat + '~' + lon + '&lvl=' + zoom;
+    },
+  },
+  {
     name: "Overpass-turbo",
     category: OSM_CATEGORY,
     domain: "overpass-turbo.eu",
@@ -266,14 +274,7 @@ const maps = [{
       }
     },
   },
-  {
-    name: "Bing",
-    category: OTHER_CATEGORY,
-    domain: "www.bing.com",
-    getUrl(lat, lon, zoom) {
-      return 'https://www.bing.com/maps?cp=' + lat + '~' + lon + '&lvl=' + zoom;
-    },
-  },
+
   {
     name: "Yahoo Map JP",
     category: OTHER_CATEGORY,
@@ -386,6 +387,36 @@ const maps = [{
       if (match) {
         let [, lon, lat, zoom] = match;
         zoom = Math.round((zoom / 11.1) ** (1 / 3.12));
+        return [lat, lon, zoom];
+      }
+    },
+  },
+  {
+    name: "CyclOSM",
+    category: OTHER_CATEGORY,
+    domain: "cyclosm.org",
+    getUrl(lat, lon, zoom) {
+      return 'https://www.cyclosm.org/#map=' + zoom + '/' + lat + '/' + 'lon' + '/cyclosm';
+    },
+    getLatLonZoom(url) {
+      const match = url.match(/www\.cyclosm\.org\/#map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)\/cyclosm/);
+      if (match) {
+        let [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
+    },
+  },
+  {
+    name: "OpenTopoMap",
+    category: OTHER_CATEGORY,
+    domain: "opentopomap.org",
+    getUrl(lat, lon, zoom) {
+      return 'https://opentopomap.org/#map=' + zoom + '/' + lat + '/' + 'lon';
+    },
+    getLatLonZoom(url) {
+      const match = url.match(/opentopomap\.org\/#map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        let [, zoom, lat, lon] = match;
         return [lat, lon, zoom];
       }
     },
