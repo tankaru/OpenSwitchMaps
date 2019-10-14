@@ -456,7 +456,24 @@ const maps = [{
     },
   },  
   
-  /*   {
+  {
+    name: "Macrostrat",
+    category: OTHER_CATEGORY,
+    domain: "macrostrat.org",
+    getUrl(lat, lon, zoom) {
+      return 'https://macrostrat.org/map/#/z=' + zoom + '/x=' + lon + '/y=' + lat + '/bedrock/lines/';
+    },
+    getLatLonZoom(url) {
+      const match = url.match(/macrostrat\.org\/map\/#\/z=([0-9.]+)\/x=(-?\d[0-9.]+)\/y=(-?\d[0-9.]+)/);
+      if (match) {
+        let [, zoom, lon, lat] = match;
+        return [lat, lon, zoom];
+      }
+    },
+  },  
+ 
+
+ /*   {
     name: "uMap(Exit only)",
     category: OTHER_CATEGORY,
     domain: "umap.openstreetmap.fr",
