@@ -25,6 +25,27 @@ function getLatLonZoom(url) {
   }
 }
 
+function bboxToLatLonZoom(minlon, minlat, maxlon, maxlat) {
+	const lon = (Number(minlon) + Number(maxlon))/2.0;
+	const lat = (Number(minlat) + Number(maxlat))/2.0;
+	const part = (Number(maxlat) - Number(minlat))/360.0;
+	const zoom = Math.log(part)/Math.log(0.5); //0.5^zoom=part
+	return [lat, lon, zoom];
+
+}
+
+function latLonZoomToBbox(lat, lon, zoom) {
+	const part = Math.pow(0.5,zoom);
+	const minlon = Number(lon) - 360*part/2;
+	const maxlon = Number(lon) + 360*part/2;
+	const minlat = Number(lat) - 180*part/2;
+	const maxlat = Number(lat) + 180*part/2;
+	return [minlon, minlat, maxlon, maxlat];
+
+}
+
+
+
 const maps = [{
     name: "Google Maps",
     category: MAIN_CATEGORY,
@@ -472,6 +493,23 @@ const maps = [{
     },
   },  
  
+  {
+    name: "Old maps online",
+    category: OTHER_CATEGORY,
+    domain: "oldmapsonline.org",
+    getUrl(lat, lon, zoom) {
+		const [minlon, minlat, maxlon, maxlat] = latLonZoomToBbox(lat, lon, zoom);
+      return 'https://www.oldmapsonline.org/#bbox=' + minlon + ',' + minlat + ',' + maxlon + ',' + maxlat + '&q=&date_from=0&date_to=9999&scale_from=&scale_to=';
+    },
+    getLatLonZoom(url) {
+      const match = url.match(/www\.oldmapsonline\.org\/.*#bbox=(-?\d[0-9.]+),(-?\d[0-9.]+),(-?\d[0-9.]+),(-?\d[0-9.]+)/);
+      if (match) {
+        let [, minlon, minlat, maxlon, maxlat] = match;
+		let [lat, lon, zoom] = bboxToLatLonZoom(minlon, minlat, maxlon, maxlat);
+        return [lat, lon, zoom];
+      }
+    },
+  },  
 
  /*   {
     name: "uMap(Exit only)",
