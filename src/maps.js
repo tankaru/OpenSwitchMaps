@@ -423,12 +423,13 @@ const maps = [{
       }
     },
   },
+
   {
     name: "OpenTopoMap",
     category: OTHER_CATEGORY,
     domain: "opentopomap.org",
     getUrl(lat, lon, zoom) {
-      return 'https://opentopomap.org/#map=' + zoom + '/' + lat + '/' + 'lon';
+      return 'https://opentopomap.org/#map=' + zoom + '/' + lat + '/' + lon;
     },
     getLatLonZoom(url) {
       const match = url.match(/opentopomap\.org\/#map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
@@ -438,7 +439,24 @@ const maps = [{
       }
     },
   },
-/*   {
+
+  {
+    name: "EO Browser",
+    category: OTHER_CATEGORY,
+    domain: "sentinel-hub.com",
+    getUrl(lat, lon, zoom) {
+      return 'https://apps.sentinel-hub.com/eo-browser/?lat=' + lat + '&lng=' + lon + '&zoom=' + zoom;
+    },
+    getLatLonZoom(url) {
+      const match = url.match(/apps\.sentinel-hub\.com\/eo-browser\/\?lat=(-?\d[0-9.]*)&lng=(-?\d[0-9.]*)&zoom=(\d{1,2})/);
+      if (match) {
+        let [, lat, lon, zoom] = match;
+        return [lat, lon, zoom];
+      }
+    },
+  },  
+  
+  /*   {
     name: "uMap(Exit only)",
     category: OTHER_CATEGORY,
     domain: "umap.openstreetmap.fr",
