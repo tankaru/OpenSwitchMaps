@@ -275,6 +275,23 @@ const maps = [{
     },
   },
 
+
+  {
+    name: "JapanMapCompare",
+    category: OSM_CATEGORY,
+    domain: "mapcompare.jp",
+    getUrl(lat, lon, zoom) {
+      return 'https://mapcompare.jp/3/' + zoom + '/' + lat + '/' + lon + '/osm/gRoad/mapSatellite';
+    },
+    getLatLonZoom(url) {
+      const match = url.match(/mapcompare\.jp\/\d+\/(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
+    },
+  },
+
   {
     name: "Yahoo Map JP",
     category: OTHER_CATEGORY,
