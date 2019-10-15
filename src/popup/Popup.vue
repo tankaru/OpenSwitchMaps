@@ -1,5 +1,6 @@
 <template>
   <div>
+    <span class="options-link" @click="openOptionsPage">⚙</span>
     <div
       v-for="(maps, columnName) in columns"
       :key="columnName"
@@ -21,6 +22,7 @@
 </template>
 <script>
 const _ = require('lodash');
+const browser = require("webextension-polyfill");
 const {getLatLonZoom, getAllMaps} = require('../maps');
 const storage = require('../options/storage');
 
@@ -50,7 +52,10 @@ module.exports = {
         chrome.tabs.executeScript(tab.id, {code});
         window.close();
       });
-    }
+    },
+    openOptionsPage() {
+      browser.runtime.openOptionsPage();
+    },
   },
 };
 </script>
@@ -78,13 +83,28 @@ module.exports = {
     background-color: #eee;
   }
 
-  .title {
+  .title, .options-link {
     background-color: #eee;
     font-weight: bold;
     font-size: larger;
     text-align: center;
     padding: 1px;
     margin: 0;
+  }
+
+  .column:last-child .title {
+    margin-right: 1ex;
+  }
+
+  .options-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-decoration: none;
+  }
+
+  .options-link:hover {
+    cursor: pointer;
   }
 
   .column {
