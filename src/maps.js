@@ -353,7 +353,7 @@ const maps = [{
     },
   },
   {
-    name: "IGN GeoPortal(FR)",
+    name: "IGN Géoportail (FR)",
     category: OTHER_CATEGORY,
     domain: "geoportail.gouv.fr",
     getUrl(lat, lon, zoom) {
