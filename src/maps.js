@@ -510,6 +510,32 @@ const maps = [{
       }
     },
   },  
+  {
+    name: "Satellite Tracker 3D",
+    category: OTHER_CATEGORY,
+    domain: "stdkmd.net",
+    getUrl(lat, lon, zoom) {
+		const d = Math.round(Math.exp((Number(zoom) - 17.7)/(-1.4)));
+      return 'https://stdkmd.net/sat/?cr=' + d + '&lang=en&ll=' + lat + '%2C' + lon ;
+    },
+
+  },  
+  {
+    name: "Traze",
+    category: OTHER_CATEGORY,
+    domain: "traze.app",
+    getUrl(lat, lon, zoom) {
+      return 'https://traze.app/#/@' + lat + ',' + lon + ',' + zoom ;
+    },
+    getLatLonZoom(url) {
+      const match = url.match(/traze\.app\/#\/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      if (match) {
+        let [, lat, lon, zoom] = match;
+        return [lat, lon, Math.round(zoom)];
+      }
+    },
+
+  },  
 
  /*   {
     name: "uMap(Exit only)",
