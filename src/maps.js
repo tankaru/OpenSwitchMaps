@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const MAIN_CATEGORY = "Main maps";
-const OSM_CATEGORY = "Utilities";
+const UTILITY_CATEGORY = "Utilities";
 const OTHER_CATEGORY = "Other maps";
 
 module.exports = {
@@ -185,7 +185,7 @@ const maps = [{
   },
   {
     name: "Overpass-turbo",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "overpass-turbo.eu",
     getUrl(lat, lon, zoom) {
       return 'http://overpass-turbo.eu/?Q=&C=' + lat + ';' + lon + ';' + zoom;
@@ -193,7 +193,7 @@ const maps = [{
   },
   {
     name: "Osmose",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "osmose.openstreetmap.fr",
     getUrl(lat, lon, zoom) {
       return 'http://osmose.openstreetmap.fr/map/#zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
@@ -208,7 +208,7 @@ const maps = [{
   },
   {
     name: "KeepRight",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "www.keepright.at",
     getUrl(lat, lon, zoom) {
       if (Number(zoom) > 18) zoom = 18;
@@ -217,7 +217,7 @@ const maps = [{
   },
   {
     name: "OSM Inspector",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "tools.geofabrik.de",
     getUrl(lat, lon, zoom) {
       if (Number(zoom) > 18) zoom = 18;
@@ -226,7 +226,7 @@ const maps = [{
   },
   {
     name: "Who did it?",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "simon04.dev.openstreetmap.org",
     getUrl(lat, lon, zoom) {
       if (Number(zoom) > 18) zoom = 18;
@@ -236,7 +236,7 @@ const maps = [{
   },
   {
     name: "Map compare",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "tools.geofabrik.de",
     getUrl(lat, lon, zoom) {
       return 'http://tools.geofabrik.de/mc/#' + zoom + '/' + lat + '/' + lon;
@@ -251,7 +251,7 @@ const maps = [{
   },
   {
     name: "Multimapas",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "javier.jimenezshaw.com",
     getUrl(lat, lon, zoom) {
       return 'http://javier.jimenezshaw.com/mapas/mapas.html?z=' + zoom + '&c=' + lat + ',' + lon;
@@ -259,7 +259,7 @@ const maps = [{
   },
   {
     name: "Waymarked Trails",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "hiking.waymarkedtrails.org",
     getUrl(lat, lon, zoom) {
       return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '!' + lat + '!' + lon;
@@ -274,7 +274,7 @@ const maps = [{
   },
   {
     name: "BigMap 2",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "osmz.ru",
     getUrl(lat, lon, zoom) {
       return 'http://bigmap.osmz.ru/index.html#map=' + zoom + '/' + lat + '/' + lon;
@@ -282,7 +282,7 @@ const maps = [{
   },
   {
     name: "Pic4Carto",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "pavie.info",
     getUrl(lat, lon, zoom) {
       return 'http://projets.pavie.info/pic4carto/index.html?#' + zoom + '/' + lat + '/' + lon;
@@ -299,7 +299,7 @@ const maps = [{
 
   {
     name: "JapanMapCompare",
-    category: OSM_CATEGORY,
+    category: UTILITY_CATEGORY,
     domain: "mapcompare.jp",
     getUrl(lat, lon, zoom) {
       return 'https://mapcompare.jp/3/' + zoom + '/' + lat + '/' + lon + '/osm/gRoad/mapSatellite';
@@ -536,14 +536,23 @@ const maps = [{
     },
 
   },  
-
- /*   {
-    name: "uMap(Exit only)",
-    category: OTHER_CATEGORY,
-    domain: "umap.openstreetmap.fr",
+  {//http://osm-analytics.org/#/show/bbox:136.68676,34.81081,137.11142,34.93364/buildings/recency
+    name: "OpenStreetMap Analytics",
+    category: UTILITY_CATEGORY,
+    domain: "osm-analytics.org",
+	description: "Analyse when/who edited the OSM data in a specific region",
     getUrl(lat, lon, zoom) {
-      return 'https://umap.openstreetmap.fr/';
+	  [minlon, minlat, maxlon, maxlat] = latLonZoomToBbox(lat, lon, zoom);
+      return 'http://osm-analytics.org/#/show/bbox:' + minlon + ',' + minlat + ',' + maxlon + ',' + maxlat + '/buildings/recency';
+
     },
+
+  },
+/*   {
+    //name: "uMap(Exit only)",
+    //category: OTHER_CATEGORY,
+    //domain: "umap.openstreetmap.fr",
+
     getLatLonZoom(url) {
       const match = url.match(/umap\.openstreetmap\.fr.*#(\d[0-9]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
       if (match) {
@@ -552,7 +561,7 @@ const maps = [{
       }
     },
   },
- */
+*/
   /* {
     name: "map.orhyginal",
     category: OTHER_CATEGORY,

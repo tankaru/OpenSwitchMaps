@@ -1,6 +1,6 @@
 {
   "name": "OpenSwitchMaps",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Switch map services, and some useful links for OpenStreetMap contributors",
   "scripts": {
     "dev": "parcel watch src/manifest.json",
