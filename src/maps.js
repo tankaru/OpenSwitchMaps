@@ -578,4 +578,15 @@ const maps = [{
     },
   },
  */
+   {
+    name: "... and more maps",
+    category: OTHER_CATEGORY,
+    //domain: "",
+	description: "OpenSwitchMaps web",
+    getUrl(lat, lon, zoom) {
+		return 'https://tankaru.github.io/OpenSwitchMapsWeb/index.html#dummy://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lon;
+
+    },
+
+  },
 ];
