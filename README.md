@@ -39,6 +39,15 @@ Firefox
 
 [![Example](http://img.youtube.com/vi/tO87xkc7VaI/0.jpg)](http://www.youtube.com/watch?v=tO87xkc7VaI)
 
+## Similar softwares
+
+* [MapJumper Plus](https://chrome.google.com/webstore/detail/mapjumper-plus/mdhfopoodheacfapdohpmjndgnfmdecj), by Tomas Kafka
+* [Maps URL Converter](https://chrome.google.com/webstore/detail/maps-url-converter/ehnoijojkgigcmlimlndncbdfcmmlgmi), by lamphanviet.com
+* [Mapswitch](https://chrome.google.com/webstore/detail/mapswitch/ineobcbceekmckhjifhdmglkhgngnhmd), by evgeny.ger
+* [Map Switcher](https://chrome.google.com/webstore/detail/map-switcher/fanpjcbgdinjeknjikpfnldfpnnpkelb), by david.r.edgar
+* [Map Helper](https://chrome.google.com/webstore/detail/map-helper/ihllleemlchjegcfnaglokgamafhafda), by petrovnn
+* [MapSwitcher](https://addons.mozilla.org/ja/firefox/addon/map-switcher/), by František Nesveda
+
 ## Japanese descriptions
 OpenStreetMapを中心に地図サービスを切り替えることができるChrome拡張機能です。
 特にMapillary⇔OSM⇔Googleマップの切り替えが便利かと思います。
