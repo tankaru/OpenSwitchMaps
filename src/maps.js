@@ -562,10 +562,11 @@ const maps = [{
     },
   },
 */
-  /* {
+  {
     name: "map.orhyginal",
     category: OTHER_CATEGORY,
     domain: "orhyginal.fr",
+	default_check: false, 
     getUrl(lat, lon, zoom) {
       return 'http://map.orhyginal.fr/#' + zoom + '/' + lat + '/' + lon;
     },
@@ -577,11 +578,23 @@ const maps = [{
       }
     },
   },
- */
+  {//https://www.viamichelin.com/web/maps?position=35;135.8353;12
+    name: "ViaMichelinnnnnn",
+    category: OTHER_CATEGORY,
+    domain: "viamichelin.com",
+	default_check: false, 
+	description: "Michelin Travel map",
+    getUrl(lat, lon, zoom) {	
+      return 'https://www.viamichelin.com/web/maps?position=' + lat + ';' + lon + ';' + zoom;
+
+    },
+
+  },
    {
     name: "... and more maps",
     category: OTHER_CATEGORY,
     //domain: "",
+	default_check: false, 
 	description: "OpenSwitchMaps web",
     getUrl(lat, lon, zoom) {
 		return 'https://tankaru.github.io/OpenSwitchMapsWeb/index.html#dummy://www.openstreetmap.org/#map=' + zoom + '/' + lat + '/' + lon;
