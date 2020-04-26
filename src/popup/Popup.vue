@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="mapmenu">
     <span class="options-link" @click="openOptionsPage">⚙</span>
     <div
       v-for="(maps, columnName) in columns"
@@ -88,7 +88,7 @@ module.exports = {
     font-weight: bold;
     font-size: larger;
     text-align: center;
-    padding: 1px;
+    padding: 5px;
     margin: 0;
   }
 
@@ -108,7 +108,21 @@ module.exports = {
   }
 
   .column {
-    display: table-cell;
+    display: inline-block;
+	vertical-align: top;
     white-space: nowrap;
+	width: 150px;
+	//float:left;
+	//clear:both;
+  }
+  
+  #mapmenu {
+	//display: table;
+	width: 450px;
+  	//display:flex;
+	//flex-direction: row;
+	//flex-wrap: wrap;
+	//flex-flow: 3 wrap;
+
   }
 </style>
