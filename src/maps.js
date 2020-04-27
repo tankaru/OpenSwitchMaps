@@ -826,8 +826,25 @@ const maps = [
     default_check: false,
     domain: "localwiki.org",
     getUrl(lat, lon, zoom) {
-		setLocalwikiAddress(lat, lon);
-      return 'https://localwiki.org/';
+
+		const url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10&addressdetails=1';
+
+		let request = new XMLHttpRequest();
+		request.open('GET', url, false);//同期処理
+
+		request.send(null);
+		//request.responseType = 'json';
+
+		if (request.status === 200) {
+			const data = JSON.parse(request.response);
+
+			const localwiki = 'https://localwiki.org/_search/?q=' + data.display_name;
+			return localwiki;
+		} else {
+			return 'https://localwiki.org/';
+
+		}
+
     },
 
   },
