@@ -21,6 +21,30 @@ function getLatLonZoom(url) {
   }
 }
 
+function bboxToLatLonZoom(minlon, minlat, maxlon, maxlat) {
+	const lon = (Number(minlon) + Number(maxlon))/2.0;
+	const lat = (Number(minlat) + Number(maxlat))/2.0;
+	const part = (Number(maxlat) - Number(minlat))/360.0;
+	const height = screen.availHeight;
+	alert("screen.availHeight: " + screen.availHeight);
+	const tile_part = part * 256 / height;
+	const zoom = Math.log(tile_part)/Math.log(0.5); //0.5^zoom=part
+	return [lat, lon, zoom];
+
+}
+
+function latLonZoomToBbox(lat, lon, zoom) {
+	alert("screen.availHeight: " + screen.availHeight);
+	const tile_part = Math.pow(0.5,zoom);
+	const part = tile_part * screen.availHeight / 256;
+	const minlon = Number(lon) - 360*part/2;
+	const maxlon = Number(lon) + 360*part/2;
+	const minlat = Number(lat) - 180*part/2;
+	const maxlat = Number(lat) + 180*part/2;
+	return [minlon, minlat, maxlon, maxlat];
+
+}
+
 const MAIN_CATEGORY = "Main maps";
 const UTILITY_CATEGORY = "Utilities";
 const OTHER_CATEGORY = "Other maps";
