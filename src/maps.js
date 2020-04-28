@@ -828,7 +828,17 @@ const maps = [
     getUrl(lat, lon, zoom) {
 
 		const url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10&addressdetails=1';
+		/*
+		async function returnLocalwiki(url) {
+			const res = await fetch(url);
+			const org = await res.json();
 
+			const localwiki = 'https://localwiki.org/_search/?q=' + org.display_name;
+			return localwiki;
+		}
+		returnLocalwiki(url);
+		*/
+		
 		let request = new XMLHttpRequest();
 		request.open('GET', url, false);//同期処理
 
@@ -844,7 +854,7 @@ const maps = [
 			return 'https://localwiki.org/';
 
 		}
-
+		
     },
 
   },

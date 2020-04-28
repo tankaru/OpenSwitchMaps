@@ -117,8 +117,10 @@ module.exports = {
   }
   
   #mapmenu {
-	//display: table;
-	width: 450px;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	//width: 450px;
+	//column-count: 3;
   	//display:flex;
 	//flex-direction: row;
 	//flex-wrap: wrap;
