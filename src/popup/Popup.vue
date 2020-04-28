@@ -114,6 +114,7 @@ module.exports = {
 	width: 150px;
 	//float:left;
 	//clear:both;
+	overflow: hidden;
   }
   
   #mapmenu {
