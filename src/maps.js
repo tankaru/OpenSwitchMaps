@@ -126,10 +126,10 @@ const maps = [
       return 'https://maps.gsi.go.jp/#' + zoom + '/' + lat + '/' + lon + '/';
     },
     getLatLonZoom(url) {
-      const match = url.match(/maps\.gsi\.go\.jp.*#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      const match = url.match(/maps\.gsi\.go\.jp.*#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
       if (match) {
         const [, zoom, lat, lon] = match;
-        return [lat, lon, zoom];
+        return [lat, lon, Math.round(Number(zoom))];
       }
     },
   },
