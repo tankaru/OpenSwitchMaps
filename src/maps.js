@@ -1391,4 +1391,19 @@ const maps = [
     },
 
   },
+
+  {//http://map.baidu.com/?latlng=35.6777,139.7588
+    name: "Baidu",
+    category: MAIN_CATEGORY,
+    default_check: false,
+    domain: "baidu.com",
+
+    getUrl(lat, lon, zoom) {	
+      return 'http://map.baidu.com/?latlng=' + lat + ',' + lon;
+
+    },
+
+  },
+  
+  
 ];
