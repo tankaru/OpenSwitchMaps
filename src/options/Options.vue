@@ -66,6 +66,7 @@ module.exports = {
   .title {
     font-weight: bold;
     font-size: larger;
+	text-align: center;
   }
 
   .column {

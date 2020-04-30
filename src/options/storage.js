@@ -7,7 +7,14 @@ const storage = browser.storage;
 const storageArea = storage.sync || storage.local;
 
 const mapNames = _.map(getAllMaps(), 'name');
-const enabledMaps = Vue.observable(_.zipObject(mapNames, new Array(mapNames.length).fill(true)));
+const mapChecks = _.map(getAllMaps(), function (map){
+	if ('default_check' in map) {
+		return map['default_check'];
+	} else {
+		return true;
+	};
+});
+const enabledMaps = Vue.observable(_.zipObject(mapNames, mapChecks));
 
 init();
 
