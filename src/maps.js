@@ -26,15 +26,18 @@ function bboxToLatLonZoom(minlon, minlat, maxlon, maxlat) {
 	const lat = (Number(minlat) + Number(maxlat))/2.0;
 	const part = (Number(maxlat) - Number(minlat))/360.0;
 	const height = screen.availHeight;
-	alert("screen.availHeight: " + screen.availHeight);
 	const tile_part = part * 256 / height;
 	const zoom = Math.log(tile_part)/Math.log(0.5); //0.5^zoom=part
 	return [lat, lon, zoom];
 
 }
+// -180 < lon < 180
+function normalizeLon(lon){
+	return ((((Number(lon) + 180) % 360) + 360) % 360) -180;
+}
+
 
 function latLonZoomToBbox(lat, lon, zoom) {
-	alert("screen.availHeight: " + screen.availHeight);
 	const tile_part = Math.pow(0.5,zoom);
 	const part = tile_part * screen.availHeight / 256;
 	const minlon = Number(lon) - 360*part/2;
@@ -208,6 +211,7 @@ const maps = [
     getUrl(lat, lon, zoom) {
       return 'https://www.bing.com/maps?cp=' + lat + '~' + lon + '&lvl=' + zoom;
     },
+	
   },
   {
     name: "Overpass-turbo",
@@ -540,7 +544,7 @@ const maps = [
     default_check: true,
     domain: "windy.com",
     getUrl(lat, lon, zoom) {
-      return 'https://www.windy.com/?' + lat + ',' + lon + ',' + Math.round(zoom) + ',i:pressure';
+      return 'https://www.windy.com/?' + Number(lat).toFixed(3) + ',' + Number(lon).toFixed(3) + ',' + Math.round(zoom) + ',i:pressure';
     },
     getLatLonZoom(url) {
       const match = url.match(/www\.windy\.com.*[,\?](-?\d[0-9.]+),(-?\d[0-9.]+),(\d{1,2})/);
@@ -832,16 +836,22 @@ const maps = [
 
   },
   
-  {
+  {//https://gbank.gsj.jp/geonavi/geonavi.php#14,35.51047,139.64054
     name: "地質図Navi (JP)",
-    category: SPECIAL_CATEGORY,
+    category: LOCAL_CATEGORY,
     default_check: false,
     domain: "gbank.gsj.jp",
-	description: "Geological map in Japan",
+	  description: "Geological map in Japan",
     getUrl(lat, lon, zoom) {
       return 'https://gbank.gsj.jp/geonavi/geonavi.php#' + zoom + ',' + lat + ',' + lon;
     },
-
+    getLatLonZoom(url) {
+      const match = url.match(/gbank\.gsj\.jp\/geonavi\/geonavi\.php#(\d{1,2}),(-?\d[0-9.]*),(-?\d[0-9.]*)/);
+      if (match) {
+        let [, zoom, lat, lon] = match;
+        return [lat, lon, zoom];
+      }
+    },
   },
   
   {
@@ -851,17 +861,22 @@ const maps = [
     domain: "localwiki.org",
     getUrl(lat, lon, zoom) {
 
-		const url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10&addressdetails=1';
+		var url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10&addressdetails=1';
+		
 		/*
-		async function returnLocalwiki(url) {
-			const res = await fetch(url);
-			const org = await res.json();
-
-			const localwiki = 'https://localwiki.org/_search/?q=' + org.display_name;
-			return localwiki;
+		//https://qiita.com/chinka/items/a084fd1c5ef9dcde4728
+		var getLocalwiki = async function () {
+			try {
+				let res = await fetch(url);
+				let org = res.json();
+				let localwiki = 'https://localwiki.org/_search/?q=' + org.display_name;
+				return localwiki;
+			} catch(e) {
+				
+			}
 		}
-		returnLocalwiki(url);
 		*/
+
 		
 		let request = new XMLHttpRequest();
 		request.open('GET', url, false);//同期処理
@@ -1208,7 +1223,7 @@ const maps = [
     getUrl(lat, lon, zoom) {
 		let z = Number(zoom);
 		if ( z > 14 ) z = 14;		
-      return 'https://firms.modaps.eosdis.nasa.gov/map/#z:' + z + ';c:' + lon + ',' + lat;
+      return 'https://firms.modaps.eosdis.nasa.gov/map/#z:' + z + ';c:' + normalizeLon(lon) + ',' + lat;
 
     },
     getLatLonZoom(url) {
@@ -1404,6 +1419,183 @@ const maps = [
     },
 
   },
+  {//https://osmaps.ordnancesurvey.co.uk/51.39378,0.13892,10
+    name: "Ordnance Survey(UK)",
+    category: LOCAL_CATEGORY,
+    default_check: false,
+    domain: "ordnancesurvey.co.uk",
+
+    getUrl(lat, lon, zoom) {	
+      return 'https://osmaps.ordnancesurvey.co.uk/' + lat + ',' + lon + ',' + zoom;
+
+    },
+    getLatLonZoom(url) {
+      const match = url.match(/osmaps\.ordnancesurvey\.co\.uk\/(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, Math.round(Number(zoom))];
+      }
+    },
+  },
   
+  {//http://www.opensnowmap.org/?zoom=17&lat=43.08561&lon=141.33047
+    name: "OpenSnowMap",
+    category: OTHER_CATEGORY,
+    default_check: false,
+    domain: "opensnowmap.org",
+	description: "Winter sports map",
+    getUrl(lat, lon, zoom) {	
+      return 'http://www.opensnowmap.org/?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
+
+    },
+  },
+  {//http://www.opencyclemap.org/?zoom=17&lat=43.08561&lon=141.33047
+    name: "OpenCycleMap",
+    category: OTHER_CATEGORY,
+    default_check: false,
+    domain: "opencyclemap.org",
+	description: "Cycling map",
+    getUrl(lat, lon, zoom) {	
+      return 'http://www.opencyclemap.org/?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
+
+    },
+  },
+  {//http://gk.historic.place/historische_objekte/translate/en/index-en.html?zoom=5&lat=50.37522&lon=11.5
+    name: "Historic Place",
+    category: OTHER_CATEGORY,
+    default_check: false,
+    domain: "historic.place",
+	description: "Historic objects",
+    getUrl(lat, lon, zoom) {	
+      return 'http://gk.historic.place/historische_objekte/translate/en/index-en.html?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
+
+    },
+  },    
+  {//http://ktgis.net/kjmapw/kjmapw.html?lat=35.680202&lng=139.758840&zoom=14
+    name: "今昔マップ(JP)",
+    category: LOCAL_CATEGORY,
+    default_check: false,
+    domain: "ktgis.net",
+	description: "Historic map compare in Japan",
+    getUrl(lat, lon, zoom) {	
+      return 'http://ktgis.net/kjmapw/kjmapw.html?lat=' + lat + '&lng=' + lon + '&zoom=' + zoom;
+
+    },
+	getLatLonZoom(url) {
+      const match = url.match(/ktgis\.net\/kjmapw\/kjmapw\.html\?lat=(-?\d[0-9.]*)\&lng=(-?\d[0-9.]*)\&zoom=(\d[0-9.]*)/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, Math.round(Number(zoom))];
+      }
+    },
+  },    
+  {//https://openstreetmap.org.ar/#8.93/35.5727/139.4429
+    name: "OSM.org.ar",
+    category: OSM_LOCAL_CATEGORY,
+    default_check: false,
+    domain: "openstreetmap.org.ar",
+	description: "",
+    getUrl(lat, lon, zoom) {	
+      return 'https://openstreetmap.org.ar/#' + zoom + '/' + lat + '/' + lon;
+
+    },
+	getLatLonZoom(url) {
+      const match = url.match(/openstreetmap\.org\.ar\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+      if (match) {
+        const [, zoom, lat, lon] = match;
+        return [lat, lon, Math.round(Number(zoom))];
+      }
+    },
+  },   
+  {//https://www.yelp.com/search?l=g%3A139.74862972962964%2C35.60176325581224%2C139.64666287171949%2C35.483875357833384
+    name: "yelp",
+    category: OTHER_CATEGORY,
+    default_check: false,
+    domain: "yelp.com",
+	description: "Local review",
+    getUrl(lat, lon, zoom) {
+		const [minlon, minlat, maxlon, maxlat] = latLonZoomToBbox(lat, lon, zoom);
+		return 'https://www.yelp.com/search?l=g%3A' + maxlon + '%2C' + maxlat + '%2C' + minlon + '%2C' + minlat;
+
+    },
+  }, 
+  {//http://map.openseamap.org/?zoom=6&lat=53.32140&lon=2.86829
+    name: "OpenSeaMap",
+    category: OTHER_CATEGORY,
+    default_check: false,
+    domain: "openseamap.org",
+	description: "",
+    getUrl(lat, lon, zoom) {
+		return 'http://map.openseamap.org/?zoom=' + Math.min(Number(zoom),18) + '&lat=' + lat + '&lon=' + lon;
+
+    },
+  }, 
+  {//https://disaportal.gsi.go.jp/maps/index.html?ll=35.371135,138.713379&z=5
+    name: "重ねるハザードマップ(JP)",
+    category: LOCAL_CATEGORY,
+    default_check: false,
+    domain: "gsi.go.jp",
+	description: "Hazard map in Japan",
+    getUrl(lat, lon, zoom) {	
+      return 'https://disaportal.gsi.go.jp/maps/index.html?ll=' + lat + ',' + lon + '&z=' + Math.min(Number(zoom),18);
+
+    },
+	getLatLonZoom(url) {
+      const match = url.match(/disaportal\.gsi\.go\.jp\/maps\/index.html\?ll=(-?\d[0-9.]*),(-?\d[0-9.]*)\&z=(\d[0-9.]*)/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, Math.round(Number(zoom))];
+      }
+    },
+  },   
+  {//https://mapps.gsi.go.jp/history.html#ll=35.6936743,139.4884086&z=15&target=t25000
+    name: "地形図・地勢図図歴(JP)",
+    category: LOCAL_CATEGORY,
+    default_check: false,
+    domain: "gsi.go.jp",
+	description: "Historic topo map in Japan",
+    getUrl(lat, lon, zoom) {	
+      return 'https://mapps.gsi.go.jp/history.html#ll=' + lat + ',' + lon + '&z=' + Math.min(Number(zoom),15);
+
+    },
+	getLatLonZoom(url) {
+      const match = url.match(/mapps\.gsi\.go\.jp\/history\.html#ll=(-?\d[0-9.]*),(-?\d[0-9.]*)&z=(\d[0-9.]*)/);
+      if (match) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, Math.round(Number(zoom))];
+      }
+    },
+  },   
+  
+  {//https://earthquake.usgs.gov/earthquakes/map/#{"autoUpdate":["autoUpdate"],"basemap":"grayscale","feed":"1day_m25","listFormat":"default","mapposition":[[32.2313896627376,126.71630859375],[40.421860362045194,143.27270507812497]],"overlays":["plates"],"restrictListToMap":["restrictListToMap"],"search":null,"sort":"newest","timezone":"utc","viewModes":["settings","map"],"event":null}
+    name: "USGS earthquakes",
+    category: SPECIAL_CATEGORY,
+    default_check: false,
+    domain: "usgs.gov",
+	description: "Latest earthquakes",
+    getUrl(lat, lon, zoom) {
+		const [minlon, minlat, maxlon, maxlat] = latLonZoomToBbox(lat, lon, zoom);
+		const url = 'https://earthquake.usgs.gov/earthquakes/map/#{"autoUpdate":["autoUpdate"],"basemap":"grayscale","feed":"1day_m25","listFormat":"default","mapposition":[[' + minlat + ',' + minlon + '],[' + maxlat + ',' + maxlon + ']],"overlays":["plates"],"restrictListToMap":["restrictListToMap"],"search":null,"sort":"newest","timezone":"utc","viewModes":["settings","map"],"event":null}';
+      return encodeURI(url);
+
+    },
+	
+	getLatLonZoom(url) {
+		const decoded = decodeURI(url);
+      const match1 = decoded.match(/\"mapposition\"%3A\[\[(-?\d[0-9.]*)%2C(-?\d[0-9.]*)\]%2C\[(-?\d[0-9.]*)%2C(-?\d[0-9.]*)\]\]/);
+	  const match2 = decoded.match(/\"mapposition\":\[\[(-?\d[0-9.]*),(-?\d[0-9.]*)\],\[(-?\d[0-9.]*),(-?\d[0-9.]*)\]\]/);
+	  let match = false;
+	  if (match1) match = match1;
+	  if (match2) match = match2;
+      if (match) {
+        const [, minlat, minlon, maxlat, maxlon] = match;
+		const [lat, lon, zoom] = bboxToLatLonZoom(minlon, minlat, maxlon, maxlat);
+        return [lat, lon, Math.round(Number(zoom))];
+      }
+    },
+	
+  }, 
+ 
   
 ];
+
