@@ -9,10 +9,10 @@ Greatly contributed by jazzzz. Thanks!
 + [Firefox addon center](https://addons.mozilla.org/ja/firefox/addon/openswitchmaps/)
 ### from source code
 This extention uses Node.js
-1. Install Node.js if needed
+1. Install Node.js
 1. Install the dependencies: npm install
 1. Build the extension: npm run build
-1. The extension is built in the dist directory
+1. The extension is built in the `dist` directory
 1. Add to your Chrome/Firefox 
 
 ## How to use
@@ -52,15 +52,7 @@ Firefox
 * [Map Helper](https://chrome.google.com/webstore/detail/map-helper/ihllleemlchjegcfnaglokgamafhafda), by petrovnn
 * [MapSwitcher](https://addons.mozilla.org/ja/firefox/addon/map-switcher/), by František Nesveda
 
-## Japanese descriptions
-OpenStreetMapを中心に地図サービスを切り替えることができるChrome拡張機能です。
-特にMapillary⇔OSM⇔Googleマップの切り替えが便利かと思います。
 
-アイコンは [ICOOON MONO](http://icooon-mono.com/) から使用させていただきました。
-
-説明用のスクリーンショット静止画にはOpenStreetMap((c)OpenStreetMap Contributors)を使用しています。
-
-説明用のスクリーンキャプチャ動画には、OpenStreetMap(by OpenStreetMap Contributors), Mapillary(by Mapillary), F4map(by F4), KeepRight(by Harald Kleiner), Ingress Intel Map(by Niantic, Google)を使用しています。
 
 ## Current (2020/06/05) supported map services
 1. Baidu
@@ -159,3 +151,13 @@ OpenStreetMapを中心に地図サービスを切り替えることができるC
 1. Launch waze map editor
 1. GeoHack
 1. map.orhyginal
+
+## Japanese descriptions
+OpenStreetMapを中心に地図サービスを切り替えることができるChrome拡張機能です。
+特にMapillary⇔OSM⇔Googleマップの切り替えが便利かと思います。
+
+アイコンは [ICOOON MONO](http://icooon-mono.com/) から使用させていただきました。
+
+説明用のスクリーンショット静止画にはOpenStreetMap((c)OpenStreetMap Contributors)を使用しています。
+
+説明用のスクリーンキャプチャ動画には、OpenStreetMap(by OpenStreetMap Contributors), Mapillary(by Mapillary), F4map(by F4), KeepRight(by Harald Kleiner), Ingress Intel Map(by Niantic, Google)を使用しています。
