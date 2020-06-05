@@ -1,9 +1,6 @@
 # OpenSwitchMaps
 Map service switcher for Chrome/Firefox extension
 
-Download from:
-
-
 Greatly contributed by jazzzz. Thanks!
 
 ## Install
