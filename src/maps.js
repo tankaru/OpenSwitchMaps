@@ -994,7 +994,7 @@ const maps = [
     default_check: false,
     domain: "waze.com",
     getUrl(lat, lon, zoom) {
-      return 'https://www.waze.com/ja/editor?lon=' + lon + '&lat=' + lat + '&zoom=5';
+      return 'https://www.waze.com/editor?lon=' + lon + '&lat=' + lat + '&zoom=7';
     },
 
   },
@@ -1599,10 +1599,10 @@ const maps = [
     name: "2gis(RU)",
     category: LOCAL_CATEGORY,
     default_check: false,
-    domain: "2gis.ru",
+    domain: "2gis.com",
     description: "Russia and some Europe map",
     getUrl(lat, lon, zoom) {
-      return `https://2gis.com/?m=${lon}%2C${lat}%2F${zoom}`;
+      return `https://2gis.ru/?m=${lon}%2C${lat}%2F${zoom}`;
 
     },
     getLatLonZoom(url) {
@@ -1615,4 +1615,3 @@ const maps = [
   },
 
 ];
-
