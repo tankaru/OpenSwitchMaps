@@ -1650,4 +1650,33 @@ const maps = [
         }
       },
     },
+    { //http://qa.poole.ch/?zoom=13&lat=35.42723&lon=139.58851
+      name: "qa.poole.ch",
+      category: UTILITY_CATEGORY,
+      default_check: false,
+      domain: "poole.ch",
+      description: "Streets with no names",
+      getUrl(lat, lon, zoom) {
+        return `http://qa.poole.ch/?zoom=${zoom}&lat=${lat}&lon=${lon}`;
+
+      },
+    },
+    { //http://www.xn--pnvkarte-m4a.de/?#139.781;35.4722;10
+      name: "ÖPNVKarte",
+      category: OTHER_CATEGORY,
+      default_check: false,
+      domain: "xn--pnvkarte-m4a.de",
+      description: "Public transport map",
+      getUrl(lat, lon, zoom) {
+        return `http://www.xn--pnvkarte-m4a.de/?#${lon};${lat};${zoom}`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/www\.xn--pnvkarte-m4a\.de\/\?#(-?\d[0-9.]*);(-?\d[0-9.]*);(-?\d[0-9.]*)/);
+        if (match) {
+          const [, lon, lat, zoom] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
 ];
