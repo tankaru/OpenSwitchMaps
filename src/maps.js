@@ -21,6 +21,8 @@ function getLatLonZoom(url) {
   }
 }
 
+//------------ replace below here -------------
+
 function bboxToLatLonZoom(minlon, minlat, maxlon, maxlat) {
   const lon = (Number(minlon) + Number(maxlon)) / 2.0;
   const lat = (Number(minlat) + Number(maxlat)) / 2.0;
@@ -1675,6 +1677,24 @@ const maps = [
         const match = url.match(/www\.xn--pnvkarte-m4a\.de\/\?#(-?\d[0-9.]*);(-?\d[0-9.]*);(-?\d[0-9.]*)/);
         if (match) {
           const [, lon, lat, zoom] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+    { //http://www.lightningmaps.org/#m=oss;t=3;s=0;o=0;b=;ts=0;y=35.5065;x=139.8395;z=10;d=2;dl=2;dc=0;
+      name: "LightningMaps.org",
+      category: OTHER_CATEGORY,
+      default_check: false,
+      domain: "lightningmaps.org",
+      description: "Realtime lightning map",
+      getUrl(lat, lon, zoom) {
+        return `http://www.lightningmaps.org/#m=oss;t=3;s=0;o=0;b=;ts=0;y=${lat};x=${lon};z=${Math.min(zoom, 15)};d=2;dl=2;dc=0`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/wwww\.lightningmaps\.org\/(.*)(-?\d[0-9.]*);x=(-?\d[0-9.]*);z=(\d[0-9.]*)/);
+        if (match) {
+          const [, dummy, lon, lat, zoom] = match;
           return [lat, normalizeLon(lon), Math.round(Number(zoom))];
         }
       },
