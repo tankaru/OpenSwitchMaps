@@ -1699,4 +1699,16 @@ const maps = [
         }
       },
     },
+    { //https://trailrouter.com/#wps=35.68107,139.76553&ss=&rt=true&td=5000&aus=false&aus2=false&ah=0&ar=true&pga=0.8&im=false
+      name: "Trail Router",
+      category: OTHER_CATEGORY,
+      default_check: false,
+      domain: "trailrouter.com",
+      description: "Green area routing",
+      getUrl(lat, lon, zoom) {
+        return `https://trailrouter.com/#wps=${lat},${lon}&ss=&rt=true&td=5000&aus=false&aus2=false&ah=0&ar=true&pga=0.8&im=false`;
+
+      },
+
+    },
 ];
