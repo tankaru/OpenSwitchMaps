@@ -1712,7 +1712,7 @@ const maps = [
 
     },
     { //https://cmap.dev/#9/36.0757/139.8477
-      name: "cmap.dev: リアルタイム被害予測",
+      name: "cmap.dev: リアルタイム被害予測(JP)",
       category: OTHER_CATEGORY,
       default_check: false,
       domain: "cmap.dev",
