@@ -1711,4 +1711,22 @@ const maps = [
       },
 
     },
+    { //https://cmap.dev/#9/36.0757/139.8477
+      name: "cmap.dev: リアルタイム被害予測",
+      category: OTHER_CATEGORY,
+      default_check: false,
+      domain: "cmap.dev",
+      description: "Realtime disaster damage estimation",
+      getUrl(lat, lon, zoom) {
+        return `https://cmap.dev/#${zoom}/${lat}/${lon}`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/cmap\.dev\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
 ];
