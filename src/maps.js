@@ -1729,4 +1729,22 @@ const maps = [
         }
       },
     },
+    { //http://beacons.schmirler.de/en/world.html#map=11/35.315176983316775/139.7419591178308&layers=OS5&details=18
+      name: "Lights of the sea online",
+      category: OTHER_CATEGORY,
+      default_check: false,
+      domain: "schmirler.de",
+      description: "Lighthouse map",
+      getUrl(lat, lon, zoom) {
+        return `http://beacons.schmirler.de/en/world.html#map=${zoom}/${lat}/${lon}&layers=OS5&details=18`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/beacons\.schmirler\.de\/([a-z]*)\/world\.html#map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, dummy, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
 ];
