@@ -1747,4 +1747,42 @@ const maps = [
         }
       },
     },
+    
+    { //https://nakarte.me/#m=9/35.29383/139.30252&l=O
+      name: "nakarte",
+      category: OTHER_CATEGORY,
+      default_check: false,
+      domain: "nakarte.me",
+      description: "Global map with Russian layers",
+      getUrl(lat, lon, zoom) {
+        return `https://nakarte.me/#m=${zoom}/${lat}/${lon}&l=O`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/nakarte\.me\/#m=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+
+    { //https://www.komoot.com/plan/@35.6837927,139.8906326,11z
+      name: "komoot",
+      category: SPECIAL_CATEGORY,
+      default_check: false,
+      domain: "komoot.com",
+      description: "Route planner for cycling and hiking",
+      getUrl(lat, lon, zoom) {
+        return `https://www.komoot.com/plan/@${lat},${lon},${zoom}z`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/komoot\.com\/plan\/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)z/);
+        if (match) {
+          const [, lat, lon, zoom] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
 ];
