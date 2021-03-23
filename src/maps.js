@@ -1818,4 +1818,138 @@ const maps = [
         }
       },
     },
+
+    
+    { //https://maps.qchizu.xyz/#15/35.686773/139.753990/&base=std&ls=std%7Cmlit_road2019_bridge_01&disp=11&lcd=mlit_road2019_bridge_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1
+      name: "全国Q地図：橋梁マップ(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "qchizu.xyz",
+      description: "Bridges in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=std&ls=std%7Cmlit_road2019_bridge_01&disp=11&lcd=mlit_road2019_bridge_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/qchizu\.xyz\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+    { //https://maps.qchizu.xyz/#15/35.686773/139.753990/&base=std&ls=std%7Cmlit_road2019_tunnel_01&disp=11&lcd=mlit_road2019_tunnel_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1
+      name: "全国Q地図：トンネルマップ(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "qchizu.xyz",
+      description: "Tunnels in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=std&ls=std%7Cmlit_road2019_tunnel_01&disp=11&lcd=mlit_road2019_tunnel_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/qchizu\.xyz\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+
+    { //https://maps.qchizu.xyz/#15/35.686773/139.753969/&base=std&ls=std%7Cmlit_road2019_shed_01&disp=11&lcd=mlit_road2019_shed_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1
+      name: "全国Q地図：シェッドマップ(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "qchizu.xyz",
+      description: "Sheds in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=std&ls=std%7Cmlit_road2019_shed_01&disp=11&lcd=mlit_road2019_shed_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/qchizu\.xyz\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+    
+    { //https://maps.qchizu.xyz/#14/35.682294/139.766135/&base=std&ls=std%7Cmlit_road2019_culvert_01&disp=11&lcd=mlit_road2019_culvert_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1
+      name: "全国Q地図：カルバートマップ(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "qchizu.xyz",
+      description: "Culverts in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=std&ls=std%7Cmlit_road2019_culvert_01&disp=11&lcd=mlit_road2019_culvert_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/qchizu\.xyz\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+    
+    { //https://maps.qchizu.xyz/#14/35.682294/139.766135/&base=std&ls=std%7Cmlit_road2019_footbridge_01&disp=11&lcd=mlit_road2019_footbridge_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1
+      name: "全国Q地図：横断歩道橋マップ(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "qchizu.xyz",
+      description: "Foot bridges in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=std&ls=std%7Cmlit_road2019_footbridge_01&disp=11&lcd=mlit_road2019_footbridge_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/qchizu\.xyz\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+    
+    { //https://maps.qchizu.xyz/#15/35.685692/139.756329/&base=std&ls=std%7Cmlit_road2019_sign_01&disp=11&lcd=mlit_road2019_sign_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1
+      name: "全国Q地図：門型標識等マップ(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "qchizu.xyz",
+      description: "Road signs in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=std&ls=std%7Cmlit_road2019_sign_01&disp=11&lcd=mlit_road2019_sign_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/qchizu\.xyz\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+    
+    { //https://maps.qchizu.xyz/#15/35.685692/139.756329/&base=std&ls=std%7Cmaff-pond20200925-1&disp=11&lcd=maff-pond20200925-1&vs=c1j0h0k0l0u0t0z0r0s0m0f1
+      name: "全国Q地図：農業用ため池マップ(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "qchizu.xyz",
+      description: "Ponds in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=std&ls=std%7Cmaff-pond20200925-1&disp=11&lcd=maff-pond20200925-1&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/qchizu\.xyz\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
+
 ];
