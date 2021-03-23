@@ -1785,4 +1785,36 @@ const maps = [
         }
       },
     },
+        
+    { //https://tile.openstreetmap.fr/?zoom=7&lat=37.03262&lon=138.14182&layers=B00000000FFFFFF
+      name: "osm.fr",
+      category: OSM_LOCAL_CATEGORY,
+      default_check: false,
+      domain: "openstreetmap.fr",
+      description: "OSM.fr",
+      getUrl(lat, lon, zoom) {
+        return `https://tile.openstreetmap.fr/?zoom=${zoom}&lat=${lat}&lon=${lon}&layers=B00000000FFFFFF`;
+
+      },
+
+    },
+    { //https://maps.nls.uk/geo/explore/#zoom=8&lat=35.73020&lon=139.68615&layers=100611144&b=1
+      //https://maps.nls.uk/geo/explore/#zoom=17&lat=52.56060&lon=-1.92500&layers=6&b=1
+      name: "National Library of Scotland",
+      category: SPECIAL_CATEGORY,
+      default_check: false,
+      domain: "nls.uk",
+      description: "National Library of Scotland's historic maps",
+      getUrl(lat, lon, zoom) {
+        return `https://maps.nls.uk/geo/explore/#zoom=${zoom}&lat=${lat}&lon=${lon}`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/#zoom=(\d[0-9.]*)&lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
 ];
