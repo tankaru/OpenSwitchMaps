@@ -1951,5 +1951,16 @@ const maps = [
         }
       },
     },
+    { //https://dammaps.jp/?ll=36.181776,139.708654&z=10
+      name: "DamMaps(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "dammaps.jp",
+      description: "Dams in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://dammaps.jp/?ll=${lat},${lon}&z=${Math.min(Number(zoom), 19)}`;
 
+      },
+
+    },
 ];
