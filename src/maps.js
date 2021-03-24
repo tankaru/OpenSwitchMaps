@@ -1963,4 +1963,23 @@ const maps = [
       },
 
     },
+            
+    { //https://www.river.go.jp/kawabou/pc/tm?zm=15&clat=35.545950195567315&clon=139.64511394500735
+      name: "川の防災情報(JP)",
+      category: LOCAL_CATEGORY,
+      default_check: false,
+      domain: "river.go.jp",
+      description: "Information on river disasters in Japan",
+      getUrl(lat, lon, zoom) {
+        return `https://www.river.go.jp/kawabou/pc/tm?zm=${Math.min(Number(zoom), 18)}&clat=${lat}&clon=${lon}`;
+
+      },
+      getLatLonZoom(url) {
+        const match = url.match(/zm=(\d[0-9.]*)&clat=(-?\d[0-9.]*)&clon=(-?\d[0-9.]*)/);
+        if (match) {
+          const [, zoom, lat, lon] = match;
+          return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+        }
+      },
+    },
 ];
