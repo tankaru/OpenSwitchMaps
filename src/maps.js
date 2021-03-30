@@ -85,6 +85,31 @@ const maps = [
 
     },
   },
+  {
+    name: "Google Street View",
+    category: MAIN_CATEGORY,
+    default_check: false,
+    domain: "www.google.com",
+    getUrl(lat, lon, zoom) {
+      return `https://www.google.com/maps/@?api=1&map_action=pano&parameters&viewpoint=${lat},${lon}`;
+    },
+    getLatLonZoom(url) {
+      let match;
+      if (match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/)) {
+        const [, lat, lon, zoom] = match;
+        return [lat, lon, zoom];
+      } else if (match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[m]/)) {
+        let [, lat, lon, zoom] = match;
+        zoom = Math.round(-1.4436 * Math.log(zoom) + 26.871);
+        return [lat, lon, zoom];
+      } else if (match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),([0-9]*)[a],[0-9.]*y/)) {
+        let [, lat, lon, zoom] = match;
+        zoom = Math.round(-1.44 * Math.log(zoom) + 27.5);
+        return [lat, lon, zoom];
+      }
+
+    },
+  },
 
 
 
@@ -139,16 +164,17 @@ const maps = [
     },
   },
   {
-    name: "OpenStreetCam",
+    //https://kartaview.org/map/@36.039955287882236,139.62856504534716,8z
+    name: "KartaView",
     category: MAIN_CATEGORY,
-    default_check: true,
-    domain: "openstreetcam.org",
+    default_check: false,
+    domain: "kartaview.org",
     description: "Crowdsourced street-level imagery available as CC BY-SA",
     getUrl(lat, lon, zoom) {
-      return 'https://openstreetcam.org/map/@' + lat + ',' + lon + ',' + zoom + 'z';
+      return `https://kartaview.org/map/@${lat},${lon},${zoom}z`
     },
     getLatLonZoom(url) {
-      const match = url.match(/openstreetcam\.org.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+      const match = url.match(/kartaview\.org.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
       if (match) {
         const [, lat, lon, zoom] = match;
         return [lat, lon, zoom];
@@ -307,7 +333,7 @@ const maps = [
     name: "Ingress Intel map",
     category: SPECIAL_CATEGORY,
     default_check: true,
-    domain: "intel.ingress.com",
+    domain: "ingress.com",
     getUrl(lat, lon, zoom) {
       return 'https://intel.ingress.com/intel?ll=' + lat + ',' + lon + '&z=' + zoom;
     },
@@ -686,7 +712,7 @@ const maps = [
     name: "Old maps online",
     category: SPECIAL_CATEGORY,
     default_check: true,
-    domain: "oldmapsonline.org",
+    domain: "www.oldmapsonline.org",
     getUrl(lat, lon, zoom) {
       const [minlon, minlat, maxlon, maxlat] = latLonZoomToBbox(lat, lon, zoom);
       return 'https://www.oldmapsonline.org/#bbox=' + minlon + ',' + minlat + ',' + maxlon + ',' + maxlat + '&q=&date_from=0&date_to=9999&scale_from=&scale_to=';
@@ -864,38 +890,20 @@ const maps = [
     domain: "localwiki.org",
     getUrl(lat, lon, zoom) {
 
-      var url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10&addressdetails=1';
-
-      /*
-      //https://qiita.com/chinka/items/a084fd1c5ef9dcde4728
-      var getLocalwiki = async function () {
-        try {
-          let res = await fetch(url);
-          let org = res.json();
-          let localwiki = 'https://localwiki.org/_search/?q=' + org.display_name;
-          return localwiki;
-        } catch(e) {
-        	
-        }
-      }
-      */
-
-
+      const url = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=' + lat + '&lon=' + lon + '&zoom=10&addressdetails=1';
       let request = new XMLHttpRequest();
-      request.open('GET', url, false);//同期処理
 
-      request.send(null);
-      //request.responseType = 'json';
-
-      if (request.status === 200) {
+      request.open('GET', url, true); //非同期処理
+      request.onload = function () {
         const data = JSON.parse(request.response);
-
         const localwiki = 'https://localwiki.org/_search/?q=' + data.display_name;
-        return localwiki;
-      } else {
-        return 'https://localwiki.org/';
+        const elem = document.getElementById("Localwiki");
 
-      }
+        elem.href = localwiki;
+
+      };
+      request.send();
+      return 'https://localwiki.org/';
 
     },
 
@@ -919,7 +927,7 @@ const maps = [
     name: "Launch iD editor",
     category: APP_CATEGORY,
     default_check: false,
-    domain: "ideditor.com/",
+    domain: "ideditor.com",
     description: "OpenStreetMap online editor",
     getUrl(lat, lon, zoom) {
       let z = Number(zoom);
@@ -954,7 +962,7 @@ const maps = [
     name: "Apple maps (for Apple device)",
     category: APP_CATEGORY,
     default_check: false,
-    domain: "apple.com/",
+    domain: "apple.com",
     getUrl(lat, lon, zoom) {
       return 'http://maps.apple.com/?ll=' + lat + ',' + lon + '&z=' + zoom;
     },
@@ -1259,7 +1267,7 @@ const maps = [
     name: "Distance calculator",
     category: UTILITY_CATEGORY,
     default_check: false,
-    domain: "meurisse.org",
+    domain: "map.meurisse.org",
     description: "Distance calculator on OSM map",
     getUrl(lat, lon, zoom) {
       return 'https://map.meurisse.org/?lon=' + lon + '&lng=' + lon + '&lat=' + lat + '&zoom=' + Math.min(Number(zoom), 18);
@@ -1414,7 +1422,7 @@ const maps = [
     name: "Baidu",
     category: MAIN_CATEGORY,
     default_check: false,
-    domain: "baidu.com",
+    domain: "map.baidu.com",
 
     getUrl(lat, lon, zoom) {
       return 'http://map.baidu.com/?latlng=' + lat + ',' + lon;
@@ -1467,7 +1475,7 @@ const maps = [
     name: "Historic Place",
     category: OTHER_CATEGORY,
     default_check: false,
-    domain: "historic.place",
+    domain: "gk.historic.place",
     description: "Historic objects",
     getUrl(lat, lon, zoom) {
       return 'http://gk.historic.place/historische_objekte/translate/en/index-en.html?zoom=' + zoom + '&lat=' + lat + '&lon=' + lon;
@@ -1734,7 +1742,7 @@ const maps = [
       name: "Lights of the sea online",
       category: OTHER_CATEGORY,
       default_check: false,
-      domain: "schmirler.de",
+      domain: "beacons.schmirler.de",
       description: "Lighthouse map",
       getUrl(lat, lon, zoom) {
         return `http://beacons.schmirler.de/en/world.html#map=${zoom}/${lat}/${lon}&layers=OS5&details=18`;
@@ -1804,7 +1812,7 @@ const maps = [
       name: "National Library of Scotland",
       category: SPECIAL_CATEGORY,
       default_check: false,
-      domain: "nls.uk",
+      domain: "maps.nls.uk",
       description: "National Library of Scotland's historic maps",
       getUrl(lat, lon, zoom) {
         return `https://maps.nls.uk/geo/explore/#zoom=${zoom}&lat=${lat}&lon=${lon}`;
@@ -1824,7 +1832,7 @@ const maps = [
       name: "全国Q地図：橋梁マップ(JP)",
       category: LOCAL_CATEGORY,
       default_check: false,
-      domain: "qchizu.xyz",
+      domain: "maps.qchizu.xyz",
       description: "Bridges in Japan",
       getUrl(lat, lon, zoom) {
         return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=pale&ls=pale%7Cmlit_road2019_bridge_01&disp=11&lcd=mlit_road2019_bridge_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
@@ -1842,7 +1850,7 @@ const maps = [
       name: "全国Q地図：トンネルマップ(JP)",
       category: LOCAL_CATEGORY,
       default_check: false,
-      domain: "qchizu.xyz",
+      domain: "maps.qchizu.xyz",
       description: "Tunnels in Japan",
       getUrl(lat, lon, zoom) {
         return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=pale&ls=pale%7Cmlit_road2019_tunnel_01&disp=11&lcd=mlit_road2019_tunnel_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
@@ -1861,7 +1869,7 @@ const maps = [
       name: "全国Q地図：シェッドマップ(JP)",
       category: LOCAL_CATEGORY,
       default_check: false,
-      domain: "qchizu.xyz",
+      domain: "maps.qchizu.xyz",
       description: "Sheds in Japan",
       getUrl(lat, lon, zoom) {
         return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=pale&ls=pale%7Cmlit_road2019_shed_01&disp=11&lcd=mlit_road2019_shed_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
@@ -1880,7 +1888,7 @@ const maps = [
       name: "全国Q地図：カルバートマップ(JP)",
       category: LOCAL_CATEGORY,
       default_check: false,
-      domain: "qchizu.xyz",
+      domain: "maps.qchizu.xyz",
       description: "Culverts in Japan",
       getUrl(lat, lon, zoom) {
         return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=pale&ls=pale%7Cmlit_road2019_culvert_01&disp=11&lcd=mlit_road2019_culvert_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
@@ -1899,7 +1907,7 @@ const maps = [
       name: "全国Q地図：横断歩道橋マップ(JP)",
       category: LOCAL_CATEGORY,
       default_check: false,
-      domain: "qchizu.xyz",
+      domain: "maps.qchizu.xyz",
       description: "Foot bridges in Japan",
       getUrl(lat, lon, zoom) {
         return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=pale&ls=pale%7Cmlit_road2019_footbridge_01&disp=11&lcd=mlit_road2019_footbridge_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
@@ -1918,7 +1926,7 @@ const maps = [
       name: "全国Q地図：門型標識等マップ(JP)",
       category: LOCAL_CATEGORY,
       default_check: false,
-      domain: "qchizu.xyz",
+      domain: "maps.qchizu.xyz",
       description: "Road signs in Japan",
       getUrl(lat, lon, zoom) {
         return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=pale&ls=pale%7Cmlit_road2019_sign_01&disp=11&lcd=mlit_road2019_sign_01&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
@@ -1937,7 +1945,7 @@ const maps = [
       name: "全国Q地図：農業用ため池マップ(JP)",
       category: LOCAL_CATEGORY,
       default_check: false,
-      domain: "qchizu.xyz",
+      domain: "maps.qchizu.xyz",
       description: "Ponds in Japan",
       getUrl(lat, lon, zoom) {
         return `https://maps.qchizu.xyz/#${zoom}/${lat}/${lon}/&base=pale&ls=pale%7Cmaff-pond20200925-1&disp=11&lcd=maff-pond20200925-1&vs=c1j0h0k0l0u0t0z0r0s0m0f1`;
@@ -1968,7 +1976,7 @@ const maps = [
       name: "川の防災情報(JP)",
       category: LOCAL_CATEGORY,
       default_check: false,
-      domain: "river.go.jp",
+      domain: "www.river.go.jp",
       description: "Information on river disasters in Japan",
       getUrl(lat, lon, zoom) {
         return `https://www.river.go.jp/kawabou/pc/tm?zm=${Math.min(Number(zoom), 18)}&clat=${lat}&clon=${lon}`;
