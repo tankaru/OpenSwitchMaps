@@ -23,7 +23,7 @@
     "vue-template-compiler": "^2.6.12"
   },
   "dependencies": {
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "node-forge": ">=0.10.0",
     "ol": "^6.5.0",
     "vue": "^2.6.12",
