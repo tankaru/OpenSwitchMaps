@@ -6,7 +6,7 @@ Greatly contributed by jazzzz. Thanks!
 ## Install
 ### from Browser plugin
 + [Chrome webstore](https://chrome.google.com/webstore/detail/openswitchmaps/cfkddjlocfecchnemnnmmpdjcohgmkij)
-+ [Firefox addon center](https://addons.mozilla.org/ja/firefox/addon/openswitchmaps/)
++ [Firefox addon center](https://addons.mozilla.org/firefox/addon/openswitchmaps/)
 ### from source code
 This extention uses Node.js
 1. Install Node.js
