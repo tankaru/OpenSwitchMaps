@@ -817,7 +817,8 @@ const maps = [
 	  getLatLonZoom(url) {
 		const match = url.match(/osmbuildings\.org\/\?lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)&zoom=(\d[0-9.]*)/);
 		if (match) {
-		  let [, zoom, lat, lon] = match;
+		  let [, lat, lon, zoom] = match;
+
 		  zoom = Math.round(Number(zoom));
 		  return [lat, lon, zoom];
 		}
