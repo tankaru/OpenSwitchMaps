@@ -2018,5 +2018,24 @@ const maps = [
 		},
   
 	  },
+
+	  { //https://openlevelup.net/#12/35.6884/139.6323
+		name: "OpenLevelUp!",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "openlevelup.net",
+		description: "Indoor viewer",
+		getUrl(lat, lon, zoom) {
+		  return `https://openlevelup.net/#${zoom}/${lat}/${lon}`;
+  
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
   ];
 
