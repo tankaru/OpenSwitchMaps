@@ -345,10 +345,10 @@ const maps = [
 	  domain: "hiking.waymarkedtrails.org",
 	  description: "Show hiking, cycling, ski routes",
 	  getUrl(lat, lon, zoom) {
-		return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '!' + lat + '!' + lon;
+		return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '/' + lat + '/' + lon;
 	  },
 	  getLatLonZoom(url) {
-		const match = url.match(/waymarkedtrails\.org\/#.*\?map=(\d{1,2})!(-?\d[0-9.]*)!(-?\d[0-9.]*)/);
+		const match = url.match(/waymarkedtrails\.org\/#.*\?map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 		if (match) {
 		  const [, zoom, lat, lon] = match;
 		  return [lat, lon, zoom];
