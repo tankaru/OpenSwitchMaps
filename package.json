@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.21",
-    "node-forge": ">=0.10.0",
+    "node-forge": ">=1.0.0",
     "ol": "^6.5.0",
     "vue": "^2.6.12",
     "vue-hot-reload-api": "^2.3.4",
