@@ -2037,5 +2037,23 @@ const maps = [
 		  }
 		},
 	  },
+	  { //https://shademap.app/@35.68102,139.76313,14.21596z,1647848172422t,0b,0p
+		name: "ShadeMap",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "shademap.app",
+		description: "View shadows of buildings at specified time",
+		getUrl(lat, lon, zoom) {
+		  return `https://shademap.app/@${lat},${lon},${zoom}z`;
+  
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/shademap\.app\/@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)z/);
+		  if (match) {
+			const [, lat, lon, zoom] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
   ];
 
