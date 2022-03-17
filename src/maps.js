@@ -2055,5 +2055,23 @@ const maps = [
 		  }
 		},
 	  },
+	  { //https://yuiseki.github.io/osm-address-editor-vite/#16.79/35.683021/139.749329
+		name: "OSM address editor",
+		category: UTILITY_CATEGORY,
+		default_check: false,
+		domain: "yuiseki.github.io",
+		description: "View the editor of buidling and edit address",
+		getUrl(lat, lon, zoom) {
+		  return `https://yuiseki.github.io/osm-address-editor-vite/#${zoom}/${lat}/${lon}`;
+  
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
   ];
 
