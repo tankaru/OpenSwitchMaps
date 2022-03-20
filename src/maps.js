@@ -2220,6 +2220,69 @@ const maps = [
 		  }
 		},
 	  },
+	  /* Suncalc doesn't move to specified coordinates
+	  { //http://suncalc.net/#/35.514,139.6201,12
+		name: "SunCalc",
+		category: UTILITY_CATEGORY,
+		default_check: false,
+		domain: "suncalc.net",
+		description: "Sunrise, sunset, sun direction",
+		getUrl(lat, lon, zoom) {
+		  return `http://suncalc.net/#/${lat},${lon},${zoom}`;
+  
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/#\/(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)/);
+		  if (match) {
+			const [, lat, lon, zoom] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
+	  */
+	  { //https://www.wolframalpha.com/input?i=35.514N+139.6201E
+		name: "Wolfram Alpha",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "wolframalpha.com",
+		description: "Scientific information at the location",
+		getUrl(lat, lon, zoom) {
+		  return `https://www.wolframalpha.com/input?i=${lat}N+${lon}E`;
+  
+		},
+	  },
+	  { //https://map.what3words.com/35.89182,140.49066
+		name: "what3words",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "what3words.com",
+		description: "Specify location with 3 words",
+		getUrl(lat, lon, zoom) {
+		  return `https://map.what3words.com/${lat},${lon}`;
+  
+		},
+	  },
+	  { //https://boulter.com/gps/#35.89182%2C140.49066
+		name: "boulter",
+		category: UTILITY_CATEGORY,
+		default_check: false,
+		domain: "boulter.com",
+		description: "GPS Coordinate Converter",
+		getUrl(lat, lon, zoom) {
+		  return `https://boulter.com/gps/#${lat}%2C${lon}`;
+  
+		},
+	  },
+	  { //https://www.gpxeditor.co.uk/?location=35.89182,140.49066&zoom=17
+		name: "GPX Editor",
+		category: UTILITY_CATEGORY,
+		default_check: false,
+		domain: "gpxeditor.co.uk",
+		description: "GPX Editor",
+		getUrl(lat, lon, zoom) {
+		  return `https://www.gpxeditor.co.uk/?location=${lat},${lon}&zoom=${zoom}`;
+  
+		},
+	  },
   ];
-
 
