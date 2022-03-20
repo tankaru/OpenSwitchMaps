@@ -2284,5 +2284,23 @@ const maps = [
   
 		},
 	  },
+	  { //https://yandex.com/maps/?l=stv%2Csta&ll=37.615268%2C55.750168&panorama%5Bdirection%5D=0%2C0&panorama%5Bfull%5D=true&panorama%5Bpoint%5D=37.615268%2C55.750168&panorama%5Bspan%5D=0%2C0&z=15
+		name: "Yandex panorama",
+		category: MAIN_CATEGORY,
+		default_check: false,
+		domain: "yandex.com",
+		description: "Yandex street view",
+		getUrl(lat, lon, zoom) {
+		  return `https://yandex.com/maps/?l=stv%2Csta&ll=${lon}%2C${lat}&panorama%5Bdirection%5D=0%2C0&panorama%5Bfull%5D=true&panorama%5Bpoint%5D=${lon}%2C${lat}&panorama%5Bspan%5D=0%2C0&z=${zoom}`;
+  
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&panorama%5Bspan%5D=(\d[0-9.]*)%2C(\d[0-9.]*)&z=(\d[0-9.]*)$/);
+		  if (match) {
+			const [, lon, lat, dummy1, dummy2, zoom] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
   ];
 
