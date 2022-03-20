@@ -59,6 +59,7 @@ const OSM_LOCAL_CATEGORY = "OSM local chapter";
 const APP_CATEGORY = "External App";
 const PORTAL_CATEGORY = "Map portal";
 
+
 const maps = [
 	{
 	  name: "Google Maps",
@@ -320,6 +321,23 @@ const maps = [
 	  },
 	},
 	{
+		name: "Map compare (BBBike)",
+		category: UTILITY_CATEGORY,
+		default_check: false,
+		domain: "mc.bbbike.org",
+		description: "Compare maps side-by-side",
+		getUrl(lat, lon, zoom) {
+		  return 'http://mc.bbbike.org/mc/#' + zoom + '/' + lat + '/' + lon;
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/mc\.bbbike\.org\/mc\/#(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, lon, zoom];
+		  }
+		},
+	  },
+	{
 	  name: "Multimapas",
 	  category: UTILITY_CATEGORY,
 	  default_check: true,
@@ -329,6 +347,7 @@ const maps = [
 		return 'http://javier.jimenezshaw.com/mapas/mapas.html?z=' + zoom + '&c=' + lat + ',' + lon;
 	  },
 	},
+
 	{
 	  name: "Ingress Intel map",
 	  category: SPECIAL_CATEGORY,
@@ -339,22 +358,22 @@ const maps = [
 	  },
 	},
 	{
-	  name: "Waymarked Trails",
-	  category: OTHER_CATEGORY,
-	  default_check: true,
-	  domain: "hiking.waymarkedtrails.org",
-	  description: "Show hiking, cycling, ski routes",
-	  getUrl(lat, lon, zoom) {
-		return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '/' + lat + '/' + lon;
+		name: "Waymarked Trails",
+		category: OTHER_CATEGORY,
+		default_check: true,
+		domain: "hiking.waymarkedtrails.org",
+		description: "Show hiking, cycling, ski routes",
+		getUrl(lat, lon, zoom) {
+		  return 'https://hiking.waymarkedtrails.org/#?map=' + zoom + '/' + lat + '/' + lon;
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/waymarkedtrails\.org\/#.*\?map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, lon, zoom];
+		  }
+		},
 	  },
-	  getLatLonZoom(url) {
-		const match = url.match(/waymarkedtrails\.org\/#.*\?map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
-		if (match) {
-		  const [, zoom, lat, lon] = match;
-		  return [lat, lon, zoom];
-		}
-	  },
-	},
 	{
 	  name: "BigMap 2",
 	  category: UTILITY_CATEGORY,
@@ -518,6 +537,66 @@ const maps = [
 		}
 	  },
 	},
+
+	{//https://map.osmchina.org/#map=14/35.6806/139.7371
+		name: "OSMChina",
+		category: OSM_LOCAL_CATEGORY,
+		default_check: false,
+		domain: "osmchina.org",
+		description: "OpenStreetMap China local chapter",
+		getUrl(lat, lon, zoom) {
+		  return 'https://map.osmchina.org/#map=' + zoom + '/' + lat + '/' + lon;
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/osmchina\.org\/#map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
+
+
+
+
+
+
+	  {
+		name: "osm.kr",
+		category: OSM_LOCAL_CATEGORY,
+		default_check: false,
+		domain: "osm.kr",
+		description: "OpenStreetMap Korea local chapter",
+		getUrl(lat, lon, zoom) {
+		  return 'https://tiles.osm.kr/#' + zoom + '/' + lat + '/' + lon;
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/osm\.kr\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
+
+	  {
+		name: "osm.bzh",
+		category: OSM_LOCAL_CATEGORY,
+		default_check: false,
+		domain: "openstreetmap.bzh",
+		description: "OpenStreetMap Breizh local chapter",
+		getUrl(lat, lon, zoom) {
+
+		  return 'https://kartenn.openstreetmap.bzh/#map=' + zoom + '/' + lat + '/' + lon;
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/openstreetmap\.bzh\/#map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
   
 	{
 	  name: "OSM.cl",
@@ -591,6 +670,15 @@ const maps = [
 		}
 	  },
 	},
+	{//https://openweathermap.org/weathermap?basemap=map&cities=true&layer=temperature&lat=35.4157&lon=139.6212&zoom=5
+		name: "OpenWeatherMap.org",
+		category: SPECIAL_CATEGORY,
+		default_check: true,
+		domain: "openweathermap.org",
+		getUrl(lat, lon, zoom) {
+		  return `https://openweathermap.org/weathermap?lat=${lat}&lon=${lon}&zoom=${zoom}`;
+		},
+	  },
 	{
 	  name: "flightradar24",
 	  category: SPECIAL_CATEGORY,
@@ -1342,6 +1430,64 @@ const maps = [
 		}
 	  },
 	},
+		{//https://www.jawg.io/en/maps#8/48.863/2.359
+			name: "jawg.io",
+			category: OTHER_CATEGORY,
+			default_check: false,
+			domain: "jawg.io",
+			description: "vector map provider",
+			getUrl(lat, lon, zoom) {
+			  return 'https://www.jawg.io/en/maps/#' + zoom + '/' + lat + '/' + lon;
+		
+			},
+			getLatLonZoom(url) {
+			  const match = url.match(/jawg.*\/#([0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+		
+			  if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			  }
+			},
+		  },
+	{//https://js.protomaps.com/examples/leaflet.html#12/25.0578/121.5115
+		name: "protomaps.com",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "protomaps.com",
+		description: "vector map provider",
+		getUrl(lat, lon, zoom) {
+		  return 'https://js.protomaps.com/examples/leaflet.html#' + zoom + '/' + lat + '/' + lon;
+	
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/protomaps.*\/#([0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+	
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
+	  	{//https://tracesmap.com/#8/36.6338/139.5915
+		name: "tracesmap.com",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "tracesmap.com",
+		description: "raster map provider",
+		getUrl(lat, lon, zoom) {
+		  return 'https://tracesmap.com/#' + zoom + '/' + lat + '/' + lon;
+	
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/tracesmap.*\/#([0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+	
+		  if (match) {
+			const [, zoom, lat, lon] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
+	  
 	{//https://gribrouillon.fr/#15/35.4484/139.6179
 	  name: "Gribrouillon",
 	  category: SPECIAL_CATEGORY,
@@ -2055,6 +2201,7 @@ const maps = [
 		  }
 		},
 	  },
+
 	  { //https://yuiseki.github.io/osm-address-editor-vite/#16.79/35.683021/139.749329
 		name: "OSM address editor",
 		category: UTILITY_CATEGORY,
@@ -2074,4 +2221,5 @@ const maps = [
 		},
 	  },
   ];
+
 
