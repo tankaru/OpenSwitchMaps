@@ -66,6 +66,7 @@ const maps = [
 	  category: MAIN_CATEGORY,
 	  default_check: true,
 	  domain: "www.google.com",
+	  is_gcj_in_china: true,
 	  getUrl(lat, lon, zoom) {
 		return 'https://www.google.com/maps/@' + lat + ',' + lon + ',' + zoom + 'z';
 	  },
@@ -91,6 +92,7 @@ const maps = [
 	  category: MAIN_CATEGORY,
 	  default_check: false,
 	  domain: "www.google.com",
+	  is_gcj_in_china: true,
 	  getUrl(lat, lon, zoom) {
 		return `https://www.google.com/maps/@?api=1&map_action=pano&parameters&viewpoint=${lat},${lon}`;
 	  },
@@ -215,24 +217,6 @@ const maps = [
 		}
 	  },
 	},
-	{ //https://yandex.com/maps/?l=stv%2Csta&ll=37.615268%2C55.750168&panorama%5Bdirection%5D=0%2C0&panorama%5Bfull%5D=true&panorama%5Bpoint%5D=37.615268%2C55.750168&panorama%5Bspan%5D=0%2C0&z=15
-		name: "Yandex panorama",
-		category: MAIN_CATEGORY,
-		default_check: false,
-		domain: "yandex.com",
-		description: "Yandex street view",
-		getUrl(lat, lon, zoom) {
-		  return `https://yandex.com/maps/?l=stv%2Csta&ll=${lon}%2C${lat}&panorama%5Bdirection%5D=0%2C0&panorama%5Bfull%5D=true&panorama%5Bpoint%5D=${lon}%2C${lat}&panorama%5Bspan%5D=0%2C0&z=${zoom}`;
-  
-		},
-		getLatLonZoom(url) {
-		  const match = url.match(/(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&panorama%5Bspan%5D=(\d[0-9.]*)%2C(\d[0-9.]*)&z=(\d[0-9.]*)$/);
-		  if (match) {
-			const [, lon, lat, dummy1, dummy2, zoom] = match;
-			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
-		  }
-		},
-	  },
 	{
 	  name: "Qwant Maps",
 	  category: MAIN_CATEGORY,
@@ -255,6 +239,7 @@ const maps = [
 	  category: MAIN_CATEGORY,
 	  default_check: true,
 	  domain: "www.bing.com",
+	  is_gcj_in_china: true,
 	  getUrl(lat, lon, zoom) {
 		return 'https://www.bing.com/maps?cp=' + lat + '~' + lon + '&lvl=' + zoom;
 	  },
@@ -798,9 +783,9 @@ const maps = [
 		return 'https://apps.sentinel-hub.com/eo-browser/?lat=' + lat + '&lng=' + lon + '&zoom=' + zoom;
 	  },
 	  getLatLonZoom(url) {
-		const match = url.match(/apps\.sentinel-hub\.com\/eo-browser\/\?lat=(-?\d[0-9.]*)&lng=(-?\d[0-9.]*)&zoom=(\d{1,2})/);
+		const match = url.match(/apps\.sentinel-hub\.com\/eo-browser\/\?zoom=(\d{1,2})&lat=(-?\d[0-9.]*)&lng=(-?\d[0-9.]*)/);
 		if (match) {
-		  let [, lat, lon, zoom] = match;
+		  let [, zoom, lat, lon] = match;
 		  return [lat, lon, zoom];
 		}
 	  },
@@ -1592,16 +1577,19 @@ const maps = [
   
 	},
   
-	{//http://map.baidu.com/?latlng=35.6777,139.7588
+		{//http://map.baidu.com/?latlng=35.6777,139.7588
 	  name: "Baidu",
 	  category: MAIN_CATEGORY,
 	  default_check: false,
 	  domain: "map.baidu.com",
-  
+	  is_gcj_in_china: "bd",
+		
 	  getUrl(lat, lon, zoom) {
 		return 'http://map.baidu.com/?latlng=' + lat + ',' + lon;
   
 	  },
+
+
   
 	},
 	{//https://osmaps.ordnancesurvey.co.uk/51.39378,0.13892,10
@@ -2224,7 +2212,7 @@ const maps = [
 		name: "OSM address editor",
 		category: UTILITY_CATEGORY,
 		default_check: false,
-		domain: "yuiseki.github.io",
+		domain: "github.io",
 		description: "View the editor of buidling and edit address",
 		getUrl(lat, lon, zoom) {
 		  return `https://yuiseki.github.io/osm-address-editor-vite/#${zoom}/${lat}/${lon}`;
@@ -2302,6 +2290,87 @@ const maps = [
   
 		},
 	  },
+	  { //https://yandex.com/maps/?l=stv%2Csta&ll=37.615268%2C55.750168&panorama%5Bdirection%5D=0%2C0&panorama%5Bfull%5D=true&panorama%5Bpoint%5D=37.615268%2C55.750168&panorama%5Bspan%5D=0%2C0&z=15
+		name: "Yandex panorama",
+		category: MAIN_CATEGORY,
+		default_check: false,
+		domain: "yandex.com",
+		description: "Yandex street view",
+		getUrl(lat, lon, zoom) {
+		  return `https://yandex.com/maps/?l=stv%2Csta&ll=${lon}%2C${lat}&panorama%5Bdirection%5D=0%2C0&panorama%5Bfull%5D=true&panorama%5Bpoint%5D=${lon}%2C${lat}&panorama%5Bspan%5D=0%2C0&z=${zoom}`;
+  
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&panorama%5Bspan%5D=(\d[0-9.]*)%2C(\d[0-9.]*)&z=(\d[0-9.]*)$/);
+		  if (match) {
+			const [, lon, lat, dummy1, dummy2, zoom] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
+	  { //https://hanishina.github.io/maps/historymap.html?y=34.7935&x=134.8956&z=8
+		name: "市区町村境界時系列マップ(仮)(JP)",
+		category: LOCAL_CATEGORY,
+		default_check: false,
+		domain: "github.io",
+		description: "Transition of administrative boundaries in Japan",
+		getUrl(lat, lon, zoom) {
+		  return `https://hanishina.github.io/maps/historymap.html?y=${lat}&x=${lon}&z=${zoom}`;
+  
+		},
+		getLatLonZoom(url) {
+		  const match = url.match(/historymap\.html\?y=(-?\d[0-9.]*)&x=(-?\d[0-9.]*)&z=(\d[0-9.]*)/);
+		  if (match) {
+			const [, lat, lon, zoom] = match;
+			return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+		  }
+		},
+	  },
+	  { //https://www.its-mo.com/maps/?lat=35.626534167&lon=139.841299444
+		name: "いつもNAVI(JP)",
+		category: LOCAL_CATEGORY,
+		default_check: false,
+		domain: "its-mo.com",
+		description: "Zenrin map in Japan",
+		getUrl(lat, lon, zoom) {
+		  return `https://www.its-mo.com/maps/?lat=${lat}&lon=${lon}`;
+  
+		},
+	  },
+	  { //https://duckduckgo.com/?q=-35%2C-135&iaxm=maps
+		name: "DuckDuckGo",
+		category: MAIN_CATEGORY,
+		default_check: false,
+		domain: "duckduckgo.com",
+		description: "Privacy secured search service",
+		getUrl(lat, lon, zoom) {
+		  return `https://duckduckgo.com/?q=${lat}%2C${lon}&iaxm=maps`;
+  
+		},
+	  },
+	  /* No good result
+	  { //https://anvaka.github.io/city-roads/?q=-23.55095%2C%20-46.63296
+		name: "city roads",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "github.io",
+		description: "Create a map every single road within a city",
+		getUrl(lat, lon, zoom) {
+		  return `https://anvaka.github.io/city-roads/?q=${lat}%2C%20${lon}`;
+  
+		},
+	  },
+	  */
+	  { //https://skyvector.com/?ll=34.735668976405066,139.33731081107155&chart=301&zoom=2
+		name: "SkyVector",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "skyvector.com",
+		description: "Aeronautical chart",
+		getUrl(lat, lon, zoom) {
+		  return `https://skyvector.com/?ll=${lat},${lon}&chart=301&zoom=2`;
+  
+		},
+	  },
 
   ];
-
