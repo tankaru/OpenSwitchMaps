@@ -882,6 +882,24 @@ const maps = [
 			}
 		},
 	},
+	
+	{
+		name: "OpenStationMap",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "openstationmap.org",
+		getUrl(lat, lon, zoom) {
+			return "https://openstationmap.org/#" + zoom + "/" + lat + "/" + lon;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/openstationmap\.org\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				let [, zoom, lat, lon] = match;
+				zoom = Math.round(Number(zoom));
+				return [lat, lon, zoom];
+			}
+		},
+	},
 
 	{
 		name: "OSM Buildings",
