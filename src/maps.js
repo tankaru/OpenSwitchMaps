@@ -2405,4 +2405,22 @@ const maps = [
 		},
 	},
 	*/
+	{
+		//https://hgis.pref.miyazaki.lg.jp/hinata/hinata.html#10/35.640127/139.624164
+		name: "ひなたGIS",
+		category: LOCAL_CATEGORY,
+		default_check: false,
+		domain: "pref.miyazaki.lg.jp",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://hgis.pref.miyazaki.lg.jp/hinata/hinata.html#${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/pref\.miyazaki\.lg\.jp\/hinata\/hinata\.html#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
 ];
