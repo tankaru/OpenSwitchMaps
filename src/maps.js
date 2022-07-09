@@ -417,6 +417,25 @@ const maps = [
 			}
 		},
 	},
+	
+	//https://www.maptiler.com/google-maps-coordinates-tile-bounds-projection/#5/111.84/47.09
+	{
+		name: "Tiles à la Google Maps",
+		category: UTILITY_CATEGORY,
+		default_check: true,
+		domain: "maptiler.com",
+		description: "Different kind of map tile number in Google Map",
+		getUrl(lat, lon, zoom) {
+			return "https://www.maptiler.com/google-maps-coordinates-tile-bounds-projection/#" + zoom + "/" + lon + "/" + lat;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/maptiler\.com\/google-maps-coordinates-tile-bounds-projection\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lon, lat] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
 
 	//https://map.yahoo.co.jp/?lat=35.76999&lon=139.41380&zoom=16&maptype=basic
 	{
@@ -2423,23 +2442,40 @@ const maps = [
 			}
 		},
 	},
-	//https://www.maptiler.com/google-maps-coordinates-tile-bounds-projection/#5/111.84/47.09
 	{
-		name: "Tiles à la Google Maps",
+		//https://notes-heatmap.openstreetmap.fr/?pos=48.25,15.39,6
+		name: "OSM Notes Heatmap",
 		category: UTILITY_CATEGORY,
-		default_check: true,
-		domain: "maptiler.com",
-		description: "Different kind of map tile number in Google Map",
+		default_check: false,
+		domain: "openstreetmap.fr",
+		description: "",
 		getUrl(lat, lon, zoom) {
-			return "https://www.maptiler.com/google-maps-coordinates-tile-bounds-projection/#" + zoom + "/" + lon + "/" + lat;
+			return `https://notes-heatmap.openstreetmap.fr/?pos=${lat},${lon},${zoom}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/maptiler\.com\/google-maps-coordinates-tile-bounds-projection\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			const match = url.match(/pos=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)/);
 			if (match) {
-				const [, zoom, lon, lat] = match;
-				return [lat, lon, zoom];
+				const [, lat, lon, zoom] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
 			}
 		},
 	},
-	
+	{
+		//https://osmand.net/map#11/35.6492/139.8395
+		name: "OsmAnd",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "osmand.net",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://osmand.net/map#${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/osmand\.net\/map#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
 ];
