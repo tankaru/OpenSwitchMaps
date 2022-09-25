@@ -417,7 +417,7 @@ const maps = [
 			}
 		},
 	},
-	
+
 	//https://www.maptiler.com/google-maps-coordinates-tile-bounds-projection/#5/111.84/47.09
 	{
 		name: "Tiles à la Google Maps",
@@ -723,7 +723,7 @@ const maps = [
 		  return [lat, lon, Math.round(zoom)];
 		}
 	  },
-  
+
 	},
 	*/
 
@@ -755,6 +755,23 @@ const maps = [
 		},
 		getLatLonZoom(url) {
 			const match = url.match(/www\.cyclosm\.org\/#map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)\/cyclosm/);
+			if (match) {
+				let [, zoom, lat, lon] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
+
+	{
+		name: "BRouter-Web",
+		category: OTHER_CATEGORY,
+		default_check: true,
+		domain: "brouter.de",
+		getUrl(lat, lon, zoom) {
+			return "https://brouter.de/brouter-web/#map=" + zoom + "/" + lat + "/" + lon + "/cyclosm";
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/brouter\.de\/brouter-web\/#map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
 				let [, zoom, lat, lon] = match;
 				return [lat, lon, zoom];
@@ -901,7 +918,7 @@ const maps = [
 			}
 		},
 	},
-	
+
 	{
 		name: "OpenStationMap",
 		category: OTHER_CATEGORY,
@@ -2198,7 +2215,7 @@ const maps = [
 		},
 	},
 
-	
+
 	  { //https://app.shadowmap.org/?lat=48.15646&lng=16.39107&zoom=15
 		name: "Shadowmap",
 		category: SPECIAL_CATEGORY,
@@ -2207,7 +2224,7 @@ const maps = [
 		description: "Visualize sunlight and shadows of terrains and buildings at specified time",
 		getUrl(lat, lon, zoom) {
 		  return `https://app.shadowmap.org/?lat=${lat}&lng=${lon}&zoom=${zoom}`;
-  
+
 		},
 		getLatLonZoom(url) {
 		  const match = url.match(/shadowmap\.org\/\?lat=(-?\d[0-9.]*)&lng=(-?\d[0-9.]*)&zoom=(\d[0-9.]*)/);
@@ -2246,7 +2263,7 @@ const maps = [
 		description: "Sunrise, sunset, sun direction",
 		getUrl(lat, lon, zoom) {
 		  return `http://suncalc.net/#/${lat},${lon},${zoom}`;
-  
+
 		},
 		getLatLonZoom(url) {
 		  const match = url.match(/#\/(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)/);
@@ -2368,7 +2385,7 @@ const maps = [
 		description: "Create a map every single road within a city",
 		getUrl(lat, lon, zoom) {
 		  return `https://anvaka.github.io/city-roads/?q=${lat}%2C%20${lon}`;
-  
+
 		},
 	  },
 	  */
