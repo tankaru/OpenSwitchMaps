@@ -206,7 +206,7 @@ const maps = [
 			return "https://yandex.com/maps/?ll=" + lon + "%2C" + lat + "&z=" + zoom;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/yandex.*maps.*ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d{1,2})/);
+			const match = url.match(/yandex.*maps.*ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*).*&z=(\d{1,2})/);
 			if (match) {
 				const [, lon, lat, zoom] = match;
 				return [lat, lon, zoom];
@@ -2478,4 +2478,39 @@ const maps = [
 			}
 		},
 	},
+	{
+		//https://rene78.github.io/latest-changes/#12/43.0991/141.3772
+		name: "OSM Latest Changes",
+		category: UTILITY_CATEGORY,
+		default_check: false,
+		domain: "github.io",
+		description: "Shows recent changes on OpenStreetMap",
+		getUrl(lat, lon, zoom) {
+			return `https://rene78.github.io/latest-changes/#${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/latest-changes\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
+
+	{
+		//geo:37.786971,-122.399677
+		//https://en.wikipedia.org/wiki/Geo_URI_scheme
+		name: "geo URI",
+		category: UTILITY_CATEGORY,
+		default_check: false,
+		domain: "",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `geo:${lat},${lon}`;
+		},
+
+	},
+
+
 ];
+
