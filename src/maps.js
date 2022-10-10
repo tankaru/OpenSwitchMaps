@@ -2511,6 +2511,26 @@ const maps = [
 
 	},
 
+	{
+		//https://app.openindoor.io/#17.48/35.689768/139.700802
+		name: "OpenIndoor",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "openindoor.io",
+		description: "Shows Indoor information of buildings",
+		getUrl(lat, lon, zoom) {
+			return `https://app.openindoor.io/#${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/app\.openindoor\.io\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
+
+
 
 ];
 
