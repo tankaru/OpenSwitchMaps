@@ -2530,7 +2530,24 @@ const maps = [
 		},
 	},
 
-
+	{
+		//https://indoorequal.org/#map=16.13/35.681577/139.766966&level=-5
+		name: "indoor=",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "indoorequal.org",
+		description: "display indoor data",
+		getUrl(lat, lon, zoom) {
+			return `https://indoorequal.org/#map=${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/indoorequal\.org\/#map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
 
 ];
 
