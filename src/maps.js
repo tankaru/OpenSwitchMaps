@@ -1330,7 +1330,8 @@ const maps = [
 	},
 
 	{
-		//https://firms.modaps.eosdis.nasa.gov/map/#z:9;c:139.9,35.7;d:2020-01-06..2020-01-07
+
+		//https://firms.modaps.eosdis.nasa.gov/map/#t:adv;d:7days;@139.8,35.6,11z
 		name: "FIRMS",
 		category: SPECIAL_CATEGORY,
 		default_check: false,
@@ -1339,12 +1340,12 @@ const maps = [
 		getUrl(lat, lon, zoom) {
 			let z = Number(zoom);
 			if (z > 14) z = 14;
-			return "https://firms.modaps.eosdis.nasa.gov/map/#z:" + z + ";c:" + normalizeLon(lon) + "," + lat;
+			return `https://firms.modaps.eosdis.nasa.gov/map/#t:adv;d:7days;@${lon},${lat},${Math.round(Math.min(Number(zoom), 14))}z`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/firms\.modaps\.eosdis\.nasa\.gov\/map\/#z:(\d{1,2});c:(-?\d[0-9.]*),(-?\d[0-9.]*)/);
+			const match = url.match(/firms\.modaps\.eosdis\.nasa\.gov\/map\/.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)z/);
 			if (match) {
-				const [, zoom, lon, lat] = match;
+				const [,  lon, lat, zoom] = match;
 				return [lat, lon, zoom];
 			}
 		},
@@ -2508,9 +2509,15 @@ const maps = [
 		getUrl(lat, lon, zoom) {
 			return `geo:${lat},${lon}`;
 		},
+		getLatLonZoom(url) {
+			const match = url.match(/geo:(-?\d[0-9.]*),(-?\d[0-9.]*)/);
+			if (match) {
+				const [, lat, lon] = match;
+				return [lat, normalizeLon(lon), 16];//zoom=16は適当
+			}
+		},
 
 	},
-
 	{
 		//https://app.openindoor.io/#17.48/35.689768/139.700802
 		name: "OpenIndoor",
@@ -2529,7 +2536,6 @@ const maps = [
 			}
 		},
 	},
-
 	{
 		//https://indoorequal.org/#map=16.13/35.681577/139.766966&level=-5
 		name: "indoor=",
@@ -2549,5 +2555,52 @@ const maps = [
 		},
 	},
 
-];
+	{
+		//https://liveuamap.com/?zoom=10&ll=52.30637946442471,32.53189086914063
+		name: "Live Universal Awareness Map",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "liveuamap.com",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://liveuamap.com/?zoom=${zoom}&ll=${lat},${lon}`;
+		},
 
+	},
+
+	{
+		//https://tankaru.github.io/OpenSwitchMapsWeb/index.html#https://www.openstreetmap.org/#map=6/49.852/34.909
+		name: "OpenSwitchMapsWeb",
+		category: PORTAL_CATEGORY,
+		default_check: false,
+		domain: "github.io",
+		description: "Web version of OpenSwitchMaps",
+		getUrl(lat, lon, zoom) {
+			return `https://tankaru.github.io/OpenSwitchMapsWeb/index.html#https://www.openstreetmap.org/#map=${zoom}/${lat}/${lon}`;//use osm as dummy
+		},
+
+	},
+
+	{
+		//https://www.deepstatemap.live/en#7.5/53.313/28.872
+		name: "DeepState Map",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "deepstatemap.live",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://www.deepstatemap.live/en#${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/deepstatemap\.live\/en#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
+
+
+
+
+];
