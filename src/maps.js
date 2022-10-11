@@ -2600,7 +2600,24 @@ const maps = [
 		},
 	},
 
-
+	{
+		//https://soar.earth/maps?pos=35.693278997339895%2C139.70266210333696%2C10.75
+		name: "Soar.Earth",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "soar.earth",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://soar.earth/maps?pos=${lat}%2C${lon}%2C${zoom}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/soar\.earth\/maps\?pos=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)%2C(\d[0-9.]*)/);
+			if (match) {
+				const [, lat, lon, zoom] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
 
 
 ];
