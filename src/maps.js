@@ -2655,5 +2655,17 @@ const maps = [
 			}
 		},
 	},
+	{
+		//https://onthegomap.com/?lat=35.68386&lng=139.74132&zoom=12.5
+		name: "On The Go Map",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "onthegomap.com",
+		description: "a route planner for running, walking, biking, or driving",
+		getUrl(lat, lon, zoom) {
+			const [minlon, minlat, maxlon, maxlat] = latLonZoomToBbox(lat, lon, zoom);
+			return `https://onthegomap.com/?lat=${lat}&lng=${lon}&zoom=${zoom}`;
+		},
 
+	},
 ];
