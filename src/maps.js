@@ -2638,5 +2638,22 @@ const maps = [
 			}
 		},
 	},
+	{
+		//https://github.com/tankaru/OpenSwitchMaps/pull/82
+		name: "BRouter-Web",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "brouter.de",
+		getUrl(lat, lon, zoom) {
+			return "https://brouter.de/brouter-web/#map=" + zoom + "/" + lat + "/" + lon + "/cyclosm";
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/brouter\.de\/brouter-web\/#map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				let [, zoom, lat, lon] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
 
 ];
