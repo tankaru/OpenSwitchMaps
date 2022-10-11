@@ -2618,6 +2618,25 @@ const maps = [
 			}
 		},
 	},
-
+	{
+		//https://worldview.earthdata.nasa.gov/?v=138.8410066163944,35.10024365499317,140.89540523118063,36.180516769442114
+		name: "EOSDIS Worldview",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "nasa.gov",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			const [minlon, minlat, maxlon, maxlat] = latLonZoomToBbox(lat, lon, zoom);
+			return `https://worldview.earthdata.nasa.gov/?v=${minlon},${minlat},${maxlon},${maxlat}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/worldview\.earthdata\.nasa\.gov\/\?v=(-?\d[0-9.]*),(-?\d[0-9.]*),(-?\d[0-9.]*),(-?\d[0-9.]*)/);
+			if (match) {
+				const [, minlon, minlat, maxlon, maxlat] = match;
+				const [lat, lon, zoom] = bboxToLatLonZoom(minlon, minlat, maxlon, maxlat);
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
 
 ];
