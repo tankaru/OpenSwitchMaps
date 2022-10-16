@@ -2739,5 +2739,22 @@ const maps = [
 			}
 		},
 	},
+	{
+		name: "ProjectOwl: Ukraine",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "www.google.com",
+		is_gcj_in_china: true,
+		getUrl(lat, lon, zoom) {
+			return `https://www.google.com/maps/d/u/0/viewer?mid=180u1IkUjtjpdJWnIC0AxTKSiqK4G6Pez&ll=${lat}%2C${lon}&z=${zoom}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/www\.google\.com\/maps\/d\/u\/0\/viewer\?mid=180u1IkUjtjpdJWnIC0AxTKSiqK4G6Pez&ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d[0-9]*)/);
+			if (match) {
+				const [, lat, lon, zoom] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
 ];
 
