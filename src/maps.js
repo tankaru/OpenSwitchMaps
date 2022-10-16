@@ -60,6 +60,7 @@ const APP_CATEGORY = "External App";
 const PORTAL_CATEGORY = "Map portal";
 
 
+
 const maps = [
 	{
 		name: "Google Maps",
@@ -67,21 +68,64 @@ const maps = [
 		default_check: true,
 		domain: "www.google.com",
 		is_gcj_in_china: true,
-		getUrl(lat, lon, zoom) {
-			return "https://www.google.com/maps/@" + lat + "," + lon + "," + zoom + "z";
+		getUrl(lat, lon, zoom, pin_lat, pin_lon) {
+
+			function Num2DMS(num){
+				
+				//numは正数
+				const d = Math.trunc(num);
+				const dec = num - d;
+				const m = Math.trunc(dec * 60);
+				const sub_dec = dec*60 - m;
+				const s = sub_dec * 60;
+				console.log(num, d, dec, m, sub_dec, s);
+				return d + '%C2%B0' + m + "'" + s.toFixed(1);
+			}
+
+			function LatLon2DMS(lat, lon){
+				const num_lat = Number(lat);
+				const num_lon = Number(lon);
+
+				let dms_lat = Num2DMS(Math.abs(num_lat)) + '%22' + ((num_lat > 0) ? 'N' : 'S');
+				let dms_lon = Num2DMS(Math.abs(num_lon)) + '%22' + ((num_lon > 0) ? 'E' : 'W');
+				return `${dms_lat}+${dms_lon}`;
+			}
+			return `https://www.google.com/maps/${pin_lat ? 'place/' + LatLon2DMS(pin_lat, pin_lon) +'/': ''}@${lat},${lon},${zoom}z`;
 		},
 		getLatLonZoom(url) {
-			let match;
+			let match, lat, lon, zoom;
 			if ((match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})[.z]/))) {
-				const [, lat, lon, zoom] = match;
-				return [lat, lon, zoom];
+				 [, lat, lon, zoom] = match;
 			} else if ((match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)[m]/))) {
-				let [, lat, lon, zoom] = match;
+				 [, lat, lon, zoom] = match;
 				zoom = Math.round(-1.4436 * Math.log(zoom) + 26.871);
-				return [lat, lon, zoom];
 			} else if ((match = url.match(/google.*maps.*@(-?\d[0-9.]*),(-?\d[0-9.]*),([0-9]*)[a],[0-9.]*y/))) {
-				let [, lat, lon, zoom] = match;
+				 [, lat, lon, zoom] = match;
 				zoom = Math.round(-1.44 * Math.log(zoom) + 27.5);
+			}
+			if (match){
+				//pinned map
+				function DMS_str_to_latlon(dms_str){
+					const p = dms_str.match(/([0-9]*)%C2%B0([0-9]*)'([0-9.]*)%22(.)\+([0-9]*)%C2%B0([0-9]*)'([0-9.]*)%22(.)/);
+					if (p) {
+						const lat = ((p[4] == 'N') ? 1 : -1) * (Number(p[1]) + Number(p[2])/60.0 + Number(p[3])/60/60) ;
+						const lon = ((p[8] == 'E') ? 1 : -1) * (Number(p[5]) + Number(p[6])/60.0 + Number(p[7])/60/60)  ;
+						return [lat,lon];
+					} else {
+
+					}
+					
+				}
+				let pin_match = url.match(/google.*maps\/place\/(.*)\/@/);
+				if (pin_match){
+					const [,dms_str] = pin_match;
+					const pinned = DMS_str_to_latlon(dms_str);
+					if (pinned) {
+						return [lat, lon, zoom, pinned[0], pinned[1]];
+					}
+				}
+				
+				//unpinned map
 				return [lat, lon, zoom];
 			}
 		},
@@ -117,10 +161,18 @@ const maps = [
 		category: MAIN_CATEGORY,
 		default_check: true,
 		domain: "www.openstreetmap.org",
-		getUrl(lat, lon, zoom) {
-			return "https://www.openstreetmap.org/#map=" + zoom + "/" + lat + "/" + lon;
+		getUrl(lat, lon, zoom, pin_lat, pin_lon) {
+			return `https://www.openstreetmap.org/${pin_lat ? '?mlat=' + pin_lat : ''}${pin_lon ? '&mlon=' + pin_lon : ''}#map=${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
+			//for pinned map
+			const pin_match = url.match(/www\.openstreetmap\.org\/.*mlat=(-?\d[0-9.]*)&mlon=(-?\d[0-9.]*).*map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (pin_match) {
+				const [, pin_lat, pin_lon, zoom, lat, lon] = pin_match;
+				return [lat, lon, zoom, pin_lat, pin_lon];
+			}
+
+			//for unpinned map
 			const match = url.match(/www\.openstreetmap\.org.*map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
 				const [, zoom, lat, lon] = match;
@@ -2618,6 +2670,7 @@ const maps = [
 			}
 		},
 	},
+
 	{
 		//https://worldview.earthdata.nasa.gov/?v=138.8410066163944,35.10024365499317,140.89540523118063,36.180516769442114
 		name: "EOSDIS Worldview",
@@ -2668,4 +2721,7 @@ const maps = [
 		},
 
 	},
+
+
 ];
+

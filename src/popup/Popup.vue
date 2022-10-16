@@ -46,8 +46,8 @@ module.exports = {
         currentWindow: true
       }, function(tabs) {
         const tab = tabs[0];
-        const [lat, lon, zoom] = getLatLonZoom(tab.url);
-        const mapUrl = map.getUrl(lat, lon, zoom);
+        const [lat, lon, zoom, pin_lat, pin_lon] = getLatLonZoom(tab.url);
+        const mapUrl = map.getUrl(lat, lon, zoom, pin_lat, pin_lon);
         const code = getCode(mapUrl);
         chrome.tabs.executeScript(tab.id, {code});
         window.close();
