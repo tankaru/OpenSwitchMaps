@@ -2721,7 +2721,23 @@ const maps = [
 		},
 
 	},
-
-
+	{
+		// https://satellites.pro/#48.060184,37.677612,14
+		name: "Satellites.pro",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "satellites.pro",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://satellites.pro/#${lat},${lon},${zoom}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/satellites\.pro\/(\w+)#(-?\d[0-9.]*)\,(-?\d[0-9.]*)\,(\d[0-9.]*)/);
+			if (match) {
+				const [, map, lat, lon, zoom] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
 ];
 
