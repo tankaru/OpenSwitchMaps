@@ -2769,7 +2769,7 @@ const maps = [
 			const match = url.match(/www\.google\.com\/maps\/d\/u\/0\/viewer\?mid=180u1IkUjtjpdJWnIC0AxTKSiqK4G6Pez&ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d[0-9]*)/);
 			if (match) {
 				const [, lat, lon, zoom] = match;
-				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+				return [lat, lon, zoom];
 			}
 		},
 	},
