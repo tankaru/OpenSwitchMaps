@@ -11,7 +11,7 @@ const mapChecks = _.map(getAllMaps(), function (map){
 	if ('default_check' in map) {
 		return map['default_check'];
 	} else {
-		return true;
+		return false;
 	};
 });
 const enabledMaps = Vue.observable(_.zipObject(mapNames, mapChecks));

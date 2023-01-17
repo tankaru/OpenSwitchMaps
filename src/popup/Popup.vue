@@ -25,7 +25,9 @@ const _ = require('lodash');
 const browser = require("webextension-polyfill");
 const {getLatLonZoom, getAllMaps} = require('../maps');
 const storage = require('../options/storage');
-
+function normalizeLon(lon) {
+  return ((((Number(lon) + 180) % 360) + 360) % 360) - 180;
+};
 module.exports = {
   computed: {
     columns() {
@@ -46,8 +48,8 @@ module.exports = {
         currentWindow: true
       }, function(tabs) {
         const tab = tabs[0];
-        const [lat, lon, zoom, pin_lat, pin_lon] = getLatLonZoom(tab.url);
-        const mapUrl = map.getUrl(lat, lon, zoom, pin_lat, pin_lon);
+        const [lat, lon, zoom, extra] = getLatLonZoom(tab.url);
+        const mapUrl = map.getUrl(lat, normalizeLon(lon), Math.round(Number(zoom)), extra);
         const code = getCode(mapUrl);
         chrome.tabs.executeScript(tab.id, {code});
         window.close();

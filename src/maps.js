@@ -68,8 +68,8 @@ const maps = [
 		default_check: true,
 		domain: "www.google.com",
 		is_gcj_in_china: true,
-		getUrl(lat, lon, zoom, pin_lat, pin_lon) {
-
+		getUrl(lat, lon, zoom, extra) {
+			
 			function Num2DMS(num){
 				
 				//numは正数
@@ -78,7 +78,7 @@ const maps = [
 				const m = Math.trunc(dec * 60);
 				const sub_dec = dec*60 - m;
 				const s = sub_dec * 60;
-				console.log(num, d, dec, m, sub_dec, s);
+				//console.log(num, d, dec, m, sub_dec, s);
 				return d + '%C2%B0' + m + "'" + s.toFixed(1);
 			}
 
@@ -90,7 +90,7 @@ const maps = [
 				let dms_lon = Num2DMS(Math.abs(num_lon)) + '%22' + ((num_lon > 0) ? 'E' : 'W');
 				return `${dms_lat}+${dms_lon}`;
 			}
-			return `https://www.google.com/maps/${pin_lat ? 'place/' + LatLon2DMS(pin_lat, pin_lon) +'/': ''}@${lat},${lon},${zoom}z`;
+			return `https://www.google.com/maps/${extra && extra.pin_lat ? 'place/' + LatLon2DMS(extra.pin_lat, extra.pin_lon) +'/': ''}@${lat},${lon},${zoom}z`;
 		},
 		getLatLonZoom(url) {
 			let match, lat, lon, zoom;
@@ -105,6 +105,8 @@ const maps = [
 			}
 			if (match){
 				//pinned map
+				//https://www.google.com/maps/place/%E5%8F%B0%E5%8C%97/@25.0484312,121.5016642,15z/data=!4m5!3m4!1s0x3442a9727e339109:0xc34a31ce3a4abecb!8m2!3d25.0480075!4d121.5170613
+				/*
 				function DMS_str_to_latlon(dms_str){
 					const p = dms_str.match(/([0-9]*)%C2%B0([0-9]*)'([0-9.]*)%22(.)\+([0-9]*)%C2%B0([0-9]*)'([0-9.]*)%22(.)/);
 					if (p) {
@@ -116,13 +118,14 @@ const maps = [
 					}
 					
 				}
-				let pin_match = url.match(/google.*maps\/place\/(.*)\/@/);
+				*/
+				let pin_match = url.match(/google.*maps\/place\/.*!3d(-?\d[0-9.]*)!4d(-?\d[0-9.]*)/);
 				if (pin_match){
-					const [,dms_str] = pin_match;
-					const pinned = DMS_str_to_latlon(dms_str);
-					if (pinned) {
-						return [lat, lon, zoom, pinned[0], pinned[1]];
-					}
+					const extra = {
+						pin_lat: pin_match[1],
+						pin_lon: pin_match[2],
+					};
+					return [lat, lon, zoom, extra];
 				}
 				
 				//unpinned map
@@ -156,20 +159,26 @@ const maps = [
 		},
 	},
 
-	{
+	{ //https://www.openstreetmap.org/changeset/127728858?mlat=35.7220&mlon=139.6376#map=10/35.7220/139.6376
 		name: "OpenStreetMap",
 		category: MAIN_CATEGORY,
 		default_check: true,
 		domain: "www.openstreetmap.org",
-		getUrl(lat, lon, zoom, pin_lat, pin_lon) {
-			return `https://www.openstreetmap.org/${pin_lat ? '?mlat=' + pin_lat : ''}${pin_lon ? '&mlon=' + pin_lon : ''}#map=${zoom}/${lat}/${lon}`;
+		getUrl(lat, lon, zoom, extra) {
+			return `https://www.openstreetmap.org/${extra && extra.changeset ? 'changeset/' + extra.changeset : ''}${extra && extra.pin_lat ? '?mlat=' + extra.pin_lat : ''}${extra && extra.pin_lon ? '&mlon=' + extra.pin_lon : ''}#map=${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
+			//for changeset 
+			const changeset_match = url.match(/www\.openstreetmap\.org\/changeset\/(\d[0-9.]*)/);
+			if (changeset_match) {
+				const [, changeset] = changeset_match;
+				return [ null, null, null, {changeset}];
+			}
 			//for pinned map
 			const pin_match = url.match(/www\.openstreetmap\.org\/.*mlat=(-?\d[0-9.]*)&mlon=(-?\d[0-9.]*).*map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (pin_match) {
 				const [, pin_lat, pin_lon, zoom, lat, lon] = pin_match;
-				return [lat, lon, zoom, pin_lat, pin_lon];
+				return [lat, lon, zoom, {pin_lat, pin_lon}];
 			}
 
 			//for unpinned map
@@ -179,6 +188,9 @@ const maps = [
 				return [lat, lon, zoom];
 			}
 		},
+		getChangesetUrl(changeset){
+			return `https://www.openstreetmap.org/changeset/${changeset}`;
+		}
 	},
 	{
 		name: "Mapillary",
@@ -249,35 +261,47 @@ const maps = [
 			}
 		},
 	},
-	{
+	{ //https://yandex.com/maps/?ll=139.588169%2C35.424138&whatshere%5Bpoint%5D=139.576626%2C35.417882&z=15.8
 		name: "Yandex",
 		category: MAIN_CATEGORY,
 		default_check: true,
 		domain: "yandex.com",
-		getUrl(lat, lon, zoom) {
-			return "https://yandex.com/maps/?ll=" + lon + "%2C" + lat + "&z=" + zoom;
+		getUrl(lat, lon, zoom, extra) {
+			return `https://yandex.com/maps/?ll=${lon}%2C${lat}${extra && extra.pin_lat ? '&whatshere%5Bpoint%5D=' + extra.pin_lon + '%2C' + extra.pin_lat : ''}&z=${zoom}`;
 		},
 		getLatLonZoom(url) {
+			//https://yandex.com/maps/21433/yokohama/?ll=139.579830%2C35.423841&mode=whatshere&whatshere%5Bpoint%5D=139.576626%2C35.417882&whatshere%5Bzoom%5D=null&z=15.6
 			const match = url.match(/yandex.*maps.*ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*).*&z=(\d{1,2})/);
 			if (match) {
 				const [, lon, lat, zoom] = match;
+				const pin_match = url.match(/whatshere%5Bpoint%5D=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)/);
+				if (pin_match){
+					return [lat, lon, zoom, {pin_lat: pin_match[2], pin_lon: pin_match[1]}];
+				}
 				return [lat, lon, zoom];
 			}
 		},
 	},
-	{
+
+	//https://www.qwant.com/maps/#map=15.76/35.4256258/139.5906212
+	//https://www.qwant.com/maps/place/latlon:35.42128:139.57313#map=16.16/35.4229916/139.5795312
+	{ 
 		name: "Qwant Maps",
 		category: MAIN_CATEGORY,
 		default_check: true,
 		domain: "qwant.com",
 		description: "Vector map based on OpenStreetMap data",
-		getUrl(lat, lon, zoom) {
-			return "https://www.qwant.com/maps/#map=" + zoom + "/" + lat + "/" + lon;
+		getUrl(lat, lon, zoom, extra) {
+			return `https://www.qwant.com/maps/${extra && extra.pin_lat ? 'place/latlon:' + extra.pin_lat + ':' + extra.pin_lon : ''}#map=${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
 			const match = url.match(/www\.qwant\.com.*#map=(\d{1,2})[0-9.]*\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
 				const [, zoom, lat, lon] = match;
+				const pin_match = url.match(/latlon:(-?\d[0-9.]*):(-?\d[0-9.]*)/);
+				if (pin_match){
+					return [lat, lon, zoom, {pin_lat: pin_match[1], pin_lon: pin_match[2]}];
+				}
 				return [lat, lon, zoom];
 			}
 		},
@@ -288,9 +312,35 @@ const maps = [
 		default_check: true,
 		domain: "www.bing.com",
 		is_gcj_in_china: true,
-		getUrl(lat, lon, zoom) {
-			return "https://www.bing.com/maps?cp=" + lat + "~" + lon + "&lvl=" + zoom;
+		getUrl(lat, lon, zoom, extra) {
+			// https://learn.microsoft.com/en-us/bingmaps/articles/create-a-custom-map-url#collections-categories 
+			let pin = ''
+			if (extra && extra.pin_lat) {
+				pin = `&sp=point.${extra.pin_lat}_${extra.pin_lon}` // + `${name}_${note}`;
+			}
+			return "https://www.bing.com/maps?cp=" + lat + "~" + lon + "&lvl=" + zoom + pin;
 		},
+		
+		getLatLonZoom(url) {
+			// https://www.bing.com/maps?osid=7b4e7fbd-4878-44fa-8302-421100f0d920&cp=23.295311~120.807682&lvl=13&v=2&sV=2&form=S00027
+			const urlobj = new URL(url);
+			const u = new URLSearchParams(urlobj.search);
+			const center = u.get('cp');
+
+			if (!center) return;
+			const [lat, lon] = center.split('~')
+			let zoom = '14';
+			if (u.has('lvl')) zoom = u.get('lvl');
+			const ret = [lat, lon, zoom];
+			
+			const pin = u.get('sp');
+			if (pin) {
+				const scan = pin.match(/point\.([\d.]+)_([\d.]+)/);
+				if (scan) ret.push({pin_lat: scan[1], pin_lon: scan[2]});
+			}
+			return ret;
+		}
+		
 	},
 	{
 		name: "Overpass-turbo",
@@ -434,6 +484,7 @@ const maps = [
 			return "http://bigmap.osmz.ru/index.html#map=" + zoom + "/" + lat + "/" + lon;
 		},
 	},
+	/* Pic4Carto obsoleted
 	{
 		name: "Pic4Carto",
 		category: UTILITY_CATEGORY,
@@ -451,6 +502,7 @@ const maps = [
 			}
 		},
 	},
+	*/
 
 	{
 		name: "JapanMapCompare",
@@ -531,14 +583,14 @@ const maps = [
 			return "https://www.mapion.co.jp/m2/" + lat + "," + lon + "," + zoom;
 		},
 	},
-	{
+	{//https://openstreetmap.de/karte/?zoom=12&lat=35.69527&lon=139.63071&layers=B00TT
 		name: "OSM.de",
 		category: OSM_LOCAL_CATEGORY,
 		default_check: false,
 		domain: "www.openstreetmap.de",
 		description: "OpenStreetMap German local chapter",
 		getUrl(lat, lon, zoom) {
-			return "https://www.openstreetmap.de/karte.html?zoom=" + zoom + "&lat=" + lat + "&lon=" + lon;
+			return "https://www.openstreetmap.de/karte/?zoom=" + zoom + "&lat=" + lat + "&lon=" + lon;
 		},
 	},
 	{
@@ -559,17 +611,17 @@ const maps = [
 		},
 	},
 	{
-		//https://openstreetmap.jp/#zoom=15&lat=35.66838&lon=139.77208&layers=B000
+		//https://tile.openstreetmap.jp/styles/osm-bright/#12.37/35.66916/139.7817
 		name: "OSM.jp",
 		category: OSM_LOCAL_CATEGORY,
 		default_check: false,
 		domain: "openstreetmap.jp",
 		description: "OpenStreetMap Japan local chapter",
 		getUrl(lat, lon, zoom) {
-			return `https://openstreetmap.jp/#zoom=${Math.min(Number(zoom), 19)}&lat=${lat}&lon=${lon}&layers=B000`;
+			return `https://tile.openstreetmap.jp/styles/osm-bright/#${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/#zoom=(\d{1,2})&lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)/);
+			const match = url.match(/tile\.openstreetmap\.jp\/.*#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
 				const [, zoom, lat, lon] = match;
 				return [lat, lon, zoom];
@@ -849,19 +901,19 @@ const maps = [
 		},
 	},
 
-	{
+	{//https://macrostrat.org/map/#x=139.835&y=35.886&z=7.44
 		name: "Macrostrat",
 		category: SPECIAL_CATEGORY,
 		default_check: true,
 		domain: "macrostrat.org",
 		description: "Geological map",
 		getUrl(lat, lon, zoom) {
-			return "https://macrostrat.org/map/#/z=" + zoom + "/x=" + lon + "/y=" + lat + "/bedrock/lines/";
+			return `https://macrostrat.org/map/#x=${lon}&y=${lat}&z=${zoom}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/macrostrat\.org\/map\/#\/z=([0-9.]+)\/x=(-?\d[0-9.]+)\/y=(-?\d[0-9.]+)/);
+			const match = url.match(/macrostrat\.org\/map\/#x=(-?\d[0-9.]*)&y=(-?\d[0-9.]*)&z=(\d[0-9.]*)/);
 			if (match) {
-				let [, zoom, lon, lat] = match;
+				const [, lon, lat, zoom] = match;
 				return [lat, lon, zoom];
 			}
 		},
@@ -1064,18 +1116,14 @@ const maps = [
 		domain: "localwiki.org",
 		getUrl(lat, lon, zoom) {
 			const url = "https://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lon + "&zoom=10&addressdetails=1";
-			let request = new XMLHttpRequest();
-
-			request.open("GET", url, true); //非同期処理
-			request.onload = function () {
-				const data = JSON.parse(request.response);
-				const localwiki = "https://localwiki.org/_search/?q=" + data.display_name;
-				const elem = document.getElementById("Localwiki");
-
-				elem.href = localwiki;
-			};
-			request.send();
-			return "https://localwiki.org/";
+			let localwiki = "https://localwiki.org/"
+			cacheDb.ajaxCallback(url, function (json) {
+				const data = JSON.parse(json);
+				localwiki = "https://localwiki.org/_search/?q=" + data.display_name;
+				const elem = document.getElementById("a_Localwiki");
+				if (elem) elem.href = localwiki;
+			});
+			return localwiki;
 		},
 	},
 
@@ -1197,7 +1245,7 @@ const maps = [
 			return "https://wego.here.com/?map=" + lat + "," + lon + "," + zoom + ",normal";
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/wego\.here\.com\/\?map=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
+			const match = url.match(/.*\.here\.com\/\?map=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d{1,2})/);
 			if (match) {
 				const [, lat, lon, zoom] = match;
 				return [lat, lon, zoom];
@@ -1265,6 +1313,16 @@ const maps = [
 		getUrl(lat, lon, zoom) {
 			//https://www.mediawiki.org/wiki/GeoHack
 			return "https://tools.wmflabs.org/geohack/geohack.php?params=" + lat + "_N_" + lon + "_E_scale:" + Math.round(100000 * Math.pow(2, 12 - Number(zoom)));
+		},
+	},
+	{ //https://geohack.toolforge.org/geohack.php?language=de&params=48.137222222222_N_11.575555555556_E
+		name: "GeoHack(local)",
+		category: PORTAL_CATEGORY,
+		default_check: false,
+		domain: "wmflabs.org",
+		description: "Map links for Wikipedia articles with lang support",
+		getUrl(lat, lon, zoom) {
+			return `https://tools.wmflabs.org/geohack/geohack.php?${navigator.language ? 'language='+ navigator.language + '&' : ''}params=${lat}_N_${lon}_E_scale:${Math.round(100000 * Math.pow(2, 12 - Number(zoom)))}`;
 		},
 	},
 
@@ -1431,20 +1489,20 @@ const maps = [
 			return "https://map.meurisse.org/?lon=" + lon + "&lng=" + lon + "&lat=" + lat + "&zoom=" + Math.min(Number(zoom), 18);
 		},
 	},
-	{
+	{ //https://disaster.ninja/active/?map=11.162/35.622/139.786
 		name: "Kontur",
 		category: UTILITY_CATEGORY,
 		default_check: true,
 		domain: "disaster.ninja",
 		description: "The most active OSM contributor",
 		getUrl(lat, lon, zoom) {
-			return "https://disaster.ninja/live/#overlays=bivariate-custom_kontur_openstreetmap_quantity,osm-users;id=GDACS_TC_1000654_2;position=" + lon + "," + lat + ";zoom=" + zoom;
+			return `https://disaster.ninja/active/?map=${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/disaster\.ninja\/live\/#.*position=(-?\d[0-9.]*),(-?\d[0-9.]*);zoom=(\d{1,2})/);
+			const match = url.match(/disaster\.ninja\/.*?map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 
 			if (match) {
-				const [, lon, lat, zoom] = match;
+				const [, zoom, lat, lon] = match;
 				return [lat, lon, zoom];
 			}
 		},
@@ -1544,7 +1602,44 @@ const maps = [
 			}
 		},
 	},
+	{
+		//https://labs.mapple.com/mapplevt.html?#8.47/35.7472/139.9546
+		name: "MαPPLE",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "labs.mapple.com",
+		description: "experimental vector map in Japan",
+		getUrl(lat, lon, zoom) {
+			return "https://labs.mapple.com/mapplevt.html?#" + zoom + "/" + lat + "/" + lon;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/labs\.mapple\.com.*#([0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
+	{
+		//https://maps.omniscale.com/en/p/map#map=2/24.6/121.2/3857/B
+		name: "Omniscale",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "maps.omniscale.com",
+		description: "Interactive map with different projections",
+		getUrl(lat, lon, zoom) {
+			return "https://maps.omniscale.com/en/p/map#map=" + zoom + "/" + lat + "/" + lon + "3857/B";
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/maps\.omniscale\.com.*#map=([0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
 	{
 		//https://gribrouillon.fr/#15/35.4484/139.6179
 		name: "Gribrouillon",
@@ -2225,7 +2320,7 @@ const maps = [
 			return `https://openlevelup.net/#${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			const match = url.match(/openlevelup\.net\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
 				const [, zoom, lat, lon] = match;
 				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
@@ -2283,7 +2378,7 @@ const maps = [
 			return `https://yuiseki.github.io/osm-address-editor-vite/#${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			const match = url.match(/osm-address-editor-vite\/#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
 				const [, zoom, lat, lon] = match;
 				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
@@ -2454,17 +2549,18 @@ const maps = [
 			}
 		},
 	},
-	/* Couldn't find a good converter.
+	
 	{
 		//https://www.geoportal.bayern.de/bayernatlas/?topic=ba&lang=de&bgLayer=atkis&catalogNodes=11&E=604510.08&N=5337130.40&zoom=3
+		//https://geoportal.bayern.de/bayernatlas?lon=11.575556&lat=48.137222&zoom=10
 		name: "BayernAtlas",
 		category: LOCAL_CATEGORY,
-		default_check: false,
 		domain: "geoportal.bayern.de",
 		description: "der Kartenviewer des Freistaates Bayern",
 		getUrl(lat, lon, zoom) {
-			return `https://www.geoportal.bayern.de/bayernatlas/?topic=ba&lang=de&bgLayer=atkis&catalogNodes=11&E=${72721*Number(lon) - 154177}&N=${110681*Number(lat) + 7222}&zoom=${Number(zoom)-5}`;
+			return `https://geoportal.bayern.de/bayernatlas?lon=${lon}&lat=${lat}&zoom=${Number(zoom)-5}`;
 		},
+		/*
 		getLatLonZoom(url) {
 			const match = url.match(/geoportal\.bayern\.de.*E=(\d[0-9.]*)&N=(\d[0-9.]*)&zoom=(\d[0-9.]*)/);
 			if (match) {
@@ -2475,8 +2571,9 @@ const maps = [
 				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
 			}
 		},
+		*/
 	},
-	*/
+	
 	{
 		//https://hgis.pref.miyazaki.lg.jp/hinata/hinata.html#10/35.640127/139.624164
 		name: "ひなたGIS",
@@ -2514,20 +2611,34 @@ const maps = [
 		},
 	},
 	{
-		//https://osmand.net/map#11/35.6492/139.8395
+		//https://osmand.net/map?pin=23.000245%2C121.000097#18/23/121
 		name: "OsmAnd",
 		category: OTHER_CATEGORY,
 		default_check: false,
 		domain: "osmand.net",
 		description: "",
-		getUrl(lat, lon, zoom) {
-			return `https://osmand.net/map#${zoom}/${lat}/${lon}`;
+		getUrl(lat, lon, zoom, extra) {
+			let pin = ''
+			if (extra != null && extra.pin_lat != null) {
+				pin = '?pin=' + encodeURIComponent(`${extra.pin_lat},${extra.pin_lon}`);
+			}
+			return `https://osmand.net/map${pin}#${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/osmand\.net\/map#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			let array;
+			const match = url.match(/osmand\.net\/map.*?#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
 				const [, zoom, lat, lon] = match;
-				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+				array = [lat, normalizeLon(lon), Math.round(Number(zoom))];
+				const u = new URL(url);
+				if (u.search && u.searchParams.has('pin')) {
+					const pin = decodeURIComponent(
+						u.searchParams.get('pin')
+					);
+					const pin_latlon = pin.split(',');
+					array.push({pin_lat: pin_latlon[0], pin_lon:pin_latlon[1]});
+				}
+				return array;
 			}
 		},
 	},
@@ -2551,22 +2662,49 @@ const maps = [
 	},
 
 	{
-		//geo:37.786971,-122.399677
+		//geo:37.786971,-122.399677?z=16&q=([\d\.]+,[\d\.]+|.*)
 		//https://en.wikipedia.org/wiki/Geo_URI_scheme
 		name: "geo URI",
 		category: UTILITY_CATEGORY,
 		default_check: false,
 		domain: "",
-		description: "",
-		getUrl(lat, lon, zoom) {
-			return `geo:${lat},${lon}`;
+		description: "A URI schema to represent a point in a coordinate reference system, which may show the location on the default map application.",
+		getUrl(lat, lon, zoom, extra) {
+			// Usually, geo uri represent a point(pin),
+			// not a map view. Therefore, if the source have pin, 
+			// use the pin and discard the lat and lon.
+			if (extra && extra.pin_lat != null) {
+				[lat, lon] = [extra.pin_lat, extra.pin_lon];
+			}
+			return `geo:${lat},${lon}?z=${zoom}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/geo:(-?\d[0-9.]*),(-?\d[0-9.]*)/);
-			if (match) {
-				const [, lat, lon] = match;
-				return [lat, normalizeLon(lon), 16];//zoom=16は適当
+			let lat, lon, zoom = 16; // 16 as default zoom level
+			
+			const u = new URL(url);
+			const latlonRegexp = /(-?\d[0-9.]*),(-?\d[0-9.]*)/;
+			const latlon = u.pathname.match(latlonRegexp);
+			if (!latlon) return;
+			[, lat, lon] = latlon;
+			if (u.search) {
+				const z = u.searchParams.get('z');
+				if (z) zoom = z;
+				
+				// some android device use 0,0?q=${lat},${lon}
+				// to represent a pin.
+				// https://en.wikipedia.org/wiki/Geo_URI_scheme#Unofficial_extensions
+				const q = u.searchParams.get('q');
+				let latlon;
+				if (Number(lat) == 0 && Number(lon) == 0 && q) {
+					latlon = q.match(latlonRegexp);
+				}
+				if (latlon) [, lat, lon] = latlon;
 			}
+			lon = normalizeLon(lon);
+			return [
+				lat, lon, zoom,
+				{pin_lat: lat, pin_lon: lon} // treat geo uri as a pin url
+			];
 		},
 
 	},
@@ -2735,7 +2873,7 @@ const maps = [
 			const match = url.match(/satellites\.pro\/(\w+)#(-?\d[0-9.]*)\,(-?\d[0-9.]*)\,(\d[0-9.]*)/);
 			if (match) {
 				const [, map, lat, lon, zoom] = match;
-				return [lat, lon, zoom];
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
 			}
 		},
 	},
@@ -2752,26 +2890,102 @@ const maps = [
 			const match = url.match(/www\.google\.com\/maps\/d\/u\/0\/viewer\?mid=180u1IkUjtjpdJWnIC0AxTKSiqK4G6Pez&ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d[0-9]*)/);
 			if (match) {
 				const [, lat, lon, zoom] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
+	{//https://zelonewolf.github.io/openstreetmap-americana/#map=15.76/37.90132/139.073283
+		name: "OpenStreetMap Americana",
+		category: OTHER_CATEGORY,
+		domain: "github.io",
+		description: "American style vector map",
+		getUrl(lat, lon, zoom) {
+			return `https://zelonewolf.github.io/openstreetmap-americana/#map=${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/zelonewolf\.github\.io\/.*\/#map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
 				return [lat, lon, zoom];
 			}
 		},
 	},
-	{
-		name: "GeoConfirmed",
-		category: SPECIAL_CATEGORY,
-		default_check: false,
-		domain: "www.google.com",
-		is_gcj_in_china: true,
+	{//https://openaedmap.org/#map=12/35.67503/139.80664
+		name: "OpenAEDMap",
+		category: OTHER_CATEGORY,
+		domain: "openaedmap.org",
+		description: "AED map",
 		getUrl(lat, lon, zoom) {
-			return `https://www.google.com/maps/d/u/0/viewer?mid=10YK14-QB25penu8jeS4hBVarzGKZsVgj&ll=${lat}%2C${lon}&z=${zoom}`;
+			return `https://openaedmap.org/#map=${zoom}/${lat}/${lon}`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/www\.google\.com\/maps\/d\/u\/0\/viewer\?mid=180u1IkUjtjpdJWnIC0AxTKSiqK4G6Pez&ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d[0-9]*)/);
+			const match = url.match(/openaedmap\.org\/#map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
+	{//https://sunders.uber.space/?lat=34.76737826&lon=134.84250069&zoom=16
+		name: "Surveillance under Surveillance",
+		category: OTHER_CATEGORY,
+		domain: "uber.space",
+		description: "Survey camera map",
+		getUrl(lat, lon, zoom) {
+			return `https://sunders.uber.space/?lat=${lat}&lon=${lon}&zoom=${zoom}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/unders\.uber\.space\/\?lat=(-?\d[0-9.]*)&lon=(-?\d[0-9.]*)&zoom=(\d[0-9.]*)/);
 			if (match) {
 				const [, lat, lon, zoom] = match;
 				return [lat, lon, zoom];
 			}
 		},
 	},
+
+	{//https://geojson.io/#map=13.62/35.68351/139.74025
+		name: "geojson.io",
+		category: UTILITY_CATEGORY,
+		domain: "geojson.io",
+		description: "geojson viewer/editor",
+		getUrl(lat, lon, zoom) {
+			return `https://geojson.io/#map=${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/geojson\.io\/#map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
+
+	{//https://www.wunderground.com/weather/35.45,139.62
+		name: "Weather Underground",
+		category: SPECIAL_CATEGORY,
+		domain: "wunderground.com",
+		description: "Local weather information",
+		getUrl(lat, lon, zoom) {
+			return `https://www.wunderground.com/weather/${lat},${lon}`;
+		},
+	},
+
+	{//https://www.ventusky.com/?p=36.41;139.21;6
+		name: "Ventusky",
+		category: SPECIAL_CATEGORY,
+		domain: "ventusky.com",
+		description: "Weather map",
+		getUrl(lat, lon, zoom) {
+			return `https://www.ventusky.com/?p=${lat};${lon};${Math.min(10, Number(zoom))}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/ventusky\.com\/?p=(-?\d[0-9.]*);(-?\d[0-9.]*);(-?\d[0-9.]*)/);
+			if (match) {
+				const [, lat, lon, zoom] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
+
 ];
 
