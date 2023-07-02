@@ -37,7 +37,11 @@ module.exports = {
   },
   methods: {
     openMapInCurrentTab(map) {
-      this.open(map, mapUrl => 'window.location.href =' + JSON.stringify(mapUrl) + ';');
+		if (storage.observablePreferences['alwaysOpenInNewTab']){//
+			this.openMapInOtherTab(map);
+			return;
+		}
+		this.open(map, mapUrl => 'window.location.href =' + JSON.stringify(mapUrl) + ';');
     },
     openMapInOtherTab(map) {
       this.open(map, mapUrl => 'window.open(' + JSON.stringify(mapUrl) + ');');

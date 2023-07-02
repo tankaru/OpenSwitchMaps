@@ -1,5 +1,17 @@
 <template>
   <div>
+	<h2>Preferences</h2>
+	<div>
+		<ul :key="preferenceChecks">
+			<li>
+				<input
+					type="checkbox"
+					:checked="preferences.alwaysOpenInNewTab"
+					@change="setPreference('alwaysOpenInNewTab', $event.target.checked)"
+				>Always open in new tab
+			</li>
+		</ul>
+	</div>
     <h2>Enabled maps</h2>
     <div
       v-for="(maps, columnName) in columns"
@@ -35,12 +47,17 @@ module.exports = {
     return {
       columns: _.groupBy(getAllMaps(), 'category'),
       enabledMaps: storage.observableEnabledMaps,
+	  preferences: storage.observablePreferences,
     };
   },
   methods: {
     setMapEnabled(map, enabled) {
       storage.setMapEnabled(map, enabled);
     },
+	setPreference(item, preference){
+		storage.setPreference(item, preference);
+		//alert('setPreference'+item+preference);
+	}
   },
 };
 </script>
