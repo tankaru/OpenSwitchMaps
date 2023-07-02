@@ -1,3 +1,4 @@
 /.cache/
+/.parcel-cashe/
 /dist/
 /node_modules/
