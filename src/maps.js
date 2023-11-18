@@ -105,7 +105,9 @@ const maps = [
 					pin_lat: lat,
 					pin_lon: lon,
 				};
-
+			} else if ((match = url.match(/google.*maps.*ll=(-?\d[0-9.]*)%2C(-?\d[0-9.]*)&z=(\d[0-9.]*)/))){
+				//https://www.google.com/maps/d/u/0/viewer?mid=1EpC-GTEzYFLFL8kPS1kqT7znfsU&ll=36.06634784473271%2C139.87667246610306&z=9
+				[, lat, lon, zoom] = match;
 			}
 			if (match) {
 				//pinned map
@@ -1219,7 +1221,10 @@ const maps = [
 		category: APP_CATEGORY,
 		default_check: false,
 		domain: "apple.com",
-		getUrl(lat, lon, zoom) {
+		getUrl(lat, lon, zoom, extra) {
+			if (extra){
+				return "http://maps.apple.com/place?ll=" + extra.pin_lat + "," + extra.pin_lon;
+			}
 			return "http://maps.apple.com/?ll=" + lat + "," + lon + "&z=" + zoom;
 		},
 	},
@@ -3050,5 +3055,54 @@ const maps = [
 			}
 		},
 	},
+	{
+		//https://www.arcgis.com/home/webmap/viewer.html?webmap=86265e5a4bbb4187a59719cf134e0018&find=35.46141,139.62938
+		name: "ESRI hybrid map",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "arcgis.com",
+		description: "Satellite and high-resolution aerial imagery for the world with political boundaries, roads, and labels for places and roads.",
+		getUrl(lat, lon, zoom) {
+			const bbox = latLonZoomToBbox(lat, lon, zoom)
+			return `https://www.arcgis.com/home/webmap/viewer.html?webmap=86265e5a4bbb4187a59719cf134e0018&extent=${bbox[0]},${bbox[1]},${bbox[2]},${bbox[3]}`;
+		},
+	},
+	{
+		//http://fieldpapers.org/compose#14/35.6865/139.7505
+		name: "Field Papers",
+		category: UTILITY_CATEGORY,
+		default_check: false,
+		domain: "fieldpapers.org",
+		description: "Field Papers is a tool to help you create a multi-page atlas of anywhere in the world.",
+		getUrl(lat, lon, zoom) {
+			return `http://fieldpapers.org/compose#${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/fieldpapers\.org\/.*#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
+	{
+		//https://maps.vk.com/ru/?lng=139.599084&lat=35.458337&zoom=11&style=main
+		name: "VK maps",
+		category: LOCAL_CATEGORY,
+		default_check: false,
+		domain: "vk.com",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://maps.vk.com/ru/?lng=${lon}&lat=${lat}&zoom=${zoom}&style=main`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/maps\.vk\.com\/.*\/?lng=(-?\d[0-9.]*)&lat=(-?\d[0-9.]*)&zoom=(\d[0-9.]*)/);
+			if (match) {
+				const [, lon, lat, zoom] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
 ];
+
 
