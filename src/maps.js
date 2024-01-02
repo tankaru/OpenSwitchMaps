@@ -186,24 +186,31 @@ const maps = [
 		},
 		getLatLonZoom(url) {
 			//for changeset
+			let lat, lon, zoom, pin_lat, pin_lon, changeset;
+			let matched = false;
 			const changeset_match = url.match(/www\.openstreetmap\.org\/changeset\/(\d[0-9.]*)/);
 			if (changeset_match) {
-				const [, changeset] = changeset_match;
-				return [null, null, null, { changeset }];
+				[, changeset] = changeset_match;
+				matched = true;
 			}
-			//for pinned map
-			const pin_match = url.match(/www\.openstreetmap\.org\/.*mlat=(-?\d[0-9.]*)&mlon=(-?\d[0-9.]*).*map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			//for pin position
+			const pin_match = url.match(/www\.openstreetmap\.org\/.*mlat=(-?\d[0-9.]*)&mlon=(-?\d[0-9.]*)/);
 			if (pin_match) {
-				const [, pin_lat, pin_lon, zoom, lat, lon] = pin_match;
-				return [lat, lon, zoom, { pin_lat, pin_lon }];
+				[, pin_lat, pin_lon] = pin_match;
+				matched = true;
 			}
 
-			//for unpinned map
+			//for map position
 			const match = url.match(/www\.openstreetmap\.org.*map=(\d{1,2})\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
-				const [, zoom, lat, lon] = match;
-				return [lat, lon, zoom];
+				[, zoom, lat, lon] = match;
+				matched = true;
 			}
+
+			if (matched){
+				return [lat, lon, zoom, {pin_lat, pin_lon, changeset}];
+			}
+
 		},
 		getChangesetUrl(changeset) {
 			return `https://www.openstreetmap.org/changeset/${changeset}`;
@@ -3101,6 +3108,64 @@ const maps = [
 				const [, lon, lat, zoom] = match;
 				return [lat, lon, zoom];
 			}
+		},
+	},
+	{
+		//https://www.openstreetmap.app/#map=13/35.6827/139.7660
+		name: "OpenStreetMap Nederland",
+		category: OSM_LOCAL_CATEGORY,
+		default_check: false,
+		domain: "openstreetmap.app",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://www.openstreetmap.app/#map=${zoom}/${lat}/${lon}`;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/www\.openstreetmap\.app\/.*#map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, lon, zoom];
+			}
+		},
+	},
+	{
+		//https://panoramax.fr/photos#focus=map&map=7.32/35.346/139.692&speed=250
+		name: "Panoramax",
+		category: MAIN_CATEGORY,
+		default_check: false,
+		domain: "panoramax.fr",
+		description: "A digital resource for sharing and exploiting field photos.",
+		getUrl(lat, lon, zoom) {
+			return `https://panoramax.fr/photos#focus=map&map=${zoom}/${Number(lat).toFixed(5)}/${Number(lon).toFixed(5)}&speed=250`;
+		},
+		getLatLonZoom(url) {
+			const pic_selected = url.match(/pic=/);
+			
+			let match;
+			//https://panoramax.fr/photos#focus=map&map=7.32/35.346/139.692&speed=250
+			//https://panoramax.ign.fr/#focus=map&map=6.46/46.651/5.877&speed=250
+			//https://panoramax.openstreetmap.fr/#focus=map&map=6.72/35.695/140.106&speed=250
+			match = url.match(/panoramax.*&map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				if (pic_selected){
+					return [lat, lon, zoom, {pin_lat: lat, pin_lon: lon}];
+				} else {
+					return [lat, lon, zoom];
+				}
+				
+			}
+		},
+	},
+	{
+		//https://sharaku.eorc.jaxa.jp/GSMaP/index.htm?lon=139.683918&lat=35.584940&zoom=11
+		name: "JAXA Global Rainfall Watch",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "jaxa.jp",
+		description: "",
+		getUrl(lat, lon, zoom) {
+			return `https://sharaku.eorc.jaxa.jp/GSMaP/index.htm?lon=${lon}&lat=${lat}&zoom=${zoom}`;
 		},
 	},
 ];
