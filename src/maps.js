@@ -1119,6 +1119,28 @@ const maps = [
 			return "https://www.openrailwaymap.org/?lat=" + lat + "&lon=" + lon + "&zoom=" + zoom;
 		},
 	},
+/* Doesnt work
+	{
+		//https://openlandmap.org/?center=25%2C39&zoom=7.15395439922849&opacity=72&base=OpenStreetMap&layer=lc_glc.fcs30d&time=2022
+		name: "OpenLandMap",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "openlandmap.org",
+		getUrl(lat, lon, zoom) {
+			return "https://openlandmap.org/?center=" + lon + "%2C" + lat + "&zoom=" + zoom + "&opacity=72&base=OpenStreetMap&layer=lc_glc.fcs30d&time=2022";
+		},
+	},
+*/
+	{
+		//https://waterwaymap.org/#map=14.42/36.63977/118.34716
+		name: "WaterwayMap",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "waterwaymap.org",
+		getUrl(lat, lon, zoom) {
+			return `https://waterwaymap.org/#map=${zoom}/${lat}/${lon}`;
+		},
+	},
 
 	{
 		name: "聖地巡礼マップ",
@@ -1440,17 +1462,17 @@ const maps = [
 		},
 	},
 
-	{
+	{//https://plan.tomtom.com/en/?p=35.68504,139.7515,14.16z
 		name: "TomTom MyDrive",
 		category: OTHER_CATEGORY,
 		default_check: false,
 		domain: "tomtom.com",
 		description: "Traffic map",
 		getUrl(lat, lon, zoom) {
-			return "https://mydrive.tomtom.com/en_gb/#mode=viewport+viewport=" + lat + "," + lon + "," + zoom + ",0,-0+ver=3";
+			return `https://plan.tomtom.com/en/?p=${lat},${lon},${zoom}z`;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/mydrive\.tomtom\.com\/[a-z_]*\/#mode=viewport\+viewport=(-?\d[0-9.]*),(-?\d[0-9.]*),(-?\d[0-9.]*)/);
+			const match = url.match(/\.tomtom\.com\/.*p=(-?\d[0-9.]*),(-?\d[0-9.]*),(\d[0-9.]*)z/);
 			if (match) {
 				const [, lat, lon, zoom] = match;
 				return [lat, lon, Math.round(Number(zoom))];
@@ -1657,6 +1679,27 @@ const maps = [
 			}
 		},
 	},
+	/*
+	{
+		//https://www.norgeskart.no/#!?project=norgeskart&layers=1002&zoom=13&lat=6649044.14&lon=262775.36
+		name: "Norgeskart",
+		category: OTHER_CATEGORY,
+		default_check: false,
+		domain: "www.norgeskart.no",
+		description: "experimental vector map in Norge",
+		getUrl(lat, lon, zoom) {
+			return "https://www.norgeskart.no/#!?project=norgeskart&layers=1002&zoom=" + zoom + "&lat=" + lat + "&lon=" + lon;
+		},
+		getLatLonZoom(url) {
+			const match = url.match(/www\.norgeskart\.no.*#.*layers=1002.*([0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+
+			if (match) {
+				const [, zoom, lat, lon] = match;
+				return [lat, normalizeLon(lon), Math.round(Number(zoom))];
+			}
+		},
+	},
+	*/
 	{
 		//https://labs.mapple.com/mapplevt.html?#8.47/35.7472/139.9546
 		name: "MαPPLE",
@@ -1715,19 +1758,19 @@ const maps = [
 		},
 	},
 	{
-		//https://www.strava.com/heatmap#9.41/139.72884/35.84051
+		//https://www.strava.com/maps/global-heatmap#18/35.6837/139.75355
 		name: "STRAVA",
 		category: SPECIAL_CATEGORY,
 		default_check: false,
 		domain: "strava.com",
 		description: "Heatmap of athletes activities",
 		getUrl(lat, lon, zoom) {
-			return "https://www.strava.com/heatmap#" + zoom + "/" + lon + "/" + lat ;
+			return "https://www.strava.com/maps/global-heatmap#" + zoom + "/" + lat + "/" + lon ;
 		},
 		getLatLonZoom(url) {
-			const match = url.match(/www\.strava\.com\/heatmap#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
+			const match = url.match(/www\.strava\.com\/.*#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
 			if (match) {
-				const [, zoom, lon, lat] = match;
+				const [, zoom, lat, lon] = match;
 				return [lat, lon, Math.round(Number(zoom))];
 			}
 		},
@@ -3166,6 +3209,17 @@ const maps = [
 		description: "",
 		getUrl(lat, lon, zoom) {
 			return `https://sharaku.eorc.jaxa.jp/GSMaP/index.htm?lon=${lon}&lat=${lat}&zoom=${zoom}`;
+		},
+	},
+	{
+		//https://map.osm.wikidata.link/map/16/35.4407/139.6275?radius=5
+		name: "OWL Map",
+		category: SPECIAL_CATEGORY,
+		default_check: false,
+		domain: "wikidata.link",
+		description: "Link Wikidata and OpenStreetMap",
+		getUrl(lat, lon, zoom) {
+			return `https://map.osm.wikidata.link/map/${zoom}/${lat}/${lon}?radius=5`;
 		},
 	},
 ];
