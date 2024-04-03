@@ -1715,14 +1715,14 @@ const maps = [
 		},
 	},
 	{
-		//https://www.strava.com/heatmap#9.41/139.72884/35.84051/hot/all
+		//https://www.strava.com/heatmap#9.41/139.72884/35.84051
 		name: "STRAVA",
 		category: SPECIAL_CATEGORY,
 		default_check: false,
 		domain: "strava.com",
 		description: "Heatmap of athletes activities",
 		getUrl(lat, lon, zoom) {
-			return "https://www.strava.com/heatmap#" + zoom + "/" + lon + "/" + lat + "/hot/all";
+			return "https://www.strava.com/heatmap#" + zoom + "/" + lon + "/" + lat ;
 		},
 		getLatLonZoom(url) {
 			const match = url.match(/www\.strava\.com\/heatmap#(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
