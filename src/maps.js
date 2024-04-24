@@ -3129,20 +3129,20 @@ const maps = [
 		},
 	},
 	{
-		//https://panoramax.fr/photos#focus=map&map=7.32/35.346/139.692&speed=250
+		//https://api.panoramax.xyz/#focus=map&map=7.32/35.346/139.692&speed=250
 		name: "Panoramax",
 		category: MAIN_CATEGORY,
 		default_check: false,
 		domain: "panoramax.fr",
 		description: "A digital resource for sharing and exploiting field photos.",
 		getUrl(lat, lon, zoom) {
-			return `https://panoramax.fr/photos#focus=map&map=${zoom}/${Number(lat).toFixed(5)}/${Number(lon).toFixed(5)}&speed=250`;
+			return `https://api.panoramax.xyz/#focus=map&map=${zoom}/${Number(lat).toFixed(5)}/${Number(lon).toFixed(5)}&speed=250`;
 		},
 		getLatLonZoom(url) {
 			const pic_selected = url.match(/pic=/);
 			
 			let match;
-			//https://panoramax.fr/photos#focus=map&map=7.32/35.346/139.692&speed=250
+			//https://api.panoramax.xyz/#focus=map&map=7.32/35.346/139.692&speed=250
 			//https://panoramax.ign.fr/#focus=map&map=6.46/46.651/5.877&speed=250
 			//https://panoramax.openstreetmap.fr/#focus=map&map=6.72/35.695/140.106&speed=250
 			match = url.match(/panoramax.*&map=(\d[0-9.]*)\/(-?\d[0-9.]*)\/(-?\d[0-9.]*)/);
