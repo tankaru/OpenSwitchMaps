@@ -14,7 +14,7 @@
         @click.left="openMapInCurrentTab(map)"
         @click.middle="openMapInOtherTab(map)"
       >
-        <img :src="'http://www.google.com/s2/favicons?domain=' + map.domain">
+        <img :src="'https://www.google.com/s2/favicons?domain=' + map.domain" width="16px">
         {{ map.name }}
       </p>
     </div>
