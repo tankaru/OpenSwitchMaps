@@ -44,7 +44,7 @@ module.exports = {
 		this.open(map, mapUrl => 'window.location.href =' + JSON.stringify(mapUrl) + ';');
     },
     openMapInOtherTab(map) {
-      this.open(map, mapUrl => 'window.open(' + JSON.stringify(mapUrl) + ');');
+      this.open(map, mapUrl => 'window.open(' + JSON.stringify(mapUrl) + ', "_blank", "noreferrer");');
     },
     open(map, getCode) {
       chrome.tabs.query({
