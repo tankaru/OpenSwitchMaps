@@ -14,7 +14,7 @@
         @click.left="openMapInCurrentTab(map)"
         @click.middle="openMapInOtherTab(map)"
       >
-        <img :src="'http://www.google.com/s2/favicons?domain=' + map.domain">
+        <img :src="'https://www.google.com/s2/favicons?domain=' + map.domain" width="16px">
         {{ map.name }}
       </p>
     </div>
@@ -44,7 +44,7 @@ module.exports = {
 		this.open(map, mapUrl => 'window.location.href =' + JSON.stringify(mapUrl) + ';');
     },
     openMapInOtherTab(map) {
-      this.open(map, mapUrl => 'window.open(' + JSON.stringify(mapUrl) + ');');
+      this.open(map, mapUrl => 'window.open(' + JSON.stringify(mapUrl) + ', "_blank", "noreferrer");');
     },
     open(map, getCode) {
       chrome.tabs.query({
