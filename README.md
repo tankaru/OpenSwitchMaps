@@ -1,4 +1,12 @@
+# *Important Notice*
+ 
+Due to issues with the maintainer's development environment, this extension cannot be updated at the moment.
+
+Please consider using the [bookmarklet version](https://github.com/tankaru/OpenSwitchMapsWeb) instead.
+
 # OpenSwitchMaps
+
+
 Map service switcher for Chrome/Firefox extension
 
 Greatly contributed by jazzzz. Thanks!
